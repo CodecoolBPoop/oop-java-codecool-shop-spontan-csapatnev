@@ -1,7 +1,9 @@
 package com.codecool.shop.dao.implementation;
 
 
+import com.codecool.shop.dao.ElementNotFoundException;
 import com.codecool.shop.dao.ProductCategoryDao;
+import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 
 import java.util.ArrayList;
@@ -32,7 +34,20 @@ public class ProductCategoryDaoMem implements ProductCategoryDao {
 
     @Override
     public ProductCategory find(int id) {
-        return data.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
+        return data
+                .stream()
+                .filter(t -> t.getId() == id)
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
+    public ProductCategory find(String name) throws ElementNotFoundException {
+        return data
+                .stream()
+                .filter(t -> t.getName().toLowerCase().equals(name.toLowerCase()))
+                .findFirst()
+                .orElseThrow(ElementNotFoundException::new);
     }
 
     @Override

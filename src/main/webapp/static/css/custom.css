@@ -31,15 +31,50 @@ body {
 }
 
 .main {
-    width: 78%;
+    width: 82%;
 }
 
 .aside {
-    width: 22%;
+    width: 18%;
 }
 
 .main, .aside {
     padding: 10px;
+}
+
+/* ----- ASIDE STYLES ----- */
+.aside .aside-container {
+    margin: 0 0 15px 0;
+    background-color: white;
+    box-shadow: 0 0 2px rgba(0, 0, 0, .4);
+    padding: 10px 15px;
+}
+
+.aside .aside-container h5 {
+    font-size: 16px;
+    margin: 0 0 8px 0;
+    padding: 0 0 8px 0;
+    border-bottom: 1px solid #aaa;
+}
+
+.aside-container ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.aside-container ul li a {
+    display: block;
+    margin: 1px 0;
+    padding: 2px 0;
+    color: #64ADFF;
+    font-size: 14px;
+    text-decoration: none;
+    transition: color 0.3s ease-out;
+}
+
+.aside-container ul li a:hover {
+    color: #438DFF;
 }
 
 
@@ -107,25 +142,21 @@ body {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-evenly;
+    padding: 50px 0;
 }
 
 .products .product {
     display: block;
-    width: calc(100% / 3.15) !important;
+    width: calc(100% / 3.2) !important;
     padding: 25px 25px 60px 25px;
-    border: 2px solid #a9a9a9;
+    box-shadow: 0 0 4px rgba(0, 0, 0, .6);
     margin-bottom: 20px;
     position: relative;
-    transition: all 0.3s ease-out;
-}
-
-.products .product:hover {
-    background-color: rgba(0, 0, 0, .03);
-    box-shadow: 0 0 12px rgba(0, 0, 0, .15);
+    background-color: white;
 }
 
 .products .product .product-thumb {
-    width: 90%;
+    width: 98%;
     margin: 0 auto;
     padding-top: 70%;
     background: url('http://placehold.it/400x250/000/fff') no-repeat center;

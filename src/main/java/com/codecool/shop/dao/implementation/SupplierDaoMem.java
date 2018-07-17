@@ -1,5 +1,6 @@
 package com.codecool.shop.dao.implementation;
 
+import com.codecool.shop.dao.ElementNotFoundException;
 import com.codecool.shop.dao.SupplierDao;
 import com.codecool.shop.model.Supplier;
 
@@ -31,7 +32,20 @@ public class SupplierDaoMem implements SupplierDao {
 
     @Override
     public Supplier find(int id) {
-        return data.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
+        return data
+                .stream()
+                .filter(t -> t.getId() == id)
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
+    public Supplier find(String name) throws ElementNotFoundException {
+        return data
+                .stream()
+                .filter(t -> t.getName().toLowerCase().equals(name.toLowerCase()))
+                .findFirst()
+                .orElseThrow(ElementNotFoundException::new);
     }
 
     @Override

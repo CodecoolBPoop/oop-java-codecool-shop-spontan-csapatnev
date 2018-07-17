@@ -67,7 +67,7 @@
                 </h5>
                 <div class="card-body">
                     <div th:each="category,iterStat : ${categories}">
-                        <a th:attr="href='/categories/' + ${category.getName().toLowerCase()}" th:text="${category.getName()}" class="card-link"></a>
+                        <a th:attr="href='/product-categories/' + ${category.getName().toLowerCase()}" th:text="${category.getName()}" class="card-link"></a>
                     </div>
                 </div>
             </div>

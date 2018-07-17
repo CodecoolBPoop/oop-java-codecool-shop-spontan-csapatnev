@@ -26,6 +26,7 @@ public class ProductCategoryController extends BaseController {
     void addPlusContext(WebContext context, HttpServletRequest req) throws ElementNotFoundException, IndexOutOfBoundsException {
         String productCategoryName = req.getRequestURI().split("/")[2];
         ProductCategory productCategory = productCategoryDataStore.find(productCategoryName);
+        context.setVariable("products", productDataStore.getBy(productCategory));
     }
 
 }

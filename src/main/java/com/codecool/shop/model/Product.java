@@ -8,7 +8,7 @@ public class Product extends BaseModel {
     private Currency defaultCurrency;
     private ProductCategory productCategory;
     private Supplier supplier;
-
+    private int shoppingCartQuantity;
 
     public Product(String name, float defaultPrice, String currencyString, String description, ProductCategory productCategory, Supplier supplier) {
         super(name, description);
@@ -74,5 +74,13 @@ public class Product extends BaseModel {
                 this.defaultCurrency.toString(),
                 this.productCategory.getName(),
                 this.supplier.getName());
+    }
+
+    public void setShoppingCartQuantity(int shoppingCartQuantity) {
+        this.shoppingCartQuantity = shoppingCartQuantity;
+    }
+
+    public int getShoppingCartQuantity() {
+        return shoppingCartQuantity;
     }
 }

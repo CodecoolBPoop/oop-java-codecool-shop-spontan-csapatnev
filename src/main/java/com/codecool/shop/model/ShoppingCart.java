@@ -45,4 +45,22 @@ public class ShoppingCart {
 
     }
 
+    public float sumOfPrices(HttpSession session) {
+        ArrayList<Product> productList = (ArrayList) session.getAttribute("ShoppingCart");
+        float sum = 0;
+        for (Product p : productList) {
+            sum += p.getShoppingCartQuantity() * p.getDefaultPrice();
+        }
+        return sum;
+    }
+
+    public int sumOfProducts(HttpSession session){
+        ArrayList<Product> productList = (ArrayList)session.getAttribute("ShoppingCart");
+        int sum= 0;
+        for(Product p : productList) {
+            sum += p.getShoppingCartQuantity();
+        }
+        return sum;
+    }
+
 }

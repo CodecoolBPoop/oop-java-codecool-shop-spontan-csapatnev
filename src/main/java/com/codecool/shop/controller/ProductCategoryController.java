@@ -1,10 +1,12 @@
 package com.codecool.shop.controller;
 
+import com.codecool.shop.dao.ElementNotFoundException;
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.config.TemplateEngineUtil;
+import com.codecool.shop.model.ProductCategory;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -21,8 +23,9 @@ import java.util.Map;
 public class ProductCategoryController extends BaseController {
 
     @Override
-    void addPlusContext(WebContext context, HttpServletRequest req) {
-        context.setVariable("products", productDataStore.getAll());
+    void addPlusContext(WebContext context, HttpServletRequest req) throws ElementNotFoundException, IndexOutOfBoundsException {
+        String productCategoryName = req.getRequestURI().split("/")[2];
+        ProductCategory productCategory = productCategoryDataStore.find(productCategoryName);
     }
 
 }

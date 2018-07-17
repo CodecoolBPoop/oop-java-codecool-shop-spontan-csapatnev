@@ -1,5 +1,6 @@
 package com.codecool.shop.controller;
 
+import com.codecool.shop.dao.ElementNotFoundException;
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.SupplierDao;
@@ -25,7 +26,7 @@ public abstract class BaseController extends HttpServlet {
     ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
     SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
 
-    abstract void addPlusContext(WebContext context, HttpServletRequest req);
+    abstract void addPlusContext(WebContext context, HttpServletRequest req) throws ElementNotFoundException, IndexOutOfBoundsException;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -33,8 +34,12 @@ public abstract class BaseController extends HttpServlet {
         WebContext context = new WebContext(req, resp, req.getServletContext());
         context.setVariable("categories", productCategoryDataStore.getAll());
         context.setVariable("suppliers", supplierDataStore.getAll());
-        addPlusContext(context, req);
-        engine.process("product/index.html", context, resp.getWriter());
+        try {
+            addPlusContext(context, req);
+            engine.process("product/index.html", context, resp.getWriter());
+        } catch(ElementNotFoundException|IndexOutOfBoundsException e) {
+            engine.process("product/404.html", context, resp.getWriter());
+        }
     }
 
 }

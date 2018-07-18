@@ -33,6 +33,8 @@
             <a href="/checkout" class="menu-link">Checkout</a>
         </li>
     </ul>
+    <div class="menu-handler" id="menuHandler"><i></i><i></i><i></i></div>
+    <div class="menu-overlay"></div>
     <div class="shopping-cart">
         <div class="shopping-cart-icon" id="shoppingCartHandler">
             <i class="fa fa-shopping-cart cart-icon"></i>
@@ -108,6 +110,17 @@
     $('#shoppingCartHandler').on('click', function(e) {
         $('.shopping-cart-content').toggleClass('opened');
     })
+
+    function menuHandling() {
+        $('#menuHandler').on('click', function() {
+            $('#pageMenu').addClass('menu-opened');
+        });
+        $('.menu-overlay').on('click', function() {
+            $('#pageMenu').removeClass('menu-opened');
+        });
+    }
+
+    menuHandling();
 
 </script>
 

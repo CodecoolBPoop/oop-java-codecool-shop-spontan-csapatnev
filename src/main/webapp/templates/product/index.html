@@ -17,7 +17,6 @@
 
 <body>
 
-<<<<<<< HEAD
 <nav id="pageMenu">
     <a href="/" class="logo"></a>
     <ul class="menu">
@@ -67,16 +66,16 @@
             <div class="product" th:each="prod,iterStat : ${products}">
                 <div class="product-thumb" th:style="'background-image: url(/static/img/product_' + ${prod.id} + '.jpg'"></div>
                 <div class="product-details">
-                    <h5 class="product-name" th:text="${prod.name}"></h5>
+                    <h5 class="product-name" th:text="${prod.getName()}"></h5>
                     <p class="product-info">
                         -&nbsp;
                         <span class="product-supplier" th:text="${prod.getSupplier().getName()}"></span>
                         <span class="product-product-category" th:text="${prod.getProductCategory().getName()}"></span>
                     </p>
-                    <p class="product-description" th:text="${prod.description}"></p>
+                    <p class="product-description" th:text="${prod.getDescription()}"></p>
                     <div class="product-buy">
                         <p class="product-price" th:text="${prod.getPrice()}"></p>
-                        <a href="#" class="product-add-to-cart">Add to cart</a>
+                        <a th:href="'/shoppingcart?id=' + ${prod.getId()}" class="product-add-to-cart">Add to cart</a>
                     </div>
                 </div>
             </div>

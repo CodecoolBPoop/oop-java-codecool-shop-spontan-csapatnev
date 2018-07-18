@@ -40,9 +40,23 @@ public class ShoppingCart {
                 productList.add(product);
             }
             session.setAttribute("ShoppingCart", productList);
-
         }
+    }
 
+    public void remove(HttpSession session, int id, boolean removeAll){
+        ArrayList<Product> productList = (ArrayList) session.getAttribute("ShoppingCart");
+        Product productToRemove = getProductById(id);
+        int i = 0;
+        while (i < productList.size()){
+            if(productList.get(i).equals(productToRemove)) {
+                Product foundProduct = productList.get(i);
+                foundProduct.setShoppingCartQuantity(foundProduct.getShoppingCartQuantity()-1);
+                if( foundProduct.getShoppingCartQuantity() == 0 || removeAll);
+                    productList.remove(i);
+            }
+            i++;
+        }
+        session.setAttribute("ShoppingCart",productList);
     }
 
     public float sumOfPrices(HttpSession session) {
@@ -61,6 +75,10 @@ public class ShoppingCart {
             sum += p.getShoppingCartQuantity();
         }
         return sum;
+        sum = 0;
+        productList.stream()
+                .
+        ;
     }
 
 }

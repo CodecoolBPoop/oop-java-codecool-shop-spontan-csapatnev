@@ -33,6 +33,7 @@ public class ShoppingCart {
                 i++;
             }
             if (i == productList.size()) {
+                product.setShoppingCartQuantity(1);
                 productList.add(product);
             }
             session.setAttribute("ShoppingCart", productList);
@@ -49,6 +50,7 @@ public class ShoppingCart {
                 foundProduct.setShoppingCartQuantity(foundProduct.getShoppingCartQuantity()-1);
                 if( foundProduct.getShoppingCartQuantity() == 0 || removeAll)
                     productList.remove(i);
+                break;
             }
             i++;
         }

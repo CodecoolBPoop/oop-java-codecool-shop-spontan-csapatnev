@@ -75,10 +75,6 @@ public class ShoppingCart {
             sum += p.getShoppingCartQuantity();
         }
         return sum;
-        sum = 0;
-        productList.stream()
-                .
-        ;
     }
-
 }
+

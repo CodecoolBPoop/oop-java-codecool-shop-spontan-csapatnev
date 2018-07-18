@@ -8,6 +8,7 @@ import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.implementation.SupplierDaoMem;
+import com.codecool.shop.model.ShoppingCart;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -33,7 +34,10 @@ public abstract class BaseController extends HttpServlet {
         context.setVariable("categories", productCategoryDataStore.getAll());
         context.setVariable("suppliers", supplierDataStore.getAll());
         HttpSession session = req.getSession();
-        context.setVariable("ShoppingCart", session.getAttribute("ShoppingCart"));
+        ShoppingCart shoppingCart = new ShoppingCart();
+        context.setVariable("shoppingCartProducts", shoppingCart.getAllProduct(session));
+        context.setVariable("sumOfProducts", shoppingCart.sumOfProducts(session));
+        context.setVariable("sumOfPrices", shoppingCart.sumOfPrices(session));
         try {
             addPlusContext(context, req);
             engine.process("product/index.html", context, resp.getWriter());

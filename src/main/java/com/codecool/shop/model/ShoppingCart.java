@@ -4,6 +4,7 @@ import com.codecool.shop.dao.implementation.ProductDaoMem;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ShoppingCart {
 
@@ -56,6 +57,9 @@ public class ShoppingCart {
 
     public float sumOfPrices(HttpSession session) {
         ArrayList<Product> productList = (ArrayList) session.getAttribute("ShoppingCart");
+        if (productList == null) {
+            return 0;
+        }
         float sum = 0;
         for (Product p : productList) {
             sum += p.getShoppingCartQuantity() * p.getDefaultPrice();
@@ -65,11 +69,19 @@ public class ShoppingCart {
 
     public int sumOfProducts(HttpSession session){
         ArrayList<Product> productList = (ArrayList)session.getAttribute("ShoppingCart");
+        if (productList == null) {
+            return 0;
+        }
         int sum= 0;
         for(Product p : productList) {
             sum += p.getShoppingCartQuantity();
         }
         return sum;
     }
+
+    public List<Product> getAllProduct(HttpSession session) {
+        return (ArrayList)session.getAttribute("ShoppingCart");
+    }
+
 }
 

@@ -36,7 +36,10 @@ public class CheckoutController extends HttpServlet {
         HttpSession session = req.getSession();
         List<Product> cartItems;
         cartItems = (ArrayList)session.getAttribute("ShoppingCart");
-        float totalPrice = calculateTotalPrice(cartItems);
+        float totalPrice = 0;
+        if (cartItems != null) {
+            totalPrice = calculateTotalPrice(cartItems);
+        }
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());

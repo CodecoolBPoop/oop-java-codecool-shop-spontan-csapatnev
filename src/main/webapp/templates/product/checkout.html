@@ -67,12 +67,10 @@
             </div>
         </div>
     </div>
-    <span id="totalPrice" th:text="${totalPrice}">100 USD</span> USD
-    <p>
-        <div id="paypal-button"></div>
-        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
-    </p>
 </div>
+<span id="totalPrice" th:text="${totalPrice}">100 USD</span> USD
+<div id="paypal-button"></div>
+<div><button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Pay with credit card</button></div>
 
 <!-- Trigger the modal with a button -->
 
@@ -88,6 +86,9 @@
             </div>
             <div class="modal-body">
                 <form action="/payment" id="my-sample-form" method="post">
+                    <label for="card-holder">Card holder</label>
+                    <input type="text" id="card-holder" name="card-holder" placeholder="Card holder">
+
                     <label for="card-number">Card Number</label>
                     <div id="card-number"></div>
 

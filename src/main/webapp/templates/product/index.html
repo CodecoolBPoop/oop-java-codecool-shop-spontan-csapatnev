@@ -53,6 +53,7 @@
                         <span class="item-quantity" th:text="${prod.getShoppingCartQuantity()}"></span>
                         <a th:href="'/shopping-cart?action=add&id=' + ${prod.getId()}" class="add-button">+</a>
                     </div>
+                    <a class="fa fa-times shopping-cart-remove-item" th:href="'/shopping-cart?action=remove&all=true&id=' + ${prod.getId()}"></a>
                 </li>
             </ul>
             <div class="shopping-cart-details">

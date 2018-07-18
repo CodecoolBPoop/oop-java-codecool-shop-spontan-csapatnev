@@ -3,9 +3,7 @@ package com.codecool.shop.model;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 
 import javax.servlet.http.HttpSession;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ShoppingCart {
 
@@ -16,9 +14,7 @@ public class ShoppingCart {
 
     public void add(HttpSession session, int id) {
         ArrayList<Product> productList;
-
         Product product = getProductById(id);
-
 
         if (session.getAttribute("ShoppingCart") == null) {
             productList = new ArrayList<Product>();
@@ -26,7 +22,6 @@ public class ShoppingCart {
             session.setAttribute("ShoppingCart", productList);
         } else {
             productList = (ArrayList)session.getAttribute("ShoppingCart");
-            //System.out.println(productList.toString());
             int i = 0;
             while (i < productList.size()) {
                 Product p = productList.get(i);
@@ -51,7 +46,7 @@ public class ShoppingCart {
             if(productList.get(i).equals(productToRemove)) {
                 Product foundProduct = productList.get(i);
                 foundProduct.setShoppingCartQuantity(foundProduct.getShoppingCartQuantity()-1);
-                if( foundProduct.getShoppingCartQuantity() == 0 || removeAll);
+                if( foundProduct.getShoppingCartQuantity() == 0 || removeAll)
                     productList.remove(i);
             }
             i++;

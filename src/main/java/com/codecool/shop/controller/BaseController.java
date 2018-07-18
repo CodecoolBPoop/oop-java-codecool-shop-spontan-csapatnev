@@ -12,13 +12,11 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 public abstract class BaseController extends HttpServlet {
 
@@ -34,7 +32,8 @@ public abstract class BaseController extends HttpServlet {
         WebContext context = new WebContext(req, resp, req.getServletContext());
         context.setVariable("categories", productCategoryDataStore.getAll());
         context.setVariable("suppliers", supplierDataStore.getAll());
-        context.setVariable("ShoppingCart", );
+        HttpSession session = req.getSession();
+        context.setVariable("ShoppingCart", session.getAttribute("ShoppingCart"));
         try {
             addPlusContext(context, req);
             engine.process("product/index.html", context, resp.getWriter());

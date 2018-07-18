@@ -237,6 +237,7 @@ body {
 }
 
 #pageMenu .shopping-cart .shopping-cart-content .cart-item {
+    position: relative;
     border-bottom: 1px solid #aaa;
     padding: 15px 10px;
     display: flex;
@@ -299,6 +300,18 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.shopping-cart-remove-item {
+    display: block;
+    font-size: 12px;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    text-decoration: none;
 }
 
 /* ----- PRODUCT STYLE ----- */

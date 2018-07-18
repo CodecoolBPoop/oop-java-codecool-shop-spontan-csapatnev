@@ -38,25 +38,26 @@
     <div class="shopping-cart">
         <div class="shopping-cart-icon" id="shoppingCartHandler">
             <i class="fa fa-shopping-cart cart-icon"></i>
-            <i class="quantity-icon">3</i>
+            <i class="quantity-icon" th:text="${sumOfProducts}"></i>
         </div>
         <div class="shopping-cart-content">
             <ul class="shopping-cart-list">
-                <li class="cart-item">
-                    <div class="shopping-cart-item-thumb"></div>
+                <li class="cart-item" th:each="prod,iter : ${shoppingCartProducts}">
+                    <div class="shopping-cart-item-thumb" th:style="'background-image: url(/static/img/product_' + ${prod.id} + '.jpg'"></div>
                     <div class="shopping-cart-item-details">
-                        <h5 class="item-name">Item #1</h5>
-                        <small class="item-price">$399</small>
+                        <h5 class="item-name" th:text="${prod.getName()}"></h5>
+                        <small class="item-price" th:text="${prod.getPrice()}"></small>
                     </div>
                     <div class="shopping-cart-item-quantity">
-                        <a href="/" class="minus-button">-</a>
-                        <span class="item-quantity">4</span>
-                        <a href="/" class="minus-button">+</a>
+                        <a th:href="'/shopping-cart?action=remove&id=' + ${prod.getId()}" class="minus-button">-</a>
+                        <span class="item-quantity" th:text="${prod.getShoppingCartQuantity()}"></span>
+                        <a th:href="'/shopping-cart?action=add&id=' + ${prod.getId()}" class="add-button">+</a>
                     </div>
+                    <a class="fa fa-times shopping-cart-remove-item" th:href="'/shopping-cart?action=remove&all=true&id=' + ${prod.getId()}"></a>
                 </li>
             </ul>
             <div class="shopping-cart-details">
-                <div class="cart-price">Total $1899</div>
+                <div class="cart-price" th:text="'Total $' + ${sumOfPrices}">Total $1899</div>
             </div>
         </div>
     </div>
@@ -77,7 +78,7 @@
                     <p class="product-description" th:text="${prod.getDescription()}"></p>
                     <div class="product-buy">
                         <p class="product-price" th:text="${prod.getPrice()}"></p>
-                        <a th:href="'/shoppingcart?id=' + ${prod.getId()}" class="product-add-to-cart">Add to cart</a>
+                        <a th:href="'/shopping-cart?action=add&id=' + ${prod.getId()}" class="product-add-to-cart">Add to cart</a>
                     </div>
                 </div>
             </div>

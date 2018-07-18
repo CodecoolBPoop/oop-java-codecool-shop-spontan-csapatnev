@@ -34,6 +34,7 @@ public abstract class BaseController extends HttpServlet {
         WebContext context = new WebContext(req, resp, req.getServletContext());
         context.setVariable("categories", productCategoryDataStore.getAll());
         context.setVariable("suppliers", supplierDataStore.getAll());
+        context.setVariable("ShoppingCart", );
         try {
             addPlusContext(context, req);
             engine.process("product/index.html", context, resp.getWriter());

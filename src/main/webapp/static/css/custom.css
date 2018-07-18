@@ -31,9 +31,15 @@ body {
     padding: 50px 0;
 }
 
-@media screen and (max-width: 768) {
+@media screen and (max-width: 768px) {
     .container {
         flex-direction: column;
+    }
+    .aside {
+        order: 1;
+    }
+    .main {
+        order: 2;
     }
 }
 
@@ -46,7 +52,7 @@ body {
 }
 
 .main, .aside {
-    padding: 10px;
+    padding: 5px;
 }
 
 /* ----- ASIDE STYLES ----- */

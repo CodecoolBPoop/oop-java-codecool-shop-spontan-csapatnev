@@ -34,10 +34,9 @@ public abstract class BaseController extends HttpServlet {
         context.setVariable("categories", productCategoryDataStore.getAll());
         context.setVariable("suppliers", supplierDataStore.getAll());
         HttpSession session = req.getSession();
-        ShoppingCart shoppingCart = new ShoppingCart();
-        context.setVariable("shoppingCartProducts", shoppingCart.getAllProduct(session));
-        context.setVariable("sumOfProducts", shoppingCart.sumOfProducts(session));
-        context.setVariable("sumOfPrices", shoppingCart.sumOfPrices(session));
+        context.setVariable("shoppingCartProducts", ShoppingCart.getAllProduct(session));
+        context.setVariable("sumOfProducts", ShoppingCart.sumOfProducts(session));
+        context.setVariable("sumOfPrices", ShoppingCart.sumOfPrices(session));
         try {
             addPlusContext(context, req);
             engine.process("product/index.html", context, resp.getWriter());

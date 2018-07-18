@@ -27,9 +27,8 @@ public class ShoppingCartController extends BaseController {
     void addPlusContext(WebContext context, HttpServletRequest req) {
         context.setVariable("products", productDataStore.getAll());
         int productId = Integer.parseInt(req.getParameter("id"));
-        ShoppingCart cart = new ShoppingCart();
         HttpSession session = req.getSession();
 
-        cart.add(session, productId);
+        ShoppingCart.add(session, productId);
     }
 }

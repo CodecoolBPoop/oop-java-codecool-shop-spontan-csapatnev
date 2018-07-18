@@ -101,6 +101,7 @@
             return actions.payment.execute()
                 .then(function () {
                     window.alert('Thank you for your purchase!');
+                    window.location.replace("/")
                 });
         }
     }, '#paypal-button');

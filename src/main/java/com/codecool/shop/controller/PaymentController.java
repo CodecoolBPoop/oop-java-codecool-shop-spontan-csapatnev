@@ -79,6 +79,7 @@ public class PaymentController extends HttpServlet {
             // Handle errors
             System.out.println("ERROR");
             System.out.println(result);
+            context.setVariable("error", result.getMessage());
             engine.process("product/paying_error.html", context, resp.getWriter());
         }
 

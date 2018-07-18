@@ -21,10 +21,11 @@ public class Order {
     private String shippingCity;
     private String shippingZipCode;
     private String shippingAddress;
+    private float totalPrice;
 
     private List<Product> orderedItems;
 
-    Order() {
+    public Order() {
         this.id = nextId++;
         this.date = currentDate.toString();
         orderedItems = new ArrayList<>();
@@ -32,10 +33,6 @@ public class Order {
 
     public String getDate() {
         return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
     }
 
     public String getName() {
@@ -136,5 +133,13 @@ public class Order {
 
     public void add(Product product) {
         orderedItems.add(product);
+    }
+
+    public float getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(float totalPrice) {
+        this.totalPrice = totalPrice;
     }
 }

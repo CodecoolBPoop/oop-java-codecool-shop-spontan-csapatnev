@@ -35,16 +35,16 @@ public class PaymentController extends HttpServlet {
             "e6ad226cd0d2f0222ce5e18172e42663"
     );
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws IOException {
-
-        TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
-        WebContext context = new WebContext(req, resp, req.getServletContext());
-
-        engine.process("product/card_payment.html", context, resp.getWriter());
-
-    }
+//    @Override
+//    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+//            throws IOException {
+//
+//        TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
+//        WebContext context = new WebContext(req, resp, req.getServletContext());
+//
+//        engine.process("product/payment.html", context, resp.getWriter());
+//
+//    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
@@ -79,7 +79,7 @@ public class PaymentController extends HttpServlet {
             // Handle errors
             System.out.println("ERROR");
             System.out.println(result);
-            engine.process("product/checkout.html", context, resp.getWriter());
+            engine.process("product/paying_error.html", context, resp.getWriter());
         }
 
     }

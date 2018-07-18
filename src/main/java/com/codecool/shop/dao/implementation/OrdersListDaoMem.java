@@ -39,16 +39,19 @@ public class OrdersListDaoMem implements OrdersListDao {
 
     @Override
     public Order find(String name) throws ElementNotFoundException {
-        return null;
+        return orderList.stream()
+                .filter(order -> order.getName().toLowerCase().equals(name.toLowerCase()))
+                .findFirst()
+                .orElseThrow(ElementNotFoundException::new);
     }
 
     @Override
     public void remove(int id) {
-
+        orderList.remove(find(id));
     }
 
     @Override
     public List<Order> getAll() {
-        return null;
+        return orderList;
     }
 }

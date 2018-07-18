@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Codecool" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Title</title>
+
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/custom.css" />
+
+    <script src="https://js.braintreegateway.com/web/3.34.1/js/client.min.js"></script>
+    <script src="https://js.braintreegateway.com/web/3.34.1/js/hosted-fields.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+    <script>
+
+        $('#shoppingCartHandler').on('click', function(e) {
+            $('.shopping-cart-content').toggleClass('opened');
+        })
+
+        function menuHandling() {
+            $('#menuHandler').on('click', function() {
+                $('#pageMenu').addClass('menu-opened');
+            });
+            $('.menu-overlay').on('click', function() {
+                $('#pageMenu').removeClass('menu-opened');
+            });
+        }
+
+        menuHandling();
+
+    </script>
+</head>
+<body>
+<nav id="pageMenu">
+    <a href="/" class="logo"></a>
+    <ul class="menu">
+        <li class="menu-item">
+            <a href="/" class="menu-link">Home</a>
+        </li>
+        <li class="menu-item">
+            <a href="/product-categories" class="menu-link">Product categories</a>
+        </li>
+        <li class="menu-item">
+            <a href="/suppliers" class="menu-link">Suppliers</a>
+        </li>
+        <li class="menu-item">
+            <a href="/checkout" class="menu-link">Checkout</a>
+        </li>
+    </ul>
+    <div class="menu-handler" id="menuHandler"><i></i><i></i><i></i></div>
+    <div class="menu-overlay"></div>
+    <div class="shopping-cart">
+        <div class="shopping-cart-icon" id="shoppingCartHandler">
+            <i class="fa fa-shopping-cart cart-icon"></i>
+            <i class="quantity-icon">3</i>
+        </div>
+        <div class="shopping-cart-content">
+            <ul class="shopping-cart-list">
+                <li class="cart-item">
+                    <div class="shopping-cart-item-thumb"></div>
+                    <div class="shopping-cart-item-details">
+                        <h5 class="item-name">Item #1</h5>
+                        <small class="item-price">$399</small>
+                    </div>
+                    <div class="shopping-cart-item-quantity">
+                        <a href="/" class="minus-button">-</a>
+                        <span class="item-quantity">4</span>
+                        <a href="/" class="minus-button">+</a>
+                    </div>
+                </li>
+            </ul>
+            <div class="shopping-cart-details">
+                <div class="cart-price">Total $1899</div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<script>
+    paypal.Button.render({
+        env: 'sandbox',
+        client: {
+            sandbox: 'AQWz_PI2Mz8X8GCHC75xR1wGnl6-7PKt0gHHzTj0zajdi87RiEyeniv0-OxGJX0YQPspHke8dNjuj4G8'
+        },
+        payment: function (data, actions) {
+            return actions.payment.create({
+                transactions: [{
+                    amount: {
+                        total: $("#total-price").text(),
+                        currency: 'USD'
+                    }
+                }]
+            });
+        },
+        onAuthorize: function (data, actions) {
+            return actions.payment.execute()
+                .then(function () {
+                    window.alert('Thank you for your purchase!');
+                });
+        }
+    }, '#paypal-button');
+</script>
+
+<span id="total-price" th:text="${totalPrice}">100 USD</span> USD
+<div id="paypal-button"></div>
+<div><button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Pay with credit card</button></div>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Modal Header</h4>
+            </div>
+            <div class="modal-body">
+                <form action="/payment" id="my-sample-form" method="post">
+                    <label for="card-holder">Card holder</label>
+                    <input type="text" id="card-holder" name="card-holder" placeholder="Card holder">
+
+                    <label for="card-number">Card Number</label>
+                    <div id="card-number"></div>
+
+                    <label for="cvv">CVV</label>
+                    <div id="cvv"></div>
+
+                    <label for="expiration-date">Expiration Date</label>
+                    <div id="expiration-date"></div>
+                    <input type="hidden" id="nonce" name="payment_method_nonce" />
+
+                    <input type="submit" value="Pay"/>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+
+            <script>
+                var form = document.querySelector('#my-sample-form');
+                var submit = document.querySelector('input[type="submit"]');
+
+                braintree.client.create({
+                    authorization: 'sandbox_6cb2nw63_29ccczmbyzw2ywt8'
+                }, function (clientErr, clientInstance) {
+                    if (clientErr) {
+                        console.error(clientErr);
+                        return;
+                    }
+
+                    // This example shows Hosted Fields, but you can also use this
+                    // client instance to create additional components here, such as
+                    // PayPal or Data Collector.
+
+                    braintree.hostedFields.create({
+                        client: clientInstance,
+                        styles: {
+                            'input': {
+                                'font-size': '14px'
+                            },
+                            'input.invalid': {
+                                'color': 'red'
+                            },
+                            'input.valid': {
+                                'color': 'green'
+                            }
+                        },
+                        fields: {
+                            number: {
+                                selector: '#card-number',
+                                placeholder: '4111 1111 1111 1111'
+                            },
+                            cvv: {
+                                selector: '#cvv',
+                                placeholder: '123'
+                            },
+                            expirationDate: {
+                                selector: '#expiration-date',
+                                placeholder: '10/2019'
+                            }
+                        }
+                    }, function (hostedFieldsErr, hostedFieldsInstance) {
+                        if (hostedFieldsErr) {
+                            console.error(hostedFieldsErr);
+                            return;
+                        }
+
+                        submit.removeAttribute('disabled');
+
+                        form.addEventListener('submit', function (event) {
+                            event.preventDefault();
+
+                            hostedFieldsInstance.tokenize(function (tokenizeErr, payload) {
+                                if (tokenizeErr) {
+                                    console.error(tokenizeErr);
+                                    alert("Some values are invalid");
+                                    return;
+                                }
+
+                                // If this was a real integration, this is where you would
+                                // send the nonce to your server.
+                                console.log('Got a nonce: ' + payload.nonce);
+                                $("#nonce").val(payload.nonce);
+                                $("#my-sample-form")[0].submit();
+                            });
+                        }, false);
+                    });
+                });
+            </script>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

@@ -31,10 +31,10 @@ public class CheckoutController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+            throws IOException {
 
         HttpSession session = req.getSession();
-        List<Product> cartItems = new ArrayList<>();
+        List<Product> cartItems;
         cartItems = (ArrayList)session.getAttribute("ShoppingCart");
         float totalPrice = calculateTotalPrice(cartItems);
 
@@ -47,7 +47,7 @@ public class CheckoutController extends HttpServlet {
 
     }
 
-    private float calculateTotalPrice(List<Product> productList) {
+    static float calculateTotalPrice(List<Product> productList) {
         float totalPrice = 0;
         for (Product product : productList) {
             totalPrice += product.getDefaultPrice() * product.getShoppingCartQuantity();

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="author" content="Codecool" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Codecool Shop</title>
+
+    <!-- Latest compiled and minified Jquery -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/static/css/custom.css" />
+</head>
+
+<body>
+
+<nav id="pageMenu">
+    <a href="/" class="logo"></a>
+    <ul class="menu">
+        <li class="menu-item">
+            <a href="/" class="menu-link">Home</a>
+        </li>
+        <li class="menu-item">
+            <a href="/product-categories" class="menu-link">Product categories</a>
+        </li>
+        <li class="menu-item">
+            <a href="/suppliers" class="menu-link">Suppliers</a>
+        </li>
+        <li class="menu-item">
+            <a href="/checkout" class="menu-link">Checkout</a>
+        </li>
+    </ul>
+    <div class="menu-handler" id="menuHandler"><i></i><i></i><i></i></div>
+    <div class="menu-overlay"></div>
+    <div class="shopping-cart">
+        <div class="shopping-cart-icon" id="shoppingCartHandler">
+            <i class="fa fa-shopping-cart cart-icon"></i>
+            <i class="quantity-icon">3</i>
+        </div>
+        <div class="shopping-cart-content">
+            <ul class="shopping-cart-list">
+                <li class="cart-item">
+                    <div class="shopping-cart-item-thumb"></div>
+                    <div class="shopping-cart-item-details">
+                        <h5 class="item-name">Item #1</h5>
+                        <small class="item-price">$399</small>
+                    </div>
+                    <div class="shopping-cart-item-quantity">
+                        <a href="/" class="minus-button">-</a>
+                        <span class="item-quantity">4</span>
+                        <a href="/" class="minus-button">+</a>
+                    </div>
+                </li>
+            </ul>
+            <div class="shopping-cart-details">
+                <div class="cart-price">Total $1899</div>
+            </div>
+        </div>
+    </div>
+</nav>
+</body>
+</html>

@@ -20,15 +20,24 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet(urlPatterns = {"/shoppingcart"})
+@WebServlet(urlPatterns = {"/shopping-cart"})
 public class ShoppingCartController extends BaseController {
+
+    private final String ACTION_ADD = "add";
+    private final String ACTION_REMOVE = "remove";
 
     @Override
     void addPlusContext(WebContext context, HttpServletRequest req) {
         context.setVariable("products", productDataStore.getAll());
+        String action = req.getParameter("action");
         int productId = Integer.parseInt(req.getParameter("id"));
         HttpSession session = req.getSession();
-
-        ShoppingCart.add(session, productId);
+        if (action != null) {
+            if (action.equals(ACTION_ADD)) {
+                ShoppingCart.add(session, productId);
+            } else if (action.equals(ACTION_REMOVE)) {
+                ShoppingCart.remove(session, productId, false);
+            }
+        }
     }
 }

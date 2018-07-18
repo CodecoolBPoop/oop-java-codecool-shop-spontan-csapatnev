@@ -49,9 +49,9 @@
                         <small class="item-price" th:text="${prod.getPrice()}"></small>
                     </div>
                     <div class="shopping-cart-item-quantity">
-                        <a href="/" class="minus-button">-</a>
+                        <a th:href="'/shopping-cart?action=remove&id=' + ${prod.getId()}" class="minus-button">-</a>
                         <span class="item-quantity" th:text="${prod.getShoppingCartQuantity()}"></span>
-                        <a href="/" class="minus-button">+</a>
+                        <a th:href="'/shopping-cart?action=add&id=' + ${prod.getId()}" class="add-button">+</a>
                     </div>
                 </li>
             </ul>
@@ -77,7 +77,7 @@
                     <p class="product-description" th:text="${prod.getDescription()}"></p>
                     <div class="product-buy">
                         <p class="product-price" th:text="${prod.getPrice()}"></p>
-                        <a th:href="'/shoppingcart?id=' + ${prod.getId()}" class="product-add-to-cart">Add to cart</a>
+                        <a th:href="'/shopping-cart?action=add&id=' + ${prod.getId()}" class="product-add-to-cart">Add to cart</a>
                     </div>
                 </div>
             </div>

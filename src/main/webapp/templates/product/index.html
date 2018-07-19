@@ -43,7 +43,7 @@
         </div>
         <div class="shopping-cart-content">
             <ul class="shopping-cart-list">
-                <li class="cart-item" th:each="prod,iter : ${shoppingCartProducts}">
+                <li class="cart-item" th:each="prod,iter : ${shoppingCartProducts}" th:id="'product-' + ${prod.getId()}">
                     <div class="shopping-cart-item-thumb" th:style="'background-image: url(/static/img/product_' + ${prod.id} + '.jpg'"></div>
                     <div class="shopping-cart-item-details">
                         <h5 class="item-name" th:text="${prod.getName()}"></h5>

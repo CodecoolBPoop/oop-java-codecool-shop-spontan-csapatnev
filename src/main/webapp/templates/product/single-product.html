@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="author" content="Codecool" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Codecool Shop</title>
+
+    <!-- Latest compiled and minified Jquery -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/static/css/custom.css" />
+</head>
+
+<body>
+
+<nav id="pageMenu">
+    <a href="/" class="logo"></a>
+    <ul class="menu">
+        <li class="menu-item">
+            <a href="/" class="menu-link">Home</a>
+        </li>
+        <li class="menu-item">
+            <a href="/product-categories" class="menu-link">Product categories</a>
+        </li>
+        <li class="menu-item">
+            <a href="/suppliers" class="menu-link">Suppliers</a>
+        </li>
+        <li class="menu-item">
+            <a href="/checkout" class="menu-link">Checkout</a>
+        </li>
+    </ul>
+    <div class="menu-handler" id="menuHandler"><i></i><i></i><i></i></div>
+    <div class="menu-overlay"></div>
+    <div class="shopping-cart">
+        <div class="shopping-cart-icon" id="shoppingCartHandler">
+            <i class="fa fa-shopping-cart cart-icon"></i>
+            <i class="quantity-icon" th:text="${sumOfProducts}"></i>
+        </div>
+        <div class="shopping-cart-content">
+            <ul class="shopping-cart-list">
+                <li class="cart-item" th:each="prod,iter : ${shoppingCartProducts}">
+                    <div class="shopping-cart-item-thumb" th:style="'background-image: url(/static/img/product_' + ${prod.id} + '.jpg'"></div>
+                    <div class="shopping-cart-item-details">
+                        <h5 class="item-name" th:text="${prod.getName()}"></h5>
+                        <small class="item-price" th:text="${prod.getPrice()}"></small>
+                    </div>
+                    <div class="shopping-cart-item-quantity">
+                        <a th:href="'/shopping-cart?action=remove&id=' + ${prod.getId()}" class="minus-button">-</a>
+                        <span class="item-quantity" th:text="${prod.getShoppingCartQuantity()}"></span>
+                        <a th:href="'/shopping-cart?action=add&id=' + ${prod.getId()}" class="add-button">+</a>
+                    </div>
+                    <a class="fa fa-times shopping-cart-remove-item" th:href="'/shopping-cart?action=remove&all=true&id=' + ${prod.getId()}"></a>
+                </li>
+            </ul>
+            <div class="shopping-cart-details">
+                <div class="cart-price" th:text="'Total $' + ${sumOfPrices}">Total $1899</div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <main class="main">
+        <div class="single-product">
+            <div class="product-thumb" th:style="'background-image: url(/static/img/product_' + ${product.id} + '.jpg'"></div>
+            <div class="product-details">
+                <h2 th:text="${product.getName()}"></h2>
+                <p th:text="${product.getDescription()}"></p>
+                <div>
+                    <span th:text="${product.getPrice()}"></span>
+                    <a href="/" class="add-to-cart button">Add to cart</a>
+                </div>
+            </div>
+        </div>
+    </main>
+    <aside class="aside">
+        <div class="product-categories-container aside-container">
+            <h5>Product Categories</h5>
+            <ul class="product-categories">
+                <li class="product-category" th:each="category,iterStat : ${categories}">
+                    <a class="product-category-link base-link" th:attr="href='/product-categories/' + ${category.getName().toLowerCase()}" th:text="${category.getName()}"></a>
+                </li>
+            </ul>
+        </div>
+        <div class="suppliers-container aside-container">
+            <h5>Suppliers</h5>
+            <ul class="suppliers">
+                <li class="supplier" th:each="supplier,iterStat : ${suppliers}">
+                    <a class="supplier-link base-link" th:attr="href='/suppliers/' + ${supplier.getName().toLowerCase()}" th:text="${supplier.getName()}"></a>
+                </li>
+            </ul>
+        </div>
+    </aside>
+</div>
+
+<div th:replace="footer.html :: copy"></div>
+
+<script>
+
+    $('#shoppingCartHandler').on('click', function(e) {
+        $('.shopping-cart-content').toggleClass('opened');
+    })
+
+    function menuHandling() {
+        $('#menuHandler').on('click', function() {
+            $('#pageMenu').addClass('menu-opened');
+        });
+        $('.menu-overlay').on('click', function() {
+            $('#pageMenu').removeClass('menu-opened');
+        });
+    }
+
+    menuHandling();
+
+</script>
+
+</body>
+</html>

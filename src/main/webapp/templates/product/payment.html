@@ -42,8 +42,10 @@
         onAuthorize: function (data, actions) {
             return actions.payment.execute()
                 .then(function () {
-                    window.alert('Thank you for your purchase!');
-                    window.location.replace("/")
+                    $.post("/paypal-success", function(response) {
+                        window.alert('Thank you for your purchase!');
+                        window.location.replace("/paypal-success")
+                    })
                 });
         }
     }, '#paypal-button');

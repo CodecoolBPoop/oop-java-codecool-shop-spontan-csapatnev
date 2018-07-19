@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Order {
 
-    private static int nextId = 0;
+    private static int nextId = 1;
     private static Date currentDate = new Date();
     private int id;
     private String date;

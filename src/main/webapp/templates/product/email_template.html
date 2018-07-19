@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    Here is your purchase details: <br>
+    <div>
+        Order date:
+        <span th:text="${orderDate}"></span>
+    </div>
+    <div class="product" th:each="prod,iterStat : ${products}">
+        <h5 class="product-name" th:text="${prod.getName()}"></h5>
+        <p class="product-info">
+            -&nbsp;
+            <span class="product-supplier" th:text="${prod.getSupplier().getName()}"></span>
+            <span class="product-product-category" th:text="${prod.getProductCategory().getName()}"></span>
+        </p>
+        <p class="product-description" th:text="${prod.getDescription()}"></p>
+        <div class="product-buy">
+            <p class="product-price" th:text="${prod.getPrice()}"></p>
+        </div>
+    </div>
+    <div>
+        Total price: <span th:text="${totalPrice}"></span>
+    </div>
+</body>
+</html>

@@ -1,25 +1,16 @@
 <!doctype html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8" />
-    <meta name="author" content="Codecool" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <title>Codecool Shop</title>
-
-    <!-- Latest compiled and minified Jquery -->
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
-    <script src="/static/js/dataHandler.js" defer></script>
-
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="/static/css/custom.css" />
-</head>
-
+<head th:replace="fragments/header.html::head"></head>
 <body>
 
 <nav th:replace="fragments/header.html::menu"></nav>
 
-Paying succesful!
+<div class="center success">
+    <h1>You paid successfully!</h1>
+    <p>Check your e-mail for the information about the order.</p>
+    <p>We will deliver your order soon.</p>
+    <a href="/" class="button">Go back to Home</a>
+</div>
 
 <div th:replace="footer.html :: copy"></div>
 

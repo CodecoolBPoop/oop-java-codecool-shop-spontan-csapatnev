@@ -46,6 +46,18 @@ body.clear {
     background-color: rgba(200, 0, 30, 1);
 }
 
+.center {
+    text-align: center;
+}
+
+.error {
+    color: darkred;
+}
+
+.success {
+    color: darkgreen;
+}
+
 /* ----- LAYOUT STYLE ----- */
 .container {
     max-width: 1280px;

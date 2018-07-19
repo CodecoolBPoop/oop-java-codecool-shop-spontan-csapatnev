@@ -9,6 +9,7 @@ import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.model.Order;
 import com.codecool.shop.model.Product;
+import com.codecool.shop.model.ShoppingCart;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -81,32 +82,35 @@ public class PaymentController extends HttpServlet {
             String mailBody = engine.process("product/paying_success.html", context);
             String subject = "Thank you for your purchase " + currentOrder.getName();
             sendEmail(toEmail, mailBody, subject);
+
+            context.setVariable("shoppingCartProducts", ShoppingCart.getAllProduct(session));
+            context.setVariable("sumOfProducts", ShoppingCart.sumOfProducts(session));
+            context.setVariable("sumOfPrices", ShoppingCart.sumOfPrices(session));
             engine.process("product/paying_success.html", context, resp.getWriter());
+
             session.invalidate();
         } else {
             // Handle errors
             System.out.println("ERROR");
             System.out.println(result);
             context.setVariable("error", result.getMessage());
+            context.setVariable("shoppingCartProducts", ShoppingCart.getAllProduct(session));
+            context.setVariable("sumOfProducts", ShoppingCart.sumOfProducts(session));
+            context.setVariable("sumOfPrices", ShoppingCart.sumOfPrices(session));
             engine.process("product/paying_error.html", context, resp.getWriter());
         }
-        Order currentOrder;
-        currentOrder = (Order)session.getAttribute("currentOrder");
-        String toEmail = currentOrder.getEmail();
-
     }
 
     private void sendEmail(String toEmail, String mailBody, String subject) {
-        final String fromEmail = "jakabgipsz1983@gmail.com"; //requires valid gmail id
-        final String password = "gipsz.j4k4b"; // correct password for gmail id
-//        final String toEmail = "myemail@yahoo.com"; // can be any email id
+        final String fromEmail = "jakabgipsz1983@gmail.com";
+        final String password = "gipsz.j4k4b";
 
         System.out.println("TLSEmail Start");
         Properties props = new Properties();
-        props.put("mail.smtp.host", "smtp.gmail.com"); //SMTP Host
-        props.put("mail.smtp.port", "587"); //TLS Port
-        props.put("mail.smtp.auth", "true"); //enable authentication
-        props.put("mail.smtp.starttls.enable", "true"); //enable STARTTLS
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
 
         //create Authenticator object to pass in Session.getInstance argument
         Authenticator auth = new Authenticator() {

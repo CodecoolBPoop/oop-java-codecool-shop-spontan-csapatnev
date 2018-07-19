@@ -10,7 +10,7 @@
         <div class="products">
             <div class="product" th:each="prod,iterStat : ${products}">
                 <a th:href="'/products/' + ${prod.getId()}">
-                    <div class="product-thumb" th:style="'background-image: url(/static/img/product_' + ${prod.id} + '.png'"></div>
+                    <div class="product-thumb" th:style="'background-image: url(/static/img/product_' + ${prod.id} + '.png);'"></div>
                 </a>
                 <div class="product-details">
                     <a th:href="'/products/' + ${prod.getId()}" class="product-link">
@@ -24,7 +24,7 @@
                     <p class="product-description" th:text="${prod.getDescription()}"></p>
                     <div class="product-buy">
                         <p class="product-price" th:text="${prod.getPrice()}"></p>
-                        <a th:href="'/shopping-cart?action=add&id=' + ${prod.getId()}" class="product-add-to-cart button">Add to cart</a>
+                        <a th:href="'/shopping-cart?action=add&id=' + ${prod.getId()}" class="button product-add-to-cart data-handler-button">Add to cart</a>
                     </div>
                 </div>
             </div>
@@ -34,25 +34,6 @@
 </div>
 
 <div th:replace="fragments/footer.html :: footer"></div>
-
-<script>
-
-    $('#shoppingCartHandler').on('click', function(e) {
-        $('.shopping-cart-content').toggleClass('opened');
-    })
-
-    function menuHandling() {
-        $('#menuHandler').on('click', function() {
-            $('#pageMenu').addClass('menu-opened');
-        });
-        $('.menu-overlay').on('click', function() {
-            $('#pageMenu').removeClass('menu-opened');
-        });
-    }
-
-    menuHandling();
-
-</script>
 
 </body>
 </html>

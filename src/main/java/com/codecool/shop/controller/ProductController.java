@@ -26,5 +26,4 @@ public class ProductController extends BaseController {
         context.setVariable("products", productDataStore.getAll());
     }
 
-
 }

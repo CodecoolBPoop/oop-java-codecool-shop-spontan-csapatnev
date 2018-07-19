@@ -58,7 +58,7 @@
                 </li>
             </ul>
             <div class="shopping-cart-details">
-                <div class="cart-price" th:text="'Total $' + ${sumOfPrices}">Total $1899</div>
+                <div class="cart-price">Total $<span class="cart-price-num" th:text="${sumOfPrices}"></span></div>
             </div>
         </div>
     </div>

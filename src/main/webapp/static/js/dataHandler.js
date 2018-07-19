@@ -33,13 +33,12 @@ function dataHandler(ev) {ev.preventDefault();
         dataType : 'json',
         success: function (data) {
             let $Quantity = $('.quantity-icon');
-            let $TotalPrice = $('.cart-price');
+            let $TotalPrice = $('.cart-price-num');
             let $itemQuantity = $('#product-' + data.id + ' .item-quantity'),
                 $shoppingCartList = $('.shopping-cart-list');
             if (data.action === 'add') {
-                console.log(data);
                 $Quantity.text(parseInt($Quantity.text().split(" ")[0]) + 1);
-                $TotalPrice.text(parseFloat($TotalPrice.text() + data.price) + " USD");
+                $TotalPrice.text(Math.round(parseFloat($TotalPrice.text()) + parseFloat(data.price)));
                 if ($('#product-'+ data.id + '.cart-item').length === 0) {
                     $shoppingCartList.append(
                         `<li class="cart-item" id="product-${id}">
@@ -62,10 +61,19 @@ function dataHandler(ev) {ev.preventDefault();
 
 
             }else if (data.action === 'remove') {
-                $Quantity.text(parseInt($Quantity.text()) - 1);
-
-
-
+                if (!data.removeAll) {
+                    $Quantity.text(parseInt($Quantity.text()) - 1);
+                    $TotalPrice.text(Math.round(parseFloat($TotalPrice.text()) - parseFloat(data.price)));
+                    if (parseInt($itemQuantity.text()) === 1) {
+                        $('#product-' + data.id + '.cart-item').remove();
+                    }
+                    $itemQuantity.text(parseInt($itemQuantity.text()) - 1);
+                } else {
+                    $Quantity.text(parseInt($Quantity.text()) - $itemQuantity);
+                    $TotalPrice.text(Math.round(parseFloat($TotalPrice.text()) - (parseFloat(data.price) * $itemQuantity)));
+                    $itemQuantity.text(0);
+                    $('#product-' + data.id + '.cart-item').remove();
+                }
             }
         }
     }

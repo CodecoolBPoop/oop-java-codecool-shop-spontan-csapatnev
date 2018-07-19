@@ -36,13 +36,22 @@ public class ShoppingCartController extends BaseController {
         int productId = Integer.parseInt(req.getParameter("id"));
         HttpSession session = req.getSession();
 
+        //admin logging
+        AdminLog logger = AdminLog.getInstance();
+        if (session.getAttribute("AdminLog") == null) {
+            JSONObject adminLog = new JSONObject();
+            session.setAttribute("AdminLog", adminLog);
+        }
+
         if (action != null) {
             if (action.equals(ACTION_ADD)) {
                 ShoppingCart.add(session, productId);
+                logger.addLog(session, "Product ID:" + Integer.toString(productId), "Added to cart");
             } else if (action.equals(ACTION_REMOVE)) {
                 if (req.getParameter("all") != null) {
                     if (req.getParameter("all").equals("true")) {
                         ShoppingCart.remove(session, productId, true);
+                        logger.addLog(session, "Product ID:" + Integer.toString(productId), "Removed from cart");
                         return;
                     }
                 }

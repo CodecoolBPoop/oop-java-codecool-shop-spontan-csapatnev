@@ -71,7 +71,7 @@ public class AdminLog {
     }
 
     /**
-     * Creates a log .txt file with name: orderId--yyyy-MM-dd, writeLogToFile() uses it
+     * Creates a log .json file with name: orderId--yyyy-MM-dd, writeLogToFile() uses it
      * @return name of that file
      */
     public String createLogFile() {
@@ -79,7 +79,7 @@ public class AdminLog {
         String timeStamp = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
         String id = readLatestOrderId();
         increaseLatestOrderId();
-        File logFile = new File(LOG_DIR_PATH + id + "--" + timeStamp + ".txt");
+        File logFile = new File(LOG_DIR_PATH + id + "--" + timeStamp + ".json");
 
         try {
             if (!logFile.exists()) {
@@ -120,7 +120,7 @@ public class AdminLog {
      * @param key key of the log to add eg.: "Username"
      * @param value value of the log to add eg.: "John Smith"
      */
-    public static void addLog(HttpSession session, String key, String value) {
+    public void addLog(HttpSession session, String key, String value) {
 
         JSONObject log = (JSONObject)session.getAttribute("AdminLog");
         session.removeAttribute("AdminLog");

@@ -1,5 +1,6 @@
 package com.codecool.shop.model;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -142,4 +143,24 @@ public class Order {
     public void setTotalPrice(float totalPrice) {
         this.totalPrice = totalPrice;
     }
+
+    public void logOrderDetails(HttpSession session, AdminLog logger){
+        logger.addLog(session, "Name:", this.name);
+        logger.addLog(session, "Email:", this.email);
+        logger.addLog(session, "Phone Number:", this.phoneNumber);
+        logger.addLog(session, "Billing Country:", this.billingCountry);
+        logger.addLog(session, "Billing City:", this.billingCity);
+        logger.addLog(session, "Billing Zip code:", this.billingZipCode);
+        logger.addLog(session, "Billing Address:", this.billingAddress);
+        logger.addLog(session, "Shipping Country:", this.shippingAddress);
+        logger.addLog(session, "Shipping City:", this.shippingCity);
+        logger.addLog(session, "Shipping Zip code:", this.shippingZipCode);
+        logger.addLog(session, "Shipping Address:", this.shippingAddress);
+        logger.addLog(session, "Total Price:", Float.toString(this.totalPrice));
+    }
+
+    public void logPaymentMethod(HttpSession session, AdminLog logger, String paymentMethod){
+        logger.addLog(session, "Payment method:", paymentMethod);
+    }
+
 }

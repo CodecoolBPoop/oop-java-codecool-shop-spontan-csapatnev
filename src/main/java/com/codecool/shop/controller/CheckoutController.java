@@ -11,6 +11,7 @@ import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.model.Order;
 import com.codecool.shop.model.Product;
+import com.codecool.shop.model.ShoppingCart;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -30,11 +31,9 @@ import java.util.stream.Stream;
 
 
 @WebServlet(urlPatterns = {"/checkout"})
-public class CheckoutController extends HttpServlet {
-
+public class CheckoutController extends BaseController {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws IOException {
+    void addPlusContext(WebContext context, HttpServletRequest req) throws ElementNotFoundException, IndexOutOfBoundsException {
 
         HttpSession session = req.getSession();
         List<Product> cartItems;
@@ -44,14 +43,34 @@ public class CheckoutController extends HttpServlet {
             totalPrice = calculateTotalPrice(cartItems);
         }
 
-        TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
-        WebContext context = new WebContext(req, resp, req.getServletContext());
+        renderHtml = "product/checkout";
 
         context.setVariable("cartItems", cartItems);
         context.setVariable("totalPrice", totalPrice);
-        engine.process("product/checkout.html", context, resp.getWriter());
 
     }
+//    @Override
+//    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+//            throws IOException {
+//
+//        HttpSession session = req.getSession();
+//        List<Product> cartItems;
+//        cartItems = (ArrayList)session.getAttribute("ShoppingCart");
+//        float totalPrice = 0;
+//        if (cartItems != null) {
+//            totalPrice = calculateTotalPrice(cartItems);
+//        }
+//
+//        TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
+//        WebContext context = new WebContext(req, resp, req.getServletContext());
+//
+//        context.setVariable("cartItems", cartItems);
+//        context.setVariable("totalPrice", totalPrice);
+//        engine.process("product/checkout.html", context, resp.getWriter());
+//
+//    }
+
+
 
     static float calculateTotalPrice(List<Product> productList) {
 //
@@ -99,6 +118,9 @@ public class CheckoutController extends HttpServlet {
         ordersDataStore.add(order);
 
         context.setVariable("totalPrice", totalPrice);
+        context.setVariable("shoppingCartProducts", ShoppingCart.getAllProduct(session));
+        context.setVariable("sumOfProducts", ShoppingCart.sumOfProducts(session));
+        context.setVariable("sumOfPrices", ShoppingCart.sumOfPrices(session));
         engine.process("product/payment.html", context, resp.getWriter());
     }
 }

@@ -25,6 +25,8 @@ public abstract class BaseController extends HttpServlet {
     ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
     SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
 
+    String renderHtml = "product/index";
+
     abstract void addPlusContext(WebContext context, HttpServletRequest req) throws ElementNotFoundException, IndexOutOfBoundsException;
 
     @Override
@@ -39,7 +41,7 @@ public abstract class BaseController extends HttpServlet {
         context.setVariable("sumOfPrices", ShoppingCart.sumOfPrices(session));
         try {
             addPlusContext(context, req);
-            engine.process("product/index.html", context, resp.getWriter());
+            engine.process( renderHtml + ".html", context, resp.getWriter());
         } catch(ElementNotFoundException|IndexOutOfBoundsException e) {
             engine.process("product/404.html", context, resp.getWriter());
         }

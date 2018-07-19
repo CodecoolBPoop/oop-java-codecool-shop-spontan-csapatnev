@@ -51,7 +51,7 @@ function dataHandler(ev) {ev.preventDefault();
                             <span class="item-quantity">1</span>
                             <a href="/shopping-cart?action=add&id=${data.id}" class="add-button data-handler-button data-handler-button">+</a>
                             </div>
-                            <a class="fa fa-times shopping-cart-remove-item data-handler-button" href="'/shopping-cart?action=remove&id=${data.id}&all=true'"></a>
+                            <a class="fa fa-times shopping-cart-remove-item data-handler-button" href="/shopping-cart?action=remove&id=${data.id}&all=true"></a>
                         </li>`)
                     $shoppingCartList.find('#product-' + data.id + ' .data-handler-button').on('click', dataHandler)
                 } else {

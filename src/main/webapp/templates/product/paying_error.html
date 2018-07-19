@@ -8,8 +8,8 @@
     <title>Codecool Shop</title>
 
     <!-- Latest compiled and minified Jquery -->
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
-            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="/static/js/dataHandler.js" defer></script>
 
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="/static/css/custom.css" />
@@ -22,26 +22,7 @@
 <span>Payment error</span>
 <span th:text="${error}"></span>
 
-<div th:replace="footer.html :: copy"></div>
-
-<script>
-
-    $('#shoppingCartHandler').on('click', function(e) {
-        $('.shopping-cart-content').toggleClass('opened');
-    });
-
-    function menuHandling() {
-        $('#menuHandler').on('click', function() {
-            $('#pageMenu').addClass('menu-opened');
-        });
-        $('.menu-overlay').on('click', function() {
-            $('#pageMenu').removeClass('menu-opened');
-        });
-    }
-
-    menuHandling();
-
-</script>
+<div th:replace="fragments/footer.html :: footer"></div>
 
 </body>
 </html>

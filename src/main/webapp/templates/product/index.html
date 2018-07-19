@@ -43,7 +43,7 @@
         <div class="shopping-cart-content">
             <ul class="shopping-cart-list">
                 <li class="cart-item" th:each="prod,iter : ${shoppingCartProducts}">
-                    <div class="shopping-cart-item-thumb" th:style="'background-image: url(/static/img/product_' + ${prod.id} + '.jpg'"></div>
+                    <div class="shopping-cart-item-thumb" th:style="'background-image: url(/static/img/product_' + ${prod.id} + '.png'"></div>
                     <div class="shopping-cart-item-details">
                         <h5 class="item-name" th:text="${prod.getName()}"></h5>
                         <small class="item-price" th:text="${prod.getPrice()}"></small>
@@ -68,7 +68,7 @@
         <div class="products">
             <div class="product" th:each="prod,iterStat : ${products}">
                 <a th:href="'/products/' + ${prod.getId()}">
-                    <div class="product-thumb" th:style="'background-image: url(/static/img/product_' + ${prod.id} + '.jpg'"></div>
+                    <div class="product-thumb" th:style="'background-image: url(/static/img/product_' + ${prod.id} + '.png'"></div>
                 </a>
                 <div class="product-details">
                     <a th:href="'/products/' + ${prod.getId()}" class="product-link">

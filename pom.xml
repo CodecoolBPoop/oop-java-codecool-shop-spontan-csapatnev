@@ -61,5 +61,10 @@
             <artifactId>braintree-java</artifactId>
             <version>2.83.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.5.5</version>
+        </dependency>
     </dependencies>
 </project>

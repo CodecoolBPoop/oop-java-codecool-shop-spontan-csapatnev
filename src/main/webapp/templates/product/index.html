@@ -78,7 +78,7 @@
                     <p class="product-description" th:text="${prod.getDescription()}"></p>
                     <div class="product-buy">
                         <p class="product-price" th:text="${prod.getPrice()}"></p>
-                        <a th:href="'/shopping-cart?action=add&id=' + ${prod.getId()}" class="product-add-to-cart">Add to cart</a>
+                        <a th:href="'/shopping-cart?action=add&id=' + ${prod.getId()}" class="product-add-to-cart button">Add to cart</a>
                     </div>
                 </div>
             </div>

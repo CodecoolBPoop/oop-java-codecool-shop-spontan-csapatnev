@@ -8,6 +8,7 @@ import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.model.AdminLog;
 import com.codecool.shop.model.ShoppingCart;
+import org.json.simple.JSONObject;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,11 +35,19 @@ public class ShoppingCartController extends BaseController {
         String action = req.getParameter("action");
         int productId = Integer.parseInt(req.getParameter("id"));
         HttpSession session = req.getSession();
+
+        //logging
+        AdminLog logger = AdminLog.getInstance();
+        File logFile = logger.createLogFile();
+        JSONObject logObj = new JSONObject();
+
         if (action != null) {
             if (action.equals(ACTION_ADD)) {
                 ShoppingCart.add(session, productId);
+                AdminLog.addLog(logObj, "Added to cart", Integer.toString(productId));
             } else if (action.equals(ACTION_REMOVE)) {
                 ShoppingCart.remove(session, productId, false);
+                AdminLog.addLog(logObj, "Removed from cart", Integer.toString(productId));
             }
         }
     }

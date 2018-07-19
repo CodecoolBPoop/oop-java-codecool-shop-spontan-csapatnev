@@ -1,11 +1,15 @@
 package com.codecool.shop.model;
 
+import org.json.simple.JSONObject;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+
 public class AdminLog {
-    public static AdminLog instance = null;
+    private static AdminLog instance = null;
+    private final String LOG_DIR_PATH = System.getProperty("user.dir") + "\\log\\";
+    private final String LATEST_ID_FILE_PATH = System.getProperty("user.dir") + "\\log\\LatestOrderId.txt";
 
     private AdminLog(){};
 
@@ -19,10 +23,10 @@ public class AdminLog {
     private String readLatestOrderId() {
         String id = "";
         FileReader reader = null;
-        try
-        {reader = new FileReader(System.getProperty("user.dir") + "\\log\\LatestOrderId.txt");}
-        catch(IOException ex) {System.err.println("Caught IOException: " + ex.getMessage());}
 
+        try
+        {reader = new FileReader(LATEST_ID_FILE_PATH);}
+        catch(IOException ex) {System.err.println("Caught IOException: " + ex.getMessage());}
 
         try(BufferedReader br = new BufferedReader(reader)) {
             StringBuilder sb = new StringBuilder();
@@ -32,28 +36,61 @@ public class AdminLog {
                 sb.append(System.lineSeparator());
                 line = br.readLine();
             }
-            id = sb.toString().substring(0, id.length() - 4);
+            id = sb.toString().trim();
         } catch(IOException ex) {
             System.err.println("Caught IOException: " + ex.getMessage());
         }
         return id;
     }
 
+    private void increaseLatestOrderId() {
+        int latestId = Integer.parseInt(readLatestOrderId());
 
-    public void createLogFile() {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime());
+        try {
+            FileWriter fw = new FileWriter(LATEST_ID_FILE_PATH);
+            PrintWriter pw = new PrintWriter(fw);
+            pw.write(Integer.toString(++latestId));
+            pw.flush();
+            pw.close();
+        } catch (IOException ex) {
+            System.err.println("Caught IOException: " + ex.getMessage());
+        }
+
+    }
+
+    public File createLogFile() {
+        String timeStamp = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
         String id = readLatestOrderId();
-        File dir = new File(System.getProperty("user.dir") + "/log");
-        File logFile = new File(dir, id + "-" + timeStamp + ".txt");
+        increaseLatestOrderId();
+        File logFile = new File(LOG_DIR_PATH + id + "--" + timeStamp + ".txt");
+
         try {
             if (!logFile.exists()) {
                 logFile.createNewFile();
+                System.out.println("Successfully created logfile: " + LOG_DIR_PATH + logFile.toString());
             }
+        }catch(IOException ex){
+            System.err.println("Caught IOException: " + ex.getMessage());
         }
-        catch(IOException ex){
+        return logFile;
+    }
+
+    public void writeLogToFile(File file, JSONObject obj) {
+        String fileName = file.toString();
+
+        try {
+            FileWriter fw = new FileWriter(LOG_DIR_PATH + fileName);
+            fw.write(obj.toJSONString());
+
+            System.out.println("Successfully Copied JSON Object to File...");
+            System.out.println("\nJSON Object: " + obj);
+
+        }catch(IOException ex){
             System.err.println("Caught IOException: " + ex.getMessage());
         }
     }
 
-
+    public static void addLog(JSONObject obj, String key, String value) {
+        obj.put(key, value);
+    }
 }

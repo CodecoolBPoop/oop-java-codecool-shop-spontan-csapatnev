@@ -43,7 +43,7 @@ function dataHandler(ev) {ev.preventDefault();
                 if ($('#product-'+ data.id + '.cart-item').length === 0) {
                     $shoppingCartList.append(
                         `<li class="cart-item" id="product-${id}">
-                            <div class="shopping-cart-item-thumb" style="'background-image: url(/static/img/product_${data.id}.png'"></div>
+                            <div class="shopping-cart-item-thumb" style="background-image: url(/static/img/product_${data.id}.png);"></div>
                             <div class="shopping-cart-item-details">
                             <h5 class="item-name" >${data.name}"</h5>
                             <small class="item-price" >${data.price} USD"</small>

@@ -5,6 +5,7 @@ import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.config.TemplateEngineUtil;
+import com.codecool.shop.model.AdminLog;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -24,5 +25,6 @@ public class ProductController extends BaseController {
     void addPlusContext(WebContext context, HttpServletRequest req) {
         context.setVariable("products", productDataStore.getAll());
     }
+
 
 }

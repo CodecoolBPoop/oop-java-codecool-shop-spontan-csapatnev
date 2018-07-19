@@ -35,14 +35,16 @@ public class ShoppingCartController extends BaseController {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        HttpSession session = req.getSession();
         String json = req.getReader().readLine();
 
         JSONObject answer = (JSONObject) JSONValue.parse(json);
         int productId = Integer.parseInt((String) answer.get("id"));
+        answer.put("name", ShoppingCart.getProductById(productId).getName());
+        answer.put("price", ShoppingCart.getProductById(productId).getPriceNum());
         String action = (String) answer.get("action");
         boolean removeAll = (boolean) answer.get("removeAll");
-        HttpSession session = req.getSession();
+
 
         if (action.equals(ACTION_ADD)) {
             ShoppingCart.add(session, productId);

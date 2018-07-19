@@ -9,7 +9,7 @@ import java.util.List;
 public class ShoppingCart {
 
 
-    private static Product getProductById(int id) {
+    public static Product getProductById(int id) {
         return ProductDaoMem.getInstance().find(id);
     }
 

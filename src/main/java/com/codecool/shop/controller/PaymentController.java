@@ -79,9 +79,10 @@ public class PaymentController extends HttpServlet {
             currentOrder = (Order)session.getAttribute("currentOrder");
             String toEmail = currentOrder.getEmail();
             String mailBody = engine.process("product/paying_success.html", context);
-            sendEmail(toEmail, mailBody);
-
+            String subject = "Thank you for your purchase " + currentOrder.getName();
+            sendEmail(toEmail, mailBody, subject);
             engine.process("product/paying_success.html", context, resp.getWriter());
+            session.invalidate();
         } else {
             // Handle errors
             System.out.println("ERROR");
@@ -89,10 +90,13 @@ public class PaymentController extends HttpServlet {
             context.setVariable("error", result.getMessage());
             engine.process("product/paying_error.html", context, resp.getWriter());
         }
+        Order currentOrder;
+        currentOrder = (Order)session.getAttribute("currentOrder");
+        String toEmail = currentOrder.getEmail();
 
     }
 
-    private void sendEmail(String toEmail, String mailBody) {
+    private void sendEmail(String toEmail, String mailBody, String subject) {
         final String fromEmail = "jakabgipsz1983@gmail.com"; //requires valid gmail id
         final String password = "gipsz.j4k4b"; // correct password for gmail id
 //        final String toEmail = "myemail@yahoo.com"; // can be any email id
@@ -113,7 +117,7 @@ public class PaymentController extends HttpServlet {
         };
         Session session = Session.getInstance(props, auth);
 
-        EmailUtil.sendEmail(session, toEmail,"TLSEmail Testing Subject", mailBody);
+        EmailUtil.sendEmail(session, toEmail, subject, mailBody);
 
     }
 }

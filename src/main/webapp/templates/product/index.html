@@ -10,6 +10,7 @@
     <!-- Latest compiled and minified Jquery -->
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"
             integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="/static/js/dataHandler.js" defer></script>
 
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="/static/css/custom.css" />
@@ -42,22 +43,22 @@
         </div>
         <div class="shopping-cart-content">
             <ul class="shopping-cart-list">
-                <li class="cart-item" th:each="prod,iter : ${shoppingCartProducts}">
-                    <div class="shopping-cart-item-thumb" th:style="'background-image: url(/static/img/product_' + ${prod.id} + '.png'"></div>
+                <li class="cart-item" th:each="prod,iter : ${shoppingCartProducts}" th:id="'product-' + ${prod.getId()}">
+                    <div class="shopping-cart-item-thumb" th:style="'background-image: url(/static/img/product_' + ${prod.id} + '.png);'"></div>
                     <div class="shopping-cart-item-details">
                         <h5 class="item-name" th:text="${prod.getName()}"></h5>
                         <small class="item-price" th:text="${prod.getPrice()}"></small>
                     </div>
                     <div class="shopping-cart-item-quantity">
-                        <a th:href="'/shopping-cart?action=remove&id=' + ${prod.getId()}" class="minus-button">-</a>
+                        <a th:href="'/shopping-cart?action=remove&id=' + ${prod.getId()}" class="minus-button data-handler-button">-</a>
                         <span class="item-quantity" th:text="${prod.getShoppingCartQuantity()}"></span>
-                        <a th:href="'/shopping-cart?action=add&id=' + ${prod.getId()}" class="add-button">+</a>
+                        <a th:href="'/shopping-cart?action=add&id=' + ${prod.getId()}" class="add-button data-handler-button">+</a>
                     </div>
-                    <a class="fa fa-times shopping-cart-remove-item" th:href="'/shopping-cart?action=remove&all=true&id=' + ${prod.getId()}"></a>
+                    <a class="fa fa-times shopping-cart-remove-item data-handler-button" th:href="'/shopping-cart?action=remove&id=' + ${prod.getId()} + '&all=true'"></a>
                 </li>
             </ul>
             <div class="shopping-cart-details">
-                <div class="cart-price" th:text="'Total $' + ${sumOfPrices}">Total $1899</div>
+                <div class="cart-price">Total $<span class="cart-price-num" th:text="${sumOfPrices}"></span></div>
             </div>
         </div>
     </div>
@@ -68,7 +69,7 @@
         <div class="products">
             <div class="product" th:each="prod,iterStat : ${products}">
                 <a th:href="'/products/' + ${prod.getId()}">
-                    <div class="product-thumb" th:style="'background-image: url(/static/img/product_' + ${prod.id} + '.png'"></div>
+                    <div class="product-thumb" th:style="'background-image: url(/static/img/product_' + ${prod.id} + '.png);'"></div>
                 </a>
                 <div class="product-details">
                     <a th:href="'/products/' + ${prod.getId()}" class="product-link">
@@ -82,7 +83,7 @@
                     <p class="product-description" th:text="${prod.getDescription()}"></p>
                     <div class="product-buy">
                         <p class="product-price" th:text="${prod.getPrice()}"></p>
-                        <a th:href="'/shopping-cart?action=add&id=' + ${prod.getId()}" class="product-add-to-cart button">Add to cart</a>
+                        <a th:href="'/shopping-cart?action=add&id=' + ${prod.getId()}" class="button product-add-to-cart data-handler-button">Add to cart</a>
                     </div>
                 </div>
             </div>
@@ -109,25 +110,6 @@
 </div>
 
 <div th:replace="footer.html :: copy"></div>
-
-<script>
-
-    $('#shoppingCartHandler').on('click', function(e) {
-        $('.shopping-cart-content').toggleClass('opened');
-    })
-
-    function menuHandling() {
-        $('#menuHandler').on('click', function() {
-            $('#pageMenu').addClass('menu-opened');
-        });
-        $('.menu-overlay').on('click', function() {
-            $('#pageMenu').removeClass('menu-opened');
-        });
-    }
-
-    menuHandling();
-
-</script>
 
 </body>
 </html>

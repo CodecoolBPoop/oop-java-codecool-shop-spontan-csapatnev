@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Codecool" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Title</title>
+
+    <!-- Latest compiled and minified Jquery -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/custom.css" />
+    <script>
+
+        $('#shoppingCartHandler').on('click', function(e) {
+            $('.shopping-cart-content').toggleClass('opened');
+        })
+
+        function menuHandling() {
+            $('#menuHandler').on('click', function() {
+                $('#pageMenu').addClass('menu-opened');
+            });
+            $('.menu-overlay').on('click', function() {
+                $('#pageMenu').removeClass('menu-opened');
+            });
+        }
+
+        menuHandling();
+
+    </script>
+</head>
+<body>
+<nav id="pageMenu">
+    <a href="/" class="logo"></a>
+    <ul class="menu">
+        <li class="menu-item">
+            <a href="/" class="menu-link">Home</a>
+        </li>
+        <li class="menu-item">
+            <a href="/product-categories" class="menu-link">Product categories</a>
+        </li>
+        <li class="menu-item">
+            <a href="/suppliers" class="menu-link">Suppliers</a>
+        </li>
+        <li class="menu-item">
+            <a href="/checkout" class="menu-link">Checkout</a>
+        </li>
+    </ul>
+    <div class="menu-handler" id="menuHandler"><i></i><i></i><i></i></div>
+    <div class="menu-overlay"></div>
+    <div class="shopping-cart">
+        <div class="shopping-cart-icon" id="shoppingCartHandler">
+            <i class="fa fa-shopping-cart cart-icon"></i>
+            <i class="quantity-icon">3</i>
+        </div>
+        <div class="shopping-cart-content">
+            <ul class="shopping-cart-list">
+                <li class="cart-item">
+                    <div class="shopping-cart-item-thumb"></div>
+                    <div class="shopping-cart-item-details">
+                        <h5 class="item-name">Item #1</h5>
+                        <small class="item-price">$399</small>
+                    </div>
+                    <div class="shopping-cart-item-quantity">
+                        <a href="/" class="minus-button">-</a>
+                        <span class="item-quantity">4</span>
+                        <a href="/" class="minus-button">+</a>
+                    </div>
+                </li>
+            </ul>
+            <div class="shopping-cart-details">
+                <div class="cart-price">Total $1899</div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+
+    <div class="main">
+
+        <div class="products">
+            <div class="product" th:each="prod,iterStat : ${cartItems}">
+                <div class="product-thumb" th:style="'background-image: url(/static/img/product_' + ${prod.id} + '.jpg'"></div>
+                <div class="product-details">
+                    <h5 class="product-name" th:text="${prod.getName()}"></h5>
+                    <p class="product-info">
+                        -&nbsp;
+                        <span class="product-supplier" th:text="${prod.getSupplier().getName()}"></span>
+                        <span class="product-product-category" th:text="${prod.getProductCategory().getName()}"></span>
+                    </p>
+                    <div class="product-buy">
+                        <p class="product-price" th:text="${prod.getPrice()}"></p>
+                        <span th:text="${prod.getShoppingCartQuantity()} + ' db'"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+Total price of your order:
+<span th:text="${totalPrice}">100 USD</span> USD
+
+If you find everything correct, please fill out the form to proceed
+
+<form action="/checkout" method="post">
+    <input type="hidden" id="total-price" name="total-price" th:value="${totalPrice}">
+
+    <label for="name">Name</label>
+    <input type="text" id="name" name="name" placeholder="Enter your name..">
+
+    <label for="email">Email</label>
+    <input type="text" id="email" name="email" placeholder="Enter your email..">
+
+    <label for="phone-number">Phone number</label>
+    <input type="text" id="phone-number" name="phone-number" placeholder="Enter your phone number..">
+
+    <span>Billing address</span>
+    <label for="billing-country">Country</label>
+    <input type="text" id="billing-country" name="billing-country" placeholder="Country">
+
+    <label for="billing-city">City</label>
+    <input type="text" id="billing-city" name="billing-city" placeholder="City">
+
+    <label for="billing-zip">Zip code</label>
+    <input type="text" id="billing-zip" name="billing-zip" placeholder="Zip code">
+
+    <label for="billing-address">Address</label>
+    <input type="text" id="billing-address" name="billing-address" placeholder="Address">
+
+    <span>Shipping address</span>
+    <label for="shipping-country">Country</label>
+    <input type="text" id="shipping-country" name="shipping-country" placeholder="Country">
+
+    <label for="shipping-city">City</label>
+    <input type="text" id="shipping-city" name="shipping-city" placeholder="City">
+
+    <label for="shipping-zip">Zip code</label>
+    <input type="text" id="shipping-zip" name="shipping-zip" placeholder="Zip code">
+
+    <label for="shipping-address">Address</label>
+    <input type="text" id="shipping-address" name="shipping-address" placeholder="Address">
+
+    <input type="submit" value="Proceed to paying">
+</form>
+</body>
+</html>

@@ -8,6 +8,7 @@ import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.implementation.SupplierDaoMem;
+import com.codecool.shop.model.ShoppingCart;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -24,6 +25,8 @@ public abstract class BaseController extends HttpServlet {
     ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
     SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
 
+    String renderHtml = "product/index";
+
     abstract void addPlusContext(WebContext context, HttpServletRequest req) throws ElementNotFoundException, IndexOutOfBoundsException;
 
     @Override
@@ -33,10 +36,12 @@ public abstract class BaseController extends HttpServlet {
         context.setVariable("categories", productCategoryDataStore.getAll());
         context.setVariable("suppliers", supplierDataStore.getAll());
         HttpSession session = req.getSession();
-        context.setVariable("ShoppingCart", session.getAttribute("ShoppingCart"));
+        context.setVariable("shoppingCartProducts", ShoppingCart.getAllProduct(session));
+        context.setVariable("sumOfProducts", ShoppingCart.sumOfProducts(session));
+        context.setVariable("sumOfPrices", ShoppingCart.sumOfPrices(session));
         try {
             addPlusContext(context, req);
-            engine.process("product/index.html", context, resp.getWriter());
+            engine.process( renderHtml + ".html", context, resp.getWriter());
         } catch(ElementNotFoundException|IndexOutOfBoundsException e) {
             engine.process("product/404.html", context, resp.getWriter());
         }

@@ -19,17 +19,16 @@ function dataHandler(ev) {ev.preventDefault();
     let id = data[1].split('=')[1];
     let removeAll = false;
     if (data.length > 2){
-        removeAll = data[2].split('=')[1];
+        removeAll = true;
     }
-
     $.ajax({
         type: "POST",
         url: "/shopping-cart",
         data: JSON.stringify({
-                action: action,
-                id: id,
-                removeAll: removeAll
-            }),
+            action: action,
+            id: id,
+            removeAll: removeAll
+        }),
         dataType : 'json',
         success: function (data) {
             let $Quantity = $('.quantity-icon');
@@ -58,9 +57,7 @@ function dataHandler(ev) {ev.preventDefault();
                 } else {
                     $itemQuantity.text(parseInt($itemQuantity.text()) + 1)
                 }
-
-
-            }else if (data.action === 'remove') {
+            } else if (data.action === 'remove') {
                 if (!data.removeAll) {
                     $Quantity.text(parseInt($Quantity.text()) - 1);
                     $TotalPrice.text(Math.round(parseFloat($TotalPrice.text()) - parseFloat(data.price)));
@@ -69,17 +66,14 @@ function dataHandler(ev) {ev.preventDefault();
                     }
                     $itemQuantity.text(parseInt($itemQuantity.text()) - 1);
                 } else {
-                    $Quantity.text(parseInt($Quantity.text()) - $itemQuantity);
-                    $TotalPrice.text(Math.round(parseFloat($TotalPrice.text()) - (parseFloat(data.price) * $itemQuantity)));
+                    $Quantity.text(parseInt($Quantity.text()) - $itemQuantity.text());
+                    $TotalPrice.text(Math.round(parseFloat($TotalPrice.text()) - (parseFloat(data.price) * $itemQuantity.text())));
                     $itemQuantity.text(0);
                     $('#product-' + data.id + '.cart-item').remove();
                 }
             }
         }
-    }
-    )
+    })
 };
 
 $('.data-handler-button').on('click',dataHandler)
-
-console.log( "ready!" );

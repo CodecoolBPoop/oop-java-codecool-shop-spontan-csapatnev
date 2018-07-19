@@ -55,9 +55,9 @@ public class ShoppingCartController extends BaseController {
         } else if (action.equals(ACTION_REMOVE)) {
             if (removeAll) {
                 ShoppingCart.remove(session, productId, true);
-                return;
+            } else {
+                ShoppingCart.remove(session, productId, false);
             }
-            ShoppingCart.remove(session, productId, false);
         }
 
         resp.setContentType("application/json");

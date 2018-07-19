@@ -5,33 +5,40 @@
 
 <nav th:replace="fragments/header.html::menu"></nav>
 
-<div class="container">
+<table class="shopping-cart-content">
+    <thead>
+        <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <td colspan="4">
+                <div class="cart-price">Total $<span class="cart-price-num" th:text="${sumOfPrices}"></span></div>
+            </td>
+        </tr>
+    </tfoot>
+    <tbody class="shopping-cart-list">
+        <tr th:each="prod, iterStat : ${cartItems}" th:id="'product-' + ${prod.getId()}" class="cart-item">
+            <td>
+                <img th:src="'/static/img/product_' + ${prod.getId()} + '.png'" height="85">
+            </td>
+            <td>
+                <strong class="product-name" th:text="${prod.getName()}"></strong>
+            </td>
+            <td>
+                <span class="item-quantity" th:text="${prod.getShoppingCartQuantity()}"></span>
+            </td>
+            <td>
+                <span class="item-price" th:text="${prod.getPrice()}"></span>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
-    <div class="main">
-
-        <div class="products">
-            <div class="product" th:each="prod,iterStat : ${cartItems}">
-                <div class="product-thumb" th:style="'background-image: url(/static/img/product_' + ${prod.id} + '.png);'"></div>
-                <div class="product-details">
-                    <h5 class="product-name" th:text="${prod.getName()}"></h5>
-                    <p class="product-info">
-                        -&nbsp;
-                        <span class="product-supplier" th:text="${prod.getSupplier().getName()}"></span>
-                        <span class="product-product-category" th:text="${prod.getProductCategory().getName()}"></span>
-                    </p>
-                    <div class="product-buy">
-                        <p class="product-price" th:text="${prod.getPrice()}"></p>
-                        <span th:text="${prod.getShoppingCartQuantity()} + ' db'"></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-Total price of your order:
-<span th:text="${totalPrice}">100 USD</span> USD
-
-If you find everything correct, please fill out the form to proceed
 <div class="container">
     <div class="form">
         <h5>Checkout</h5>

@@ -33,11 +33,16 @@ function dataHandler(ev) {ev.preventDefault();
         success: function (data) {
             let $Quantity = $('.quantity-icon');
             let $TotalPrice = $('.cart-price-num');
+            let totalPrice = parseFloat($('.shopping-cart .cart-price-num').text());
+            let changePrice = parseFloat(data.price);
             let $itemQuantity = $('#product-' + data.id + ' .item-quantity'),
                 $shoppingCartList = $('.shopping-cart-list');
+            let quantity = parseInt($('.shopping-cart #product-' + data.id + ' .item-quantity').text());
             if (data.action === 'add') {
                 $Quantity.text(parseInt($Quantity.text().split(" ")[0]) + 1);
-                $TotalPrice.text(Math.round(parseFloat($TotalPrice.text()) + parseFloat(data.price)));
+                $TotalPrice.each(function() {
+                    $(this).text(Math.round(totalPrice + changePrice));
+                });
                 if ($('#product-'+ data.id + '.cart-item').length === 0) {
                     $shoppingCartList.append(
                         `<li class="cart-item" id="product-${id}">
@@ -55,19 +60,27 @@ function dataHandler(ev) {ev.preventDefault();
                         </li>`)
                     $shoppingCartList.find('#product-' + data.id + ' .data-handler-button').on('click', dataHandler)
                 } else {
-                    $itemQuantity.text(parseInt($itemQuantity.text()) + 1)
+                    $itemQuantity.each(function() {
+                        $(this).text(quantity + 1);
+                    });
                 }
             } else if (data.action === 'remove') {
                 if (!data.removeAll) {
                     $Quantity.text(parseInt($Quantity.text()) - 1);
-                    $TotalPrice.text(Math.round(parseFloat($TotalPrice.text()) - parseFloat(data.price)));
-                    if (parseInt($itemQuantity.text()) === 1) {
+                    $TotalPrice.each(function() {
+                        $(this).text(Math.round(totalPrice - changePrice));
+                    });
+                    if (quantity === 1) {
                         $('#product-' + data.id + '.cart-item').remove();
                     }
-                    $itemQuantity.text(parseInt($itemQuantity.text()) - 1);
+                    $itemQuantity.each(function() {
+                        $(this).text(quantity - 1);
+                    });
                 } else {
-                    $Quantity.text(parseInt($Quantity.text()) - $itemQuantity.text());
-                    $TotalPrice.text(Math.round(parseFloat($TotalPrice.text()) - (parseFloat(data.price) * $itemQuantity.text())));
+                    $Quantity.text(parseInt($Quantity.text()) - quantity);
+                    $TotalPrice.each(function() {
+                        $(this).text(Math.round(totalPrice - (changePrice * quantity)));
+                    });
                     $itemQuantity.text(0);
                     $('#product-' + data.id + '.cart-item').remove();
                 }

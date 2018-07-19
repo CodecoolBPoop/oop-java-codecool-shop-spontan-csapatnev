@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/static/css/custom.css" />
 
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="/static/js/dataHandler.js" defer></script>
     <script src="https://js.braintreegateway.com/web/3.34.1/js/client.min.js"></script>
     <script src="https://js.braintreegateway.com/web/3.34.1/js/hosted-fields.min.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.js"></script>
@@ -18,51 +20,8 @@
     <script src="https://www.paypalobjects.com/api/checkout.js"></script>
 </head>
 <body>
-<nav id="pageMenu">
-    <a href="/" class="logo"></a>
-    <ul class="menu">
-        <li class="menu-item">
-            <a href="/" class="menu-link">Home</a>
-        </li>
-        <li class="menu-item">
-            <a href="/product-categories" class="menu-link">Product categories</a>
-        </li>
-        <li class="menu-item">
-            <a href="/suppliers" class="menu-link">Suppliers</a>
-        </li>
-        <li class="menu-item">
-            <a href="/checkout" class="menu-link">Checkout</a>
-        </li>
-    </ul>
-    <div class="menu-handler" id="menuHandler"><i></i><i></i><i></i></div>
-    <div class="menu-overlay"></div>
-    <div class="shopping-cart">
-        <div class="shopping-cart-icon" id="shoppingCartHandler">
-            <i class="fa fa-shopping-cart cart-icon"></i>
-            <i class="quantity-icon" th:text="${sumOfProducts}"></i>
-        </div>
-        <div class="shopping-cart-content">
-            <ul class="shopping-cart-list">
-                <li class="cart-item" th:each="prod,iter : ${shoppingCartProducts}">
-                    <div class="shopping-cart-item-thumb" th:style="'background-image: url(/static/img/product_' + ${prod.id} + '.png'"></div>
-                    <div class="shopping-cart-item-details">
-                        <h5 class="item-name" th:text="${prod.getName()}"></h5>
-                        <small class="item-price" th:text="${prod.getPrice()}"></small>
-                    </div>
-                    <div class="shopping-cart-item-quantity">
-                        <a th:href="'/shopping-cart?action=remove&id=' + ${prod.getId()}" class="minus-button">-</a>
-                        <span class="item-quantity" th:text="${prod.getShoppingCartQuantity()}"></span>
-                        <a th:href="'/shopping-cart?action=add&id=' + ${prod.getId()}" class="add-button">+</a>
-                    </div>
-                    <a class="fa fa-times shopping-cart-remove-item" th:href="'/shopping-cart?action=remove&all=true&id=' + ${prod.getId()}"></a>
-                </li>
-            </ul>
-            <div class="shopping-cart-details">
-                <div class="cart-price" th:text="'Total $' + ${sumOfPrices}">Total $1899</div>
-            </div>
-        </div>
-    </div>
-</nav>
+
+<nav th:replace="fragments/header.html::menu"></nav>
 
 <script>
     paypal.Button.render({
@@ -201,24 +160,6 @@
 
     </div>
 </div>
-<script>
-
-    $('#shoppingCartHandler').on('click', function(e) {
-        $('.shopping-cart-content').toggleClass('opened');
-    })
-
-    function menuHandling() {
-        $('#menuHandler').on('click', function() {
-            $('#pageMenu').addClass('menu-opened');
-        });
-        $('.menu-overlay').on('click', function() {
-            $('#pageMenu').removeClass('menu-opened');
-        });
-    }
-
-    menuHandling();
-
-</script>
 
 </body>
 </html>

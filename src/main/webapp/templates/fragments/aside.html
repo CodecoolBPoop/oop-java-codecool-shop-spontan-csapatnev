@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<aside th:fragment="aside" class="aside">
+    <div class="product-categories-container aside-container">
+        <h5>Product Categories</h5>
+        <ul class="product-categories">
+            <li class="product-category" th:each="category,iterStat : ${categories}">
+                <a class="product-category-link base-link" th:attr="href='/product-categories/' + ${category.getName().toLowerCase()}" th:text="${category.getName()}"></a>
+            </li>
+        </ul>
+    </div>
+    <div class="suppliers-container aside-container">
+        <h5>Suppliers</h5>
+        <ul class="suppliers">
+            <li class="supplier" th:each="supplier,iterStat : ${suppliers}">
+                <a class="supplier-link base-link" th:attr="href='/suppliers/' + ${supplier.getName().toLowerCase()}" th:text="${supplier.getName()}"></a>
+            </li>
+        </ul>
+    </div>
+</aside>
+
+</body>
+</html>

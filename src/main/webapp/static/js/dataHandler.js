@@ -13,13 +13,6 @@ $('#shoppingCartHandler').on('click', function(e) {
     $('.shopping-cart-content').toggleClass('opened');
 });
 
-function printTotalPrice(price) {
-    let totalPrice = parseFloat($('.shopping-cart .cart-price-num').text());
-    $('.cart-price-num').each(function() {
-        $(this).text(Math.round(totalPrice - price));
-    });
-}
-
 function dataHandler(ev) {ev.preventDefault();
     let data = this.href.split('?')[1].split("&");
     let action = data[0].split('=')[1];
@@ -40,12 +33,16 @@ function dataHandler(ev) {ev.preventDefault();
         success: function (data) {
             let $Quantity = $('.quantity-icon');
             let $TotalPrice = $('.cart-price-num');
+            let totalPrice = parseFloat($('.shopping-cart .cart-price-num').text());
+            let changePrice = parseFloat(data.price);
             let $itemQuantity = $('#product-' + data.id + ' .item-quantity'),
                 $shoppingCartList = $('.shopping-cart-list');
             let quantity = parseInt($('.shopping-cart #product-' + data.id + ' .item-quantity').text());
             if (data.action === 'add') {
                 $Quantity.text(parseInt($Quantity.text().split(" ")[0]) + 1);
-                printTotalPrice(data.price);
+                $TotalPrice.each(function() {
+                    $(this).text(Math.round(totalPrice + changePrice));
+                });
                 if ($('#product-'+ data.id + '.cart-item').length === 0) {
                     $shoppingCartList.append(
                         `<li class="cart-item" id="product-${id}">
@@ -70,8 +67,10 @@ function dataHandler(ev) {ev.preventDefault();
             } else if (data.action === 'remove') {
                 if (!data.removeAll) {
                     $Quantity.text(parseInt($Quantity.text()) - 1);
-                    printTotalPrice(data.price);
-                    if (parseInt($itemQuantity.text()) === 1) {
+                    $TotalPrice.each(function() {
+                        $(this).text(Math.round(totalPrice - changePrice));
+                    });
+                    if (quantity === 1) {
                         $('#product-' + data.id + '.cart-item').remove();
                     }
                     $itemQuantity.each(function() {
@@ -79,7 +78,9 @@ function dataHandler(ev) {ev.preventDefault();
                     });
                 } else {
                     $Quantity.text(parseInt($Quantity.text()) - quantity);
-                    printTotalPrice(data.price);
+                    $TotalPrice.each(function() {
+                        $(this).text(Math.round(totalPrice - (changePrice * quantity)));
+                    });
                     $itemQuantity.text(0);
                     $('#product-' + data.id + '.cart-item').remove();
                 }

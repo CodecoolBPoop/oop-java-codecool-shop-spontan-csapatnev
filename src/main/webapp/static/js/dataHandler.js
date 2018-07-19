@@ -33,16 +33,16 @@ function dataHandler(ev) {ev.preventDefault();
         dataType : 'json',
         success: function (data) {
             let $Quantity = $('.quantity-icon');
-            let $TotalPrice = $('.cart-price')
-            let $itemQuantity = $('#' + data.id + '.item-quantity'),
+            let $TotalPrice = $('.cart-price');
+            let $itemQuantity = $('#product-' + data.id + ' .item-quantity'),
                 $shoppingCartList = $('.shopping-cart-list');
             if (data.action === 'add') {
-                console.log(data)
+                console.log(data);
                 $Quantity.text(parseInt($Quantity.text().split(" ")[0]) + 1);
                 $TotalPrice.text(parseFloat($TotalPrice.text() + data.price) + " USD");
-                if ($itemQuantity.length === 0) {
+                if ($('#product-'+ data.id + '.cart-item').length === 0) {
                     $shoppingCartList.append(
-                        `<li class="cart-item" id="${id}">
+                        `<li class="cart-item" id="product-${id}">
                             <div class="shopping-cart-item-thumb" style="'background-image: url(/static/img/product_${data.id}.png'"></div>
                             <div class="shopping-cart-item-details">
                             <h5 class="item-name" >${data.name}"</h5>
@@ -50,19 +50,19 @@ function dataHandler(ev) {ev.preventDefault();
                             </div>
                             <div class="shopping-cart-item-quantity">
                             <a href="/shopping-cart?action=remove&id=${data.id}" data-id=""class="minus-button data-handler-button data-handler-button">-</a>
-                            <span class="item-quantity" id="${id}">1</span>
+                            <span class="item-quantity">1</span>
                             <a href="/shopping-cart?action=add&id=${data.id}" class="add-button data-handler-button data-handler-button">+</a>
                             </div>
                             <a class="fa fa-times shopping-cart-remove-item data-handler-button" href="'/shopping-cart?action=remove&id=${data.id}&all=true'"></a>
                         </li>`)
-                    $shoppingCartList.find('#' + data.id + ' .data-handler-button').on('click', dataHandler)
+                    $shoppingCartList.find('#product-' + data.id + ' .data-handler-button').on('click', dataHandler)
                 } else {
                     $itemQuantity.text(parseInt($itemQuantity.text()) + 1)
                 }
 
 
             }else if (data.action === 'remove') {
-                Quantity.text(parseInt(Quantity.text()) - 1);
+                $Quantity.text(parseInt($Quantity.text()) - 1);
 
 
 

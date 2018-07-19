@@ -25,7 +25,7 @@
 
         <div class="products">
             <div class="product" th:each="prod,iterStat : ${cartItems}">
-                <div class="product-thumb" th:style="'background-image: url(/static/img/product_' + ${prod.id} + '.jpg'"></div>
+                <div class="product-thumb" th:style="'background-image: url(/static/img/product_' + ${prod.id} + '.png);'"></div>
                 <div class="product-details">
                     <h5 class="product-name" th:text="${prod.getName()}"></h5>
                     <p class="product-info">

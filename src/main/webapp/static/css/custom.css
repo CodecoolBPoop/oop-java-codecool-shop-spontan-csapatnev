@@ -565,6 +565,23 @@ table.shopping-cart-content tfoot td {
     background-color: rgba(180, 0, 25, 1);
 }
 
+.footer {
+    width: 100%;
+    padding: 20px 0;
+    text-align: center;
+    color: white;
+    font-size: 18px;
+    font-weight: lighter;
+    background-color: #333333;
+    border-top: 2px solid black;
+    box-shadow: 0 0 16px rgba(0, 0, 0, .4);
+}
+
+.footer p {
+    margin: 0;
+    padding: 0;
+}
+
 @media screen and (max-width: 876px) {
     .button {
         font-size: 14px;

@@ -67,9 +67,13 @@
     <main class="main">
         <div class="products">
             <div class="product" th:each="prod,iterStat : ${products}">
-                <div class="product-thumb" th:style="'background-image: url(/static/img/product_' + ${prod.id} + '.jpg'"></div>
+                <a th:href="'/products/' + ${prod.getId()}">
+                    <div class="product-thumb" th:style="'background-image: url(/static/img/product_' + ${prod.id} + '.jpg'"></div>
+                </a>
                 <div class="product-details">
-                    <h5 class="product-name" th:text="${prod.getName()}"></h5>
+                    <a th:href="'/products/' + ${prod.getId()}" class="product-link">
+                        <h5 class="product-name" th:text="${prod.getName()}"></h5>
+                    </a>
                     <p class="product-info">
                         -&nbsp;
                         <span class="product-supplier" th:text="${prod.getSupplier().getName()}"></span>

@@ -378,6 +378,13 @@ body {
     padding: 20px 0 80px 0;
 }
 
+.product-details .product-link {
+    text-decoration: none;
+    color: #333333;
+    font-size: 16px;
+    font-weight: bold;
+}
+
 .product-details .product-name {
     font-size: 16px;
     font-weight: bold;

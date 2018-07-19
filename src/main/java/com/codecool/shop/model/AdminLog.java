@@ -1,12 +1,14 @@
 package com.codecool.shop.model;
 
 import org.json.simple.JSONObject;
+import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 
 public class AdminLog {
+
     private static AdminLog instance = null;
     private final String LOG_DIR_PATH = System.getProperty("user.dir") + "\\log\\";
     private final String LATEST_ID_FILE_PATH = System.getProperty("user.dir") + "\\log\\LatestOrderId.txt";
@@ -14,13 +16,19 @@ public class AdminLog {
     private AdminLog(){};
 
     public static AdminLog getInstance() {
+
         if (instance == null) {
             instance = new AdminLog();
         }
         return instance;
     }
 
+    /**
+     * Reads and returns the latest Order ID from /log/LatestOrderId.txt
+     * @return Latest order ID in string.
+     */
     private String readLatestOrderId() {
+
         String id = "";
         FileReader reader = null;
 
@@ -43,7 +51,11 @@ public class AdminLog {
         return id;
     }
 
+    /**
+     * Increases the latest order ID by 1 in /log/LatestOrderId.txt
+     */
     private void increaseLatestOrderId() {
+
         int latestId = Integer.parseInt(readLatestOrderId());
 
         try {
@@ -58,7 +70,12 @@ public class AdminLog {
 
     }
 
-    public File createLogFile() {
+    /**
+     * Creates a log .txt file with name: orderId--yyyy-MM-dd, writeLogToFile() uses it
+     * @return name of that file
+     */
+    public String createLogFile() {
+
         String timeStamp = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
         String id = readLatestOrderId();
         increaseLatestOrderId();
@@ -72,25 +89,44 @@ public class AdminLog {
         }catch(IOException ex){
             System.err.println("Caught IOException: " + ex.getMessage());
         }
-        return logFile;
+        return logFile.toString();
     }
 
-    public void writeLogToFile(File file, JSONObject obj) {
-        String fileName = file.toString();
+    /**
+     * Retrieves all the final logs from the session that is stored in a JSONObject
+     * and writes it to the corresponding log file
+     * @param session the HttpSession in which the JSONObject can be found
+     */
+    public void writeLogToFile(HttpSession session) {
+
+        JSONObject log = (JSONObject)session.getAttribute("AdminLog");
+        session.removeAttribute("AdminLog");
 
         try {
-            FileWriter fw = new FileWriter(LOG_DIR_PATH + fileName);
-            fw.write(obj.toJSONString());
+            FileWriter fw = new FileWriter(LOG_DIR_PATH + createLogFile());
+            fw.write(log.toJSONString());
 
             System.out.println("Successfully Copied JSON Object to File...");
-            System.out.println("\nJSON Object: " + obj);
+            System.out.println("\nJSON Object: " + log);
 
         }catch(IOException ex){
             System.err.println("Caught IOException: " + ex.getMessage());
         }
     }
 
-    public static void addLog(JSONObject obj, String key, String value) {
-        obj.put(key, value);
+    /**
+     * Retrieves the JSONObject from the session and adds ONE log to it.
+     * @param session the HttpSession in which the JSONObject can be found
+     * @param key key of the log to add eg.: "Username"
+     * @param value value of the log to add eg.: "John Smith"
+     */
+    public static void addLog(HttpSession session, String key, String value) {
+
+        JSONObject log = (JSONObject)session.getAttribute("AdminLog");
+        session.removeAttribute("AdminLog");
+        log.put(key, value);
+        session.setAttribute("AdminLog", log);
+
     }
+
 }

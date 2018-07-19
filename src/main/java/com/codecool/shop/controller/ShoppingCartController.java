@@ -46,6 +46,12 @@ public class ShoppingCartController extends BaseController {
                 ShoppingCart.add(session, productId);
                 AdminLog.addLog(logObj, "Added to cart", Integer.toString(productId));
             } else if (action.equals(ACTION_REMOVE)) {
+                if (req.getParameter("all") != null) {
+                    if (req.getParameter("all").equals("true")) {
+                        ShoppingCart.remove(session, productId, true);
+                        return;
+                    }
+                }
                 ShoppingCart.remove(session, productId, false);
                 AdminLog.addLog(logObj, "Removed from cart", Integer.toString(productId));
             }

@@ -29,7 +29,7 @@ public class SingleProductController extends BaseController {
         if (urlSplitted.length != 3) {
             throw new ElementNotFoundException("Too long many parameters for the url.");
         }
-        renderHtml = "product/single-product.html";
+        renderHtml = "product/single-product";
         Product product = productDataStore.find(Integer.parseInt(urlSplitted[2]));
         context.setVariable("product", product);
     }

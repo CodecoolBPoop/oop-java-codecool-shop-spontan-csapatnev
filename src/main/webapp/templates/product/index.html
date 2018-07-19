@@ -54,7 +54,7 @@
                         <span class="item-quantity" th:text="${prod.getShoppingCartQuantity()}"></span>
                         <a th:href="'/shopping-cart?action=add&id=' + ${prod.getId()}" class="add-button data-handler-button">+</a>
                     </div>
-                    <a class="fa fa-times shopping-cart-remove-item data-handler-button" th:href="'/shopping-cart?action=remove&all=true&id=' + ${prod.getId()}"></a>
+                    <a class="fa fa-times shopping-cart-remove-item data-handler-button" th:href="'/shopping-cart?action=remove&id=' + ${prod.getId()} + '&all=true'"></a>
                 </li>
             </ul>
             <div class="shopping-cart-details">

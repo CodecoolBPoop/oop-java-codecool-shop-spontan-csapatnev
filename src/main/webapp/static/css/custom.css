@@ -201,8 +201,9 @@ body.clear {
     top: 5px;
     left: 15px;
     height: 60px;
-    width: 90px;
-    background-color: pink;
+    width: 120px;
+    background: url(/static/img/logo/full.png) center no-repeat;
+    background-size: contain;
 }
 
 #pageMenu .shopping-cart {

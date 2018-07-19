@@ -79,7 +79,11 @@ public class PaymentController extends HttpServlet {
             Order currentOrder;
             currentOrder = (Order)session.getAttribute("currentOrder");
             String toEmail = currentOrder.getEmail();
-            String mailBody = engine.process("product/paying_success.html", context);
+            Date date = new Date();
+            context.setVariable("orderDate", date.toString());
+            context.setVariable("products", currentOrder.getOrderedItems());
+            context.setVariable("totalPrice", currentOrder.getTotalPrice());
+            String mailBody = engine.process("product/email_template.html", context);
             String subject = "Thank you for your purchase " + currentOrder.getName();
             sendEmail(toEmail, mailBody, subject);
 

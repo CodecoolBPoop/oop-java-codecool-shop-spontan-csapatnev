@@ -23,7 +23,7 @@ $('.data-handler-button').on('click', function (ev) {ev.preventDefault();
     }
 
     $.ajax({
-        type: "GET",
+        type: "POST",
         url: "/shopping-cart",
         data: JSON.stringify({
                 action: action,

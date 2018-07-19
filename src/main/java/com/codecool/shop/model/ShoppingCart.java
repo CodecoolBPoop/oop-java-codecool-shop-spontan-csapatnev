@@ -1,5 +1,6 @@
 package com.codecool.shop.model;
 
+import com.codecool.shop.dao.ElementNotFoundException;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 
 import javax.servlet.http.HttpSession;
@@ -10,7 +11,11 @@ public class ShoppingCart {
 
 
     public static Product getProductById(int id) {
-        return ProductDaoMem.getInstance().find(id);
+        try {
+            return ProductDaoMem.getInstance().find(id);
+        } catch (ElementNotFoundException e) {
+            return null;
+        }
     }
 
     public static void add(HttpSession session, int id) {

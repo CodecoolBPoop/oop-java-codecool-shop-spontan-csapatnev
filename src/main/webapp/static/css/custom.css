@@ -439,6 +439,40 @@ body {
     color: #555;
 }
 
+/* ----- FORM STYLES ------ */
+.form {
+    width: 40%;
+    margin: 0 auto;
+    padding: 20px 35px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, .3);
+}
+
+.input-group {
+    margin: 15px 0;
+}
+
+.input-group label, .input-group input {
+    display: block;
+    outline: none;
+}
+
+.input-group label {
+    margin-bottom: 3px;
+    cursor: pointer;
+}
+
+.input-group input {
+    font-size: 14px;
+    font-weight: lighter;
+    padding: 8px 12px;
+    border-radius: 6px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, .2);
+    border: 1px solid #353535;
+    color: #353535;
+    letter-spacing: 0.015em;
+    width: 100%;
+}
+
 @media screen and (max-width: 876px) {
     .button {
         font-size: 14px;

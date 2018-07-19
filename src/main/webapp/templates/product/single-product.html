@@ -43,7 +43,7 @@
         <div class="shopping-cart-content">
             <ul class="shopping-cart-list">
                 <li class="cart-item" th:each="prod,iter : ${shoppingCartProducts}">
-                    <div class="shopping-cart-item-thumb" th:style="'background-image: url(/static/img/product_' + ${prod.id} + '.png'"></div>
+                    <div class="shopping-cart-item-thumb" th:style="'background-image: url(/static/img/product_' + ${prod.id} + '.jpg'"></div>
                     <div class="shopping-cart-item-details">
                         <h5 class="item-name" th:text="${prod.getName()}"></h5>
                         <small class="item-price" th:text="${prod.getPrice()}"></small>
@@ -63,9 +63,44 @@
     </div>
 </nav>
 
-
-<span>Payment error</span>
-<span th:text="${error}"></span>
+<div class="container">
+    <main class="main">
+        <div class="single-product">
+            <div class="product-thumb" th:style="'background-image: url(/static/img/product_' + ${product.id} + '.jpg'"></div>
+            <div class="product-details">
+                <h2 th:text="${product.getName()}" class="product-name"></h2>
+                <p class="product-info">
+                    -&nbsp;
+                    <span class="product-supplier" th:text="${product.getSupplier().getName()}"></span>
+                    <span class="product-product-category" th:text="${product.getProductCategory().getName()}"></span>
+                </p>
+                <p th:text="${product.getDescription()}" class="product-description"></p>
+                <div class="product-buy">
+                    <p class="product-price" th:text="${product.getPrice()}"></p>
+                    <a th:href="'/shopping-cart?action=add&id=' + ${product.getId()}" class="product-add-to-cart button">Add to cart</a>
+                </div>
+            </div>
+        </div>
+    </main>
+    <aside class="aside">
+        <div class="product-categories-container aside-container">
+            <h5>Product Categories</h5>
+            <ul class="product-categories">
+                <li class="product-category" th:each="category,iterStat : ${categories}">
+                    <a class="product-category-link base-link" th:attr="href='/product-categories/' + ${category.getName().toLowerCase()}" th:text="${category.getName()}"></a>
+                </li>
+            </ul>
+        </div>
+        <div class="suppliers-container aside-container">
+            <h5>Suppliers</h5>
+            <ul class="suppliers">
+                <li class="supplier" th:each="supplier,iterStat : ${suppliers}">
+                    <a class="supplier-link base-link" th:attr="href='/suppliers/' + ${supplier.getName().toLowerCase()}" th:text="${supplier.getName()}"></a>
+                </li>
+            </ul>
+        </div>
+    </aside>
+</div>
 
 <div th:replace="footer.html :: copy"></div>
 
@@ -73,7 +108,7 @@
 
     $('#shoppingCartHandler').on('click', function(e) {
         $('.shopping-cart-content').toggleClass('opened');
-    });
+    })
 
     function menuHandling() {
         $('#menuHandler').on('click', function() {

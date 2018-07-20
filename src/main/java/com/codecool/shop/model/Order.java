@@ -1,12 +1,12 @@
 package com.codecool.shop.model;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class Order {
 
-    private static int nextId = 1;
     private static Date currentDate = new Date();
     private int id;
     private String date;
@@ -26,7 +26,9 @@ public class Order {
     private List<Product> orderedItems;
 
     public Order() {
-        this.id = nextId++;
+        AdminLog logger = AdminLog.getInstance();
+        this.id = Integer.parseInt(logger.readLatestOrderId());
+        logger.increaseLatestOrderId();
         this.date = currentDate.toString();
         orderedItems = new ArrayList<>();
     }
@@ -142,4 +144,54 @@ public class Order {
     public void setTotalPrice(float totalPrice) {
         this.totalPrice = totalPrice;
     }
+
+    public void logOrderDetails(HttpSession session, AdminLog logger){
+        System.out.println(this);
+        logger.addLog(session, "Name: " + this.name);
+        logger.addLog(session, "Email: " + this.email);
+        logger.addLog(session, "Phone Number: " + this.phoneNumber);
+        logger.addLog(session, "Billing Country: " + this.billingCountry);
+        logger.addLog(session, "Billing City: " + this.billingCity);
+        logger.addLog(session, "Billing Zip code: " + this.billingZipCode);
+        logger.addLog(session, "Billing Address: " + this.billingAddress);
+        logger.addLog(session, "Shipping Country: " + this.shippingAddress);
+        logger.addLog(session, "Shipping City: " + this.shippingCity);
+        logger.addLog(session, "Shipping Zip code: " + this.shippingZipCode);
+        logger.addLog(session, "Shipping Address: " + this.shippingAddress);
+        logger.addLog(session, "Total Price: " + Float.toString(this.totalPrice));
+    }
+
+    public void logPaymentMethod(HttpSession session, AdminLog logger, String paymentMethod){
+        logger.addLog(session, "Payment method: " + paymentMethod);
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", date='" + date + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", billingCountry='" + billingCountry + '\'' +
+                ", billingCity='" + billingCity + '\'' +
+                ", billingZipCode='" + billingZipCode + '\'' +
+                ", billingAddress='" + billingAddress + '\'' +
+                ", shippingCountry='" + shippingCountry + '\'' +
+                ", shippingCity='" + shippingCity + '\'' +
+                ", shippingZipCode='" + shippingZipCode + '\'' +
+                ", shippingAddress='" + shippingAddress + '\'' +
+                ", totalPrice=" + totalPrice +
+                ", orderedItems=" + orderedItems +
+                '}';
+    }
+
+    public void logPaymentResult(HttpSession session, AdminLog logger, String paymentResult){
+        logger.addLog(session, "Payment result: " + paymentResult);
+    }
+
+    public void logPaymentError(HttpSession session, AdminLog logger, String paymentError){
+        logger.addLog(session, "Payment error:" + paymentError);
+    }
+
 }

@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -56,7 +57,29 @@ public class ShoppingCartController extends BaseController {
             if (removeAll) {
                 ShoppingCart.remove(session, productId, true);
             } else {
+
+            }
+        //admin logging
+        AdminLog logger = AdminLog.getInstance();
+        if (session.getAttribute("AdminLog") == null) {
+            session.setAttribute("AdminLog", new LinkedHashMap<Long, String>());
+        }
+
+        if (action != null) {
+            if (action.equals(ACTION_ADD)) {
+                ShoppingCart.add(session, productId);
+                logger.addLog(session, "Product ID: " + Integer.toString(productId) + " added to cart");
+            } else if (action.equals(ACTION_REMOVE)) {
+                if (req.getParameter("all") != null) {
+                    if (req.getParameter("all").equals("true")) {
+                        ShoppingCart.remove(session, productId, true);
+                        logger.addLog(session, "Removed everything from cart");
+                        return;
+                    }
+                }
                 ShoppingCart.remove(session, productId, false);
+                logger.addLog(session, "Product ID: " + Integer.toString(productId) + " removed from cart");
+
             }
         }
 

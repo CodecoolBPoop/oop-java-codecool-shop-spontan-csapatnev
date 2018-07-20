@@ -10,7 +10,7 @@ import java.util.List;
 public class ShoppingCart {
 
 
-    private static Product getProductById(int id) {
+    public static Product getProductById(int id) {
         try {
             return ProductDaoMem.getInstance().find(id);
         } catch (ElementNotFoundException e) {

@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header.html::head"></head>
+<body>
+
+<nav th:replace="fragments/header.html::menu"></nav>
+
+<div class="center success">
+    <h1>You paid successfully!</h1>
+    <p>Check your e-mail for the information about the order.</p>
+    <p>We will deliver your order soon.</p>
+    <a href="/" class="button">Go back to Home</a>
+</div>
+
+<div th:replace="fragments/footer.html :: footer"></div>
+
+</body>
+</html>

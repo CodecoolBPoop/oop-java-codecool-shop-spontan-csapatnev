@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header.html::head"></head>
+<body>
+
+<nav th:replace="fragments/header.html::menu"></nav>
+
+<div class="center error">
+    <h1>Some error happened during the payment.</h1>
+    <p><span th:text="${error}"></span></p>
+    <a href="/" class="button">Go back to Home</a>
+</div>
+
+<div th:replace="footer.html :: footer"></div>
+
+</body>
+</html>

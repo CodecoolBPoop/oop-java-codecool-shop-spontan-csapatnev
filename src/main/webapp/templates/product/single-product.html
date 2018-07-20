@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header.html::head"></head>
+<body>
+
+<nav th:replace="fragments/header.html::menu"></nav>
+
+<div class="container">
+    <main class="main">
+        <div class="single-product">
+            <div class="product-thumb" th:style="'background-image: url(/static/img/product_' + ${product.id} + '.png'"></div>
+            <div class="product-details">
+                <h2 th:text="${product.getName()}" class="product-name"></h2>
+                <p class="product-info">
+                    -&nbsp;
+                    <span class="product-supplier" th:text="${product.getSupplier().getName()}"></span>
+                    <span class="product-product-category" th:text="${product.getProductCategory().getName()}"></span>
+                </p>
+                <p th:text="${product.getDescription()}" class="product-description"></p>
+                <div class="product-buy">
+                    <p class="product-price" th:text="${product.getPrice()}"></p>
+                    <a th:href="'/shopping-cart?action=add&id=' + ${product.getId()}" class="button product-add-to-cart data-handler-button">Add to cart</a>
+                </div>
+            </div>
+        </div>
+    </main>
+    <aside th:replace="fragments/aside.html::aside"></aside>
+</div>
+
+<div th:replace="fragments/footer.html :: footer"></div>
+
+</body>
+</html>

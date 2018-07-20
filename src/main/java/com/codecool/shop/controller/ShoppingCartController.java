@@ -8,7 +8,6 @@ import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.model.AdminLog;
 import com.codecool.shop.model.ShoppingCart;
-import org.json.simple.JSONObject;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -21,6 +20,7 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 @WebServlet(urlPatterns = {"/shopping-cart"})
@@ -39,23 +39,24 @@ public class ShoppingCartController extends BaseController {
         //admin logging
         AdminLog logger = AdminLog.getInstance();
         if (session.getAttribute("AdminLog") == null) {
-            JSONObject adminLog = new JSONObject();
-            session.setAttribute("AdminLog", adminLog);
+            session.setAttribute("AdminLog", new LinkedHashMap<Long, String>());
         }
 
         if (action != null) {
             if (action.equals(ACTION_ADD)) {
                 ShoppingCart.add(session, productId);
-                logger.addLog(session, "Product ID:" + Integer.toString(productId), "Added to cart");
+                logger.addLog(session, "Product ID: " + Integer.toString(productId) + " added to cart");
             } else if (action.equals(ACTION_REMOVE)) {
                 if (req.getParameter("all") != null) {
                     if (req.getParameter("all").equals("true")) {
                         ShoppingCart.remove(session, productId, true);
-                        logger.addLog(session, "Product ID:" + Integer.toString(productId), "Removed from cart");
+                        logger.addLog(session, "Removed everything from cart");
                         return;
                     }
                 }
                 ShoppingCart.remove(session, productId, false);
+                logger.addLog(session, "Product ID: " + Integer.toString(productId) + " removed from cart");
+
             }
         }
     }

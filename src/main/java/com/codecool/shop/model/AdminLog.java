@@ -1,10 +1,12 @@
 package com.codecool.shop.model;
 
-import org.json.simple.JSONObject;
+import com.google.gson.Gson;
+
 import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.LinkedHashMap;
 
 
 public class AdminLog {
@@ -12,8 +14,11 @@ public class AdminLog {
     private static AdminLog instance = null;
     private final String LOG_DIR_PATH = System.getProperty("user.dir") + "\\log\\";
     private final String LATEST_ID_FILE_PATH = System.getProperty("user.dir") + "\\log\\LatestOrderId.txt";
+    static int idx = 0;
 
-    private AdminLog(){};
+    private AdminLog() {
+    }
+
 
     public static AdminLog getInstance() {
 
@@ -25,18 +30,21 @@ public class AdminLog {
 
     /**
      * Reads and returns the latest Order ID from /log/LatestOrderId.txt
+     *
      * @return Latest order ID in string.
      */
-    private String readLatestOrderId() {
+    String readLatestOrderId() {
 
         String id = "";
         FileReader reader = null;
 
-        try
-        {reader = new FileReader(LATEST_ID_FILE_PATH);}
-        catch(IOException ex) {System.err.println("Caught IOException: " + ex.getMessage());}
+        try {
+            reader = new FileReader(LATEST_ID_FILE_PATH);
+        } catch (IOException ex) {
+            System.err.println("Caught IOException: " + ex.getMessage());
+        }
 
-        try(BufferedReader br = new BufferedReader(reader)) {
+        try (BufferedReader br = new BufferedReader(reader)) {
             StringBuilder sb = new StringBuilder();
             String line = br.readLine();
             while (line != null) {
@@ -45,7 +53,7 @@ public class AdminLog {
                 line = br.readLine();
             }
             id = sb.toString().trim();
-        } catch(IOException ex) {
+        } catch (IOException ex) {
             System.err.println("Caught IOException: " + ex.getMessage());
         }
         return id;
@@ -54,7 +62,7 @@ public class AdminLog {
     /**
      * Increases the latest order ID by 1 in /log/LatestOrderId.txt
      */
-    private void increaseLatestOrderId() {
+    void increaseLatestOrderId() {
 
         int latestId = Integer.parseInt(readLatestOrderId());
 
@@ -72,60 +80,64 @@ public class AdminLog {
 
     /**
      * Creates a log .json file with name: orderId--yyyy-MM-dd, writeLogToFile() uses it
+     *
      * @return name of that file
      */
-    public String createLogFile() {
+    public String createLogFile(HttpSession session) {
 
         String timeStamp = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
-        String id = readLatestOrderId();
-        increaseLatestOrderId();
+        Order order = (Order) session.getAttribute("currentOrder");
+        String id = Integer.toString(order.getId());
         File logFile = new File(LOG_DIR_PATH + id + "--" + timeStamp + ".json");
 
         try {
             if (!logFile.exists()) {
                 logFile.createNewFile();
-                System.out.println("Successfully created logfile: " + LOG_DIR_PATH + logFile.toString());
+                System.out.println("Successfully created logfile: " + logFile.toString());
             }
-        }catch(IOException ex){
+        } catch (IOException ex) {
             System.err.println("Caught IOException: " + ex.getMessage());
         }
         return logFile.toString();
     }
 
     /**
-     * Retrieves all the final logs from the session that is stored in a JSONObject
-     * and writes it to the corresponding log file
-     * @param session the HttpSession in which the JSONObject can be found
+     * Retrieves all the final logs from the session that is stored in the linked hash map
+     * and writes it to the corresponding .json file
+     *
+     * @param session the HttpSession in which the linked hash map can be found
      */
-    public void writeLogToFile(HttpSession session) {
+    public void writeLogsToFile(HttpSession session) {
 
-        JSONObject log = (JSONObject)session.getAttribute("AdminLog");
+        LinkedHashMap<Long, String> log = (LinkedHashMap) session.getAttribute("AdminLog");
         session.removeAttribute("AdminLog");
 
         try {
-            FileWriter fw = new FileWriter(LOG_DIR_PATH + createLogFile());
-            fw.write(log.toJSONString());
+            String json = new Gson().toJson(log);
+            FileWriter fw = new FileWriter(createLogFile(session));
+            fw.write(json);
+            fw.flush();
+            fw.close();
 
-            System.out.println("Successfully Copied JSON Object to File...");
-            System.out.println("\nJSON Object: " + log);
+            System.out.println("Successfully Copied log from session to File...");
+            System.out.println("\nlog: " + log);
 
-        }catch(IOException ex){
+        } catch (IOException ex) {
             System.err.println("Caught IOException: " + ex.getMessage());
         }
+        idx = 0;
     }
 
     /**
-     * Retrieves the JSONObject from the session and adds ONE log to it.
-     * @param session the HttpSession in which the JSONObject can be found
-     * @param key key of the log to add eg.: "Username"
-     * @param value value of the log to add eg.: "John Smith"
+     * Retrieves a linked hash map ("AdminLog") from the session and adds ONE log to it.
+     *
+     * @param session the HttpSession in which the linked hash map can be found
+     * @param value   value of the log to add
      */
-    public void addLog(HttpSession session, String key, String value) {
-
-        JSONObject log = (JSONObject)session.getAttribute("AdminLog");
-        session.removeAttribute("AdminLog");
-        log.put(key, value);
-        session.setAttribute("AdminLog", log);
+    public void addLog(HttpSession session, String value) {
+        Long time = idx++ + System.currentTimeMillis();
+        LinkedHashMap<Long, String> log = (LinkedHashMap) session.getAttribute("AdminLog");
+        log.put(time, Integer.toString(idx) + " - " + value);
 
     }
 

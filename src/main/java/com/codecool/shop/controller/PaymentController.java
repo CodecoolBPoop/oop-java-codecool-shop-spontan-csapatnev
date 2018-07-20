@@ -7,6 +7,7 @@ import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.config.TemplateEngineUtil;
+import com.codecool.shop.model.AdminLog;
 import com.codecool.shop.model.Order;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ShoppingCart;
@@ -55,6 +56,8 @@ public class PaymentController extends HttpServlet {
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
 
+        AdminLog logger = AdminLog.getInstance();
+
         ClientTokenRequest clientTokenRequest = new ClientTokenRequest();
         String clientToken = gateway.clientToken().generate(clientTokenRequest);
         String nonceFromTheClient = req.getParameter("payment_method_nonce");
@@ -73,11 +76,11 @@ public class PaymentController extends HttpServlet {
                 .done();
 
         Result<Transaction> result = gateway.transaction().sale(request);
+        Order currentOrder;
+        currentOrder = (Order)session.getAttribute("currentOrder");
         if (result.isSuccess()) {
             // See result.getTarget() for details
             System.out.println("Paying success!!!");
-            Order currentOrder;
-            currentOrder = (Order)session.getAttribute("currentOrder");
             String toEmail = currentOrder.getEmail();
             String mailBody = engine.process("product/paying_success.html", context);
             String subject = "Thank you for your purchase " + currentOrder.getName();
@@ -88,11 +91,23 @@ public class PaymentController extends HttpServlet {
             context.setVariable("sumOfPrices", ShoppingCart.sumOfPrices(session));
             engine.process("product/paying_success.html", context, resp.getWriter());
 
+            currentOrder.logPaymentMethod(session, logger, "Card");
+            currentOrder.logOrderDetails(session, logger);
+            currentOrder.logPaymentResult(session, logger, "Success!");
+            logger.writeLogsToFile(session);
+
             session.invalidate();
         } else {
             // Handle errors
             System.out.println("ERROR");
             System.out.println(result);
+
+            currentOrder.logPaymentMethod(session, logger, "Card");
+            currentOrder.logOrderDetails(session, logger);
+            currentOrder.logPaymentResult(session, logger, "Failed!");
+            currentOrder.logPaymentError(session, logger, result.getMessage());
+
+
             context.setVariable("error", result.getMessage());
             context.setVariable("shoppingCartProducts", ShoppingCart.getAllProduct(session));
             context.setVariable("sumOfProducts", ShoppingCart.sumOfProducts(session));

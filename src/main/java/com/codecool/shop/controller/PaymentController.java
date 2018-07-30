@@ -7,8 +7,10 @@ import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.config.TemplateEngineUtil;
+import com.codecool.shop.model.AdminLog;
 import com.codecool.shop.model.Order;
 import com.codecool.shop.model.Product;
+import com.codecool.shop.model.ShoppingCart;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -36,23 +38,14 @@ public class PaymentController extends HttpServlet {
             "e6ad226cd0d2f0222ce5e18172e42663"
     );
 
-//    @Override
-//    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-//            throws IOException {
-//
-//        TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
-//        WebContext context = new WebContext(req, resp, req.getServletContext());
-//
-//        engine.process("product/payment.html", context, resp.getWriter());
-//
-//    }
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
+
+        AdminLog logger = AdminLog.getInstance();
 
         ClientTokenRequest clientTokenRequest = new ClientTokenRequest();
         String clientToken = gateway.clientToken().generate(clientTokenRequest);
@@ -72,52 +65,40 @@ public class PaymentController extends HttpServlet {
                 .done();
 
         Result<Transaction> result = gateway.transaction().sale(request);
+        Order currentOrder;
+        currentOrder = (Order)session.getAttribute("currentOrder");
         if (result.isSuccess()) {
-            // See result.getTarget() for details
             System.out.println("Paying success!!!");
-            Order currentOrder;
-            currentOrder = (Order)session.getAttribute("currentOrder");
-            String toEmail = currentOrder.getEmail();
-            String mailBody = engine.process("product/paying_success.html", context);
-            String subject = "Thank you for your purchase " + currentOrder.getName();
-            sendEmail(toEmail, mailBody, subject);
+            EmailUtil.createEmail(req, resp);
+
+            context.setVariable("shoppingCartProducts", ShoppingCart.getAllProduct(session));
+            context.setVariable("sumOfProducts", ShoppingCart.sumOfProducts(session));
+            context.setVariable("sumOfPrices", ShoppingCart.sumOfPrices(session));
             engine.process("product/paying_success.html", context, resp.getWriter());
+
+            currentOrder.logPaymentMethod(session, logger, "Card");
+            currentOrder.logOrderDetails(session, logger);
+            currentOrder.logPaymentResult(session, logger, "Success!");
+            logger.writeLogsToFile(session);
+
             session.invalidate();
         } else {
             // Handle errors
             System.out.println("ERROR");
             System.out.println(result);
+
+            currentOrder.logPaymentMethod(session, logger, "Card");
+            currentOrder.logOrderDetails(session, logger);
+            currentOrder.logPaymentResult(session, logger, "Failed!");
+            currentOrder.logPaymentError(session, logger, result.getMessage());
+
+
             context.setVariable("error", result.getMessage());
+            context.setVariable("shoppingCartProducts", ShoppingCart.getAllProduct(session));
+            context.setVariable("sumOfProducts", ShoppingCart.sumOfProducts(session));
+            context.setVariable("sumOfPrices", ShoppingCart.sumOfPrices(session));
             engine.process("product/paying_error.html", context, resp.getWriter());
         }
-        Order currentOrder;
-        currentOrder = (Order)session.getAttribute("currentOrder");
-        String toEmail = currentOrder.getEmail();
-
     }
 
-    private void sendEmail(String toEmail, String mailBody, String subject) {
-        final String fromEmail = "jakabgipsz1983@gmail.com"; //requires valid gmail id
-        final String password = "gipsz.j4k4b"; // correct password for gmail id
-//        final String toEmail = "myemail@yahoo.com"; // can be any email id
-
-        System.out.println("TLSEmail Start");
-        Properties props = new Properties();
-        props.put("mail.smtp.host", "smtp.gmail.com"); //SMTP Host
-        props.put("mail.smtp.port", "587"); //TLS Port
-        props.put("mail.smtp.auth", "true"); //enable authentication
-        props.put("mail.smtp.starttls.enable", "true"); //enable STARTTLS
-
-        //create Authenticator object to pass in Session.getInstance argument
-        Authenticator auth = new Authenticator() {
-            //override the getPasswordAuthentication method
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(fromEmail, password);
-            }
-        };
-        Session session = Session.getInstance(props, auth);
-
-        EmailUtil.sendEmail(session, toEmail, subject, mailBody);
-
-    }
 }

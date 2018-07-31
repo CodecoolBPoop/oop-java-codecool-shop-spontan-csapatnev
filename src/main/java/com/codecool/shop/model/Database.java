@@ -67,4 +67,40 @@ public class Database {
         }
         return name;
     }
+
+/*    public void addProduct(Product product) {
+        ResultSet rs = null;
+        String name = null;
+        Connection conn = connectToDatabase();
+        try {
+            Statement st = conn.createStatement();
+            String sql;
+            sql = "INSERT INTO product VALUES ("
+                    + product.getName() + ", "
+                    + product.getDescription() + ", "
+                    + "product_" + product.getId() + ".png, "
+                    + ")";
+            rs = st.executeQuery(sql);
+        } catch (SQLException se) {
+            System.err.println(se.getMessage());
+        }
+    }*/
+
+    public void addSupplier(Supplier product) {
+        ResultSet rs = null;
+        String name = null;
+        Connection conn = connectToDatabase();
+        try {
+            Statement st = conn.createStatement();
+            String sql;
+            sql = "INSERT INTO product VALUES ("
+                    + product.getName() + ", "
+                    + product.getDescription() + ", "
+                    + "product_" + product.getId() + ".png, "
+                    + ")";
+            rs = st.executeQuery(sql);
+        } catch (SQLException se) {
+            System.err.println(se.getMessage());
+        }
+    }
 }

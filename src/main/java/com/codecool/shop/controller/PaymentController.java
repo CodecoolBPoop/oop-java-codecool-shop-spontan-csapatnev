@@ -1,11 +1,6 @@
 package com.codecool.shop.controller;
 
 import com.braintreegateway.*;
-import com.codecool.shop.dao.ElementNotFoundException;
-import com.codecool.shop.dao.ProductCategoryDao;
-import com.codecool.shop.dao.ProductDao;
-import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
-import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.model.AdminLog;
 import com.codecool.shop.model.Order;
@@ -14,10 +9,6 @@ import com.codecool.shop.model.ShoppingCart;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
-import javax.mail.Authenticator;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -69,7 +60,7 @@ public class PaymentController extends HttpServlet {
         currentOrder = (Order)session.getAttribute("currentOrder");
         if (result.isSuccess()) {
             System.out.println("Paying success!!!");
-            EmailUtil.createEmail(req, resp);
+            EmailUtil.createEmailOfOrder(req, resp);
 
             context.setVariable("shoppingCartProducts", ShoppingCart.getAllProduct(session));
             context.setVariable("sumOfProducts", ShoppingCart.sumOfProducts(session));

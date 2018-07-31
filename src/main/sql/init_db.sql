@@ -32,3 +32,24 @@ CREATE TABLE public.product
     CONSTRAINT supplier_id_fk FOREIGN KEY (supplier_id) REFERENCES suppliers (id)
 );
 CREATE UNIQUE INDEX product_id_uindex ON public.product (id);
+
+
+create table users
+(
+  id       serial not null
+    constraint users_pkey
+    primary key,
+  name     varchar(255),
+  password varchar(255),
+  email    varchar(255)
+);
+
+create unique index users_id_uindex
+  on users (id);
+
+create unique index users_name_uindex
+  on users (name);
+
+create unique index users_email_uindex
+  on users (email);
+

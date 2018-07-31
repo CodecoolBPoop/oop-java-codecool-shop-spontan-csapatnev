@@ -49,4 +49,22 @@ public class Database {
         }
         return name;
     }*/
+
+    public String getName() {
+        ResultSet rs = null;
+        String name = null;
+        Connection conn = connectToDatabase();
+        try {
+            Statement st = conn.createStatement();
+            String sql;
+            sql = "SELECT name FROM test WHERE name = 'tibi'";
+            rs = st.executeQuery(sql);
+            while (rs.next()) {
+                name = rs.getString("name");
+            }
+        } catch (SQLException se) {
+            System.err.println(se.getMessage());
+        }
+        return name;
+    }
 }

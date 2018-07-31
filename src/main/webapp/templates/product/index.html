@@ -5,6 +5,8 @@
 
 <nav th:replace="fragments/header.html::menu"></nav>
 
+<div th:if="${username}"><span th:text="'Welcome ' + ${username} + '!'"></span></div>
+
 <div class="container">
     <main class="main">
         <div class="products">

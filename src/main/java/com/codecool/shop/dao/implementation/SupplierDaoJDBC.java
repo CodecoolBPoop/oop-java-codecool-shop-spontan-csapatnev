@@ -29,6 +29,7 @@ public class SupplierDaoJDBC implements SupplierDao {
     @Override
     public void add(Supplier supplier) {
         Connection conn = db.connectToDatabase();
+
         try {
             Statement st = conn.createStatement();
             String sql;
@@ -46,10 +47,12 @@ public class SupplierDaoJDBC implements SupplierDao {
 
     @Override
     public Supplier find(int id) {
-        ResultSet rs;
         String name = null;
         String description = null;
+
+        ResultSet rs;
         Connection conn = db.connectToDatabase();
+
         try {
             Statement st = conn.createStatement();
             rs = st.executeQuery("SELECT name, description FROM suppliers WHERE id = " + id);
@@ -70,13 +73,15 @@ public class SupplierDaoJDBC implements SupplierDao {
 
     @Override
     public Supplier find(String name){
-        ResultSet rs;
         String description = null;
         int id = 0;
+
+        ResultSet rs;
         Connection conn = db.connectToDatabase();
+
         try {
             Statement st = conn.createStatement();
-            rs = st.executeQuery("SELECT id, description FROM suppliers WHERE name = " + name);
+            rs = st.executeQuery("SELECT id, description FROM suppliers WHERE name = " + "'" + name + "'");
             while (rs.next()) {
                 description = rs.getString("description");
                 id = rs.getInt("id");
@@ -95,9 +100,9 @@ public class SupplierDaoJDBC implements SupplierDao {
     @Override
     public void remove(int id) {
         Connection conn = db.connectToDatabase();
+
         try {
             Statement st = conn.createStatement();
-            String sql;
             st.executeUpdate("DELETE FROM suppliers WHERE id = " + id);
             conn.close();
             System.out.println("Deleted supplier with id: " + id + "from the database.");
@@ -108,11 +113,13 @@ public class SupplierDaoJDBC implements SupplierDao {
 
     @Override
     public List<Supplier> getAll() {
-        ResultSet rs;
         String description;
         int id;
         String name;
+
+        ResultSet rs;
         Connection conn = db.connectToDatabase();
+
         try {
             Statement st = conn.createStatement();
             rs = st.executeQuery("SELECT * FROM suppliers");

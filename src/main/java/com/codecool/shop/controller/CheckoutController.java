@@ -49,7 +49,8 @@ public class CheckoutController extends BaseController {
         context.setVariable("totalPrice", totalPrice);
 
     }
-//    @Override
+
+    //    @Override
 //    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 //            throws IOException {
 //
@@ -77,11 +78,16 @@ public class CheckoutController extends BaseController {
 //        return productList.stream()
 //                .map(Product::getDefaultPrice)
 //
-        float totalPrice = 0;
-        for (Product product : productList) {
-            totalPrice += product.getDefaultPrice() * product.getShoppingCartQuantity();
-        }
-        return totalPrice;
+//        float totalPrice = 0;
+//        for (Product product : productList) {
+//            totalPrice += product.getDefaultPrice() * product.getShoppingCartQuantity();
+//        }
+//        return totalPrice;
+
+        return (float) productList
+                .parallelStream()
+                .mapToDouble(p -> p.getDefaultPrice()*p.getShoppingCartQuantity())
+                .sum();
     }
 
     @Override
@@ -90,18 +96,7 @@ public class CheckoutController extends BaseController {
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
 
-        Order order = new Order();
-        order.setName(req.getParameter("name"));
-        order.setEmail(req.getParameter("email"));
-        order.setPhoneNumber(req.getParameter("phone-number"));
-        order.setBillingCountry(req.getParameter("billing-country"));
-        order.setBillingCity(req.getParameter("billing-city"));
-        order.setBillingZipCode(req.getParameter("billing-zip"));
-        order.setBillingAddress(req.getParameter("billing-address"));
-        order.setShippingCountry(req.getParameter("shipping-country"));
-        order.setShippingCity(req.getParameter("shipping-city"));
-        order.setShippingZipCode(req.getParameter("shipping-zip"));
-        order.setShippingAddress(req.getParameter("shipping-address"));
+        Order order = ensembleOrder(req);
 
         HttpSession session = req.getSession();
         List<Product> cartItems;
@@ -122,5 +117,21 @@ public class CheckoutController extends BaseController {
         context.setVariable("sumOfProducts", ShoppingCart.sumOfProducts(session));
         context.setVariable("sumOfPrices", ShoppingCart.sumOfPrices(session));
         engine.process("product/payment.html", context, resp.getWriter());
+    }
+
+    private Order ensembleOrder(HttpServletRequest req) {
+        Order order = new Order();
+        order.setName(req.getParameter("name"));
+        order.setEmail(req.getParameter("email"));
+        order.setPhoneNumber(req.getParameter("phone-number"));
+        order.setBillingCountry(req.getParameter("billing-country"));
+        order.setBillingCity(req.getParameter("billing-city"));
+        order.setBillingZipCode(req.getParameter("billing-zip"));
+        order.setBillingAddress(req.getParameter("billing-address"));
+        order.setShippingCountry(req.getParameter("shipping-country"));
+        order.setShippingCity(req.getParameter("shipping-city"));
+        order.setShippingZipCode(req.getParameter("shipping-zip"));
+        order.setShippingAddress(req.getParameter("shipping-address"));
+        return order;
     }
 }

@@ -1,5 +1,6 @@
 package com.codecool.shop.controller.ajaxCalls;
 
+import com.codecool.shop.controller.PasswordHash;
 import com.codecool.shop.model.Database;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -12,44 +13,42 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.*;
 
-@WebServlet(urlPatterns = {"/check-username"})
-public class CheckUsername extends HttpServlet {
+@WebServlet(urlPatterns = {"/verify-user"})
+public class VerifyUser extends HttpServlet {
 
     private static Database db = Database.getInstance();
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String json = req.getReader().readLine();
         JSONObject data = (JSONObject) JSONValue.parse(json);
-        String username = (String) data.get("username");
         String email = (String) data.get("email");
-        if (usernameIsTaken(username) && emailIsTaken(email)) {
-            resp.getWriter().write("both");
-        } else if (usernameIsTaken(username)) {
-            resp.getWriter().write("username");
-        } else if (emailIsTaken(email)){
-            resp.getWriter().write("email");
+        String password = (String) data.get("password");
+        if (!validEmailAddress(email)) {
+            resp.getWriter().write("not ok");
         } else {
-            resp.getWriter().write("ok");
+            String hashedPassword = getHashedPassword(email);
+            if (PasswordHash.checkPassword(password, hashedPassword)) {
+                resp.getWriter().write("ok");
+            } else {
+                resp.getWriter().write("not ok");
+            }
         }
-
     }
 
-    private boolean usernameIsTaken(String username){
-        String name = null;
-        name = getString(username, name, "SELECT * FROM users WHERE name=?", "name");
-
-        return name != null;
+    private String getHashedPassword(String email) {
+        String pw = null;
+        pw = getString(email, "SELECT password FROM users WHERE email=?;", "password");
+        return pw;
     }
 
-    private boolean emailIsTaken(String email) {
-        String userEmail = null;
-        userEmail = getString(email, userEmail, "SELECT * FROM users WHERE email=?", "email");
-
-        return userEmail != null;
-
+    private boolean validEmailAddress(String email) {
+        String loginEmail = null;
+        loginEmail = getString(email, "SELECT * FROM users WHERE email=?;", "email");
+        return loginEmail != null;
     }
 
-    private String getString(String username, String name, String query, String returnField) {
+    private String getString(String username, String query, String returnField) {
+        String returnString = null;
         Connection connection = db.connectToDatabase();
 
         try {
@@ -57,12 +56,12 @@ public class CheckUsername extends HttpServlet {
             stmt.setString(1, username);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                name = rs.getString(returnField);
+                returnString = rs.getString(returnField);
             }
             connection.close();
         } catch (SQLException se) {
             System.err.println(se.getMessage());
         }
-        return name;
+        return returnString;
     }
 }

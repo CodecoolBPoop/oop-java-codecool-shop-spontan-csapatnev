@@ -8,14 +8,13 @@ import com.codecool.shop.dao.implementation.SupplierDaoMem;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 
 import java.util.ArrayList;
 
-import org.junit.jupiter.api.function.Executable;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class testProductDaoMem {
@@ -31,7 +30,7 @@ public class testProductDaoMem {
 
     @BeforeAll
     public static void init() {
-        System.out.println("Test started");
+
         if(Mem) {
             testProductDao = ProductDaoMem.getInstance();
             testCategoryDao = ProductCategoryDaoMem.getInstance();
@@ -78,7 +77,6 @@ public class testProductDaoMem {
     @Tag("ProductDao")
     @Test
     public void testFindProductName(){
-        init();
         assertDoesNotThrow(() -> testProductDao.find(1));
         try{
             assertEquals("Amazon Fire",testProductDao.find(1).getName());
@@ -197,14 +195,14 @@ public class testProductDaoMem {
     @Tag("ProductCategoryDao")
     @Test
     public void testCategoryFindThrowsException(){
-        assertThrows(ElementNotFoundException.class,() -> testCategoryDao.find(0));
+        assertThrows(ElementNotFoundException.class,() -> testCategoryDao.find("Non Existent Name"));
     }
 
     @Tag("ExceptionThrow")
     @Tag("ProductSupplierDao")
     @Test
     public void testSupplierFindThrowsException(){
-        assertThrows(ElementNotFoundException.class,() -> testSupplierDao.find(0));
+        assertThrows(ElementNotFoundException.class,() -> testSupplierDao.find("Non Existent Name"));
     }
 
 }

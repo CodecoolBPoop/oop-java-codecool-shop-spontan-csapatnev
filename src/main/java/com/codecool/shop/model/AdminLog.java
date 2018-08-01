@@ -11,9 +11,9 @@ import java.util.LinkedHashMap;
 
 public class AdminLog {
 
-    private static AdminLog instance ;
-    private final String LOG_DIR_PATH = System.getProperty("user.dir") + "\\log\\";
-    private final String LATEST_ID_FILE_PATH = System.getProperty("user.dir") + "\\log\\LatestOrderId.txt";
+    private static AdminLog instance = null;
+    private final String LOG_DIR_PATH = System.getProperty("user.dir") + "/log/";
+    private final String LATEST_ID_FILE_PATH = System.getProperty("user.dir") + "/log/LatestOrderId.txt";
     static int idx = 0;
 
     private AdminLog() {

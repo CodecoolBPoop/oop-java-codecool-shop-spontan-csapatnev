@@ -10,14 +10,13 @@ import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class testProductDaoMem {
+public class testMemoryDao {
 
     private static ProductDao testProductDao;
     private static ProductCategoryDao testCategoryDao;

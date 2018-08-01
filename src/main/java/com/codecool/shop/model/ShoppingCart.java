@@ -10,6 +10,8 @@ import java.util.List;
 public class ShoppingCart {
 
 
+    public static final String SHOPPING_CART = "ShoppingCart";
+
     public static Product getProductById(int id) {
         try {
             return ProductDaoMem.getInstance().find(id);
@@ -22,12 +24,12 @@ public class ShoppingCart {
         ArrayList<Product> productList;
         Product product = getProductById(id);
 
-        if (session.getAttribute("ShoppingCart") == null) {
+        if (session.getAttribute(SHOPPING_CART) == null) {
             productList = new ArrayList<Product>();
             productList.add(product);
-            session.setAttribute("ShoppingCart", productList);
+            session.setAttribute(SHOPPING_CART, productList);
         } else {
-            productList = (ArrayList)session.getAttribute("ShoppingCart");
+            productList = (ArrayList)session.getAttribute(SHOPPING_CART);
             int i = 0;
             while (i < productList.size()) {
                 Product p = productList.get(i);
@@ -41,12 +43,12 @@ public class ShoppingCart {
                 product.setShoppingCartQuantity(1);
                 productList.add(product);
             }
-            session.setAttribute("ShoppingCart", productList);
+            session.setAttribute(SHOPPING_CART, productList);
         }
     }
 
     public static void remove(HttpSession session, int id, boolean removeAll){
-        ArrayList<Product> productList = (ArrayList) session.getAttribute("ShoppingCart");
+        ArrayList<Product> productList = (ArrayList) session.getAttribute(SHOPPING_CART);
         Product productToRemove = getProductById(id);
         int i = 0;
         while (i < productList.size()){
@@ -59,11 +61,11 @@ public class ShoppingCart {
             }
             i++;
         }
-        session.setAttribute("ShoppingCart",productList);
+        session.setAttribute(SHOPPING_CART,productList);
     }
 
     public static float sumOfPrices(HttpSession session) {
-        ArrayList<Product> productList = (ArrayList) session.getAttribute("ShoppingCart");
+        ArrayList<Product> productList = (ArrayList) session.getAttribute(SHOPPING_CART);
         if (productList == null) {
             return 0;
         }
@@ -75,7 +77,7 @@ public class ShoppingCart {
     }
 
     public static int sumOfProducts(HttpSession session){
-        ArrayList<Product> productList = (ArrayList)session.getAttribute("ShoppingCart");
+        ArrayList<Product> productList = (ArrayList)session.getAttribute(SHOPPING_CART);
         if (productList == null) {
             return 0;
         }
@@ -87,7 +89,7 @@ public class ShoppingCart {
     }
 
     public static List<Product> getAllProduct(HttpSession session) {
-        return (ArrayList)session.getAttribute("ShoppingCart");
+        return (ArrayList)session.getAttribute(SHOPPING_CART);
     }
 
 }

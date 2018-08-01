@@ -103,9 +103,9 @@ $(document).ready(function () {
             $("#message").text("Passwords don't match!")
         } else {
             event.preventDefault();
-            let validationUrl = $("#registerForm").data("validationUrl");
+            let validationUrl = "/check-username";
             let username = $("#username").val();
-            $.post(validationUrl, {"username": username}, function (response) {
+            $.post(validationUrl, JSON.stringify({"username": username}), function (response) {
                 if (response === "ok") {
                     console.log(response);
                     $("#registerForm")[0].submit();

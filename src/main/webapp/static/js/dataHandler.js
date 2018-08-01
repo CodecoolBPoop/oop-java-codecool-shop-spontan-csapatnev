@@ -124,3 +124,21 @@ $(document).ready(function () {
         }
     })
 });
+
+$(document).ready(function () {
+    $("#login").click(function (event) {
+        $("#loginMessage").removeClass("alert-danger");
+        $("#loginMessage").text("");
+        let email = $("#loginEmail").val();
+        let password = $("#loginPassword").val();
+        event.preventDefault();
+        $.post('/verify-user', JSON.stringify({"email": email, "password": password}), function(response){
+                if(response === "ok"){
+                    $("#loginForm")[0].submit();
+                }else{
+                    $("#loginMessage").toggleClass("alert-danger");
+                    $("#loginMessage").text("Email or password is incorrect")
+                }
+            })
+    })
+});

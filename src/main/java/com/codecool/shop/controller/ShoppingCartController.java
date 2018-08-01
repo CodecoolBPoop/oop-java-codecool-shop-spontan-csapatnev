@@ -32,7 +32,6 @@ public class ShoppingCartController extends BaseController {
         String action = (String) answer.get("action");
         boolean removeAll = (boolean) answer.get("removeAll");
 
-        //admin logging
         AdminLog logger = AdminLog.getInstance();
         if (session.getAttribute("AdminLog") == null) {
             session.setAttribute("AdminLog", new LinkedHashMap<Long, String>());

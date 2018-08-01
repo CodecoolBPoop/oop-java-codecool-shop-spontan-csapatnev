@@ -4,6 +4,10 @@ import com.codecool.shop.dao.ElementNotFoundException;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 
 import javax.servlet.http.HttpSession;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,6 +94,35 @@ public class ShoppingCart {
 
     public static List<Product> getAllProduct(HttpSession session) {
         return (ArrayList)session.getAttribute(SHOPPING_CART);
+    }
+
+    public void saveToDatabase(HttpSession session) {
+        ArrayList<Product> productList = (ArrayList)session.getAttribute(SHOPPING_CART);
+        Database db = Database.getInstance();
+
+        String username = (String) session.getAttribute("username");
+        int userId = db.baseQuery("id", "users", "name", "username");
+
+        ResultSet rs;
+        Connection conn = db.connectToDatabase();
+
+        try {
+            Statement st = conn.createStatement();
+            st.executeUpdate(String.format("INSERT INTO shopping_cart (user_id) VALUES (%d)", userId));
+            conn.close();
+        } catch (SQLException se) {
+            System.err.println(se.getMessage());
+        }
+
+        int shoppingCartId = db.baseQuery("id", "shopping_cart", "user_id", userId);
+
+        try {
+            Statement st = conn.createStatement();
+            st.executeUpdate("INSERT INTO cart_content (user_id) VALUES (" + userId + ")");
+            conn.close();
+        } catch (SQLException se) {
+            System.err.println(se.getMessage());
+        }
     }
 
 }

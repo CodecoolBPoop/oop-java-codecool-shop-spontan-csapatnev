@@ -5,7 +5,6 @@ import org.thymeleaf.context.WebContext;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
-import java.sql.ResultSet;
 
 
 @WebServlet(urlPatterns = {"/adminFillBaseDatabase"})

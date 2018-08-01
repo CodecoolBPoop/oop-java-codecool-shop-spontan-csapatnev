@@ -567,6 +567,7 @@ table.shopping-cart-content tfoot td {
 }
 
 .footer {
+    margin-top: 80px;
     width: 100%;
     padding: 20px 0;
     text-align: center;

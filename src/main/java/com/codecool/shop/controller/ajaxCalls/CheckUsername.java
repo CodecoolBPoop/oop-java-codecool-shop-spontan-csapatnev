@@ -9,8 +9,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.sql.*;
 
@@ -23,31 +21,48 @@ public class CheckUsername extends HttpServlet {
         String json = req.getReader().readLine();
         JSONObject data = (JSONObject) JSONValue.parse(json);
         String username = (String) data.get("username");
-        if (usernameIsFree(username)) {
-            resp.getWriter().write("ok");
+        String email = (String) data.get("email");
+        if (usernameIsTaken(username) && emailIsTaken(email)) {
+            resp.getWriter().write("both");
+        }else if (usernameIsTaken(username)) {
+            resp.getWriter().write("username");
+        } else if (emailIsTaken(email)){
+            resp.getWriter().write("email");
         } else {
-            resp.getWriter().write("not ok");
+            resp.getWriter().write("ok");
         }
 
     }
 
-    private boolean usernameIsFree(String username){
+    private boolean usernameIsTaken(String username){
         String name = null;
+        name = getString(username, name, "SELECT * FROM users WHERE name=?", "name");
+
+        return name != null;
+    }
+
+    private boolean emailIsTaken(String email) {
+        String userEmail = null;
+        userEmail = getString(email, userEmail, "SELECT * FROM users WHERE email=?", "email");
+
+        return userEmail != null;
+
+    }
+
+    private String getString(String username, String name, String query, String returnField) {
         Connection connection = db.connectToDatabase();
 
         try {
-            PreparedStatement stmt = connection.prepareStatement("SELECT * FROM users WHERE name=?");
+            PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setString(1, username);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                name = rs.getString("name");
+                name = rs.getString(returnField);
             }
             connection.close();
         } catch (SQLException se) {
             System.err.println(se.getMessage());
         }
-
-        return name == null;
-
+        return name;
     }
 }

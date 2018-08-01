@@ -15,7 +15,7 @@ public class Dbtest extends BaseController {
         Database db = Database.getInstance();
 
 
-        context.setVariable("name", db.getName());
+//        context.setVariable("name", db.getName());
         renderHtml = "product/db";
     }
 

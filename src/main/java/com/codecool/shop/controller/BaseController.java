@@ -38,6 +38,13 @@ public abstract class BaseController extends HttpServlet {
         context.setVariable("categories", productCategoryDataStore.getAll());
         context.setVariable("suppliers", supplierDataStore.getAll());
         HttpSession session = req.getSession();
+        String username;
+        try {
+            username = session.getAttribute("username").toString();
+        } catch (NullPointerException e) {
+            username = null;
+        }
+        context.setVariable("username", username);
         context.setVariable("shoppingCartProducts", ShoppingCart.getAllProduct(session));
         context.setVariable("sumOfProducts", ShoppingCart.sumOfProducts(session));
         context.setVariable("sumOfPrices", ShoppingCart.sumOfPrices(session));

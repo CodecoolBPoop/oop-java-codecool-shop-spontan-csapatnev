@@ -87,6 +87,33 @@ function dataHandler(ev) {ev.preventDefault();
             }
         }
     })
-};
+}
 
-$('.data-handler-button').on('click',dataHandler)
+$('.data-handler-button').on('click',dataHandler);
+
+$(document).ready(function () {
+    $("#register").click(function (event) {
+        $("#message").removeClass("alert-danger");
+        $("#message").text("");
+        let password = $("#password").val();
+        let password_confirm = $("#password-confirm").val();
+        if (!(password === password_confirm)) {
+            event.preventDefault();
+            $("#message").toggleClass("alert-danger");
+            $("#message").text("Passwords don't match!")
+        } else {
+            event.preventDefault();
+            let validationUrl = "/check-username";
+            let username = $("#username").val();
+            $.post(validationUrl, JSON.stringify({"username": username}), function (response) {
+                if (response === "ok") {
+                    console.log(response);
+                    $("#registerForm")[0].submit();
+                } else {
+                    $("#message").toggleClass("alert-danger");
+                    $("#message").text("Username is already taken")
+                }
+            })
+        }
+    })
+});

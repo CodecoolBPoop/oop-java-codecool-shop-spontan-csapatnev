@@ -60,7 +60,7 @@ public class PaymentController extends HttpServlet {
         currentOrder = (Order)session.getAttribute("currentOrder");
         if (result.isSuccess()) {
             System.out.println("Paying success!!!");
-            EmailUtil.createEmail(req, resp);
+            EmailUtil.createEmailOfOrder(req, resp);
 
             context.setVariable("shoppingCartProducts", ShoppingCart.getAllProduct(session));
             context.setVariable("sumOfProducts", ShoppingCart.sumOfProducts(session));

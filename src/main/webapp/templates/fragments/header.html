@@ -13,6 +13,10 @@
     <script src="/static/js/dataHandler.js" defer></script>
 
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
     <link rel="stylesheet" type="text/css" href="/static/css/custom.css" />
 </head>
 <body>
@@ -32,7 +36,57 @@
         <li class="menu-item">
             <a href="/checkout" class="menu-link">Checkout</a>
         </li>
+        <div th:if="${username == null}">
+            <li class="menu-item">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#registrationModal">
+                    Sign up
+                </button>
+                <div class="modal fade" id="registrationModal" tabindex="-1" role="dialog" data-backdrop="" aria-labelledby="registrationModalTitle" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="ModalTitle">Sign up</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form action="/registration" method="post" id="registerForm">
+                                <div class="modal-body">
+                                    <label>Name
+                                        <input type="text" name="name" id="username" required>
+                                    </label>
+                                    <label>Password
+                                        <input type="password" name="password" id="password" required>
+                                    </label>
+                                    <label>Confirm password
+                                        <input type="password" name="confirm-password" id="password-confirm" required>
+                                    </label>
+                                    <label>Email
+                                        <input type="email" name="email" required>
+                                    </label>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    <div class="form-group"><label for="register"></label>
+                                        <button type="submit" name="register-submit" value="Register" class="btn btn-primary" id="register">Register</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <span class="alert" id="message"></span>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </div>
+        <div th:if="${username != null}">
+            <a href="/logout">
+                <button type="button" class="btn btn-primary">
+                    Logout
+                </button>
+            </a>
+        </div>
     </ul>
+
     <div class="menu-handler" id="menuHandler"><i></i><i></i><i></i></div>
     <div class="menu-overlay"></div>
     <div class="shopping-cart">

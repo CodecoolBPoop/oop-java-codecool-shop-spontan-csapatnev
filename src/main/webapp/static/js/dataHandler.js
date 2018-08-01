@@ -105,13 +105,20 @@ $(document).ready(function () {
             event.preventDefault();
             let validationUrl = "/check-username";
             let username = $("#username").val();
-            $.post(validationUrl, JSON.stringify({"username": username}), function (response) {
+            let email = $("#email").val();
+            $.post(validationUrl, JSON.stringify({"username": username, "email": email}), function (response) {
                 if (response === "ok") {
                     console.log(response);
                     $("#registerForm")[0].submit();
-                } else {
+                } else if (response === "both") {
+                    $("#message").toggleClass("alert-danger");
+                    $("#message").text("Username and email is already taken")
+                } else if (response === "username") {
                     $("#message").toggleClass("alert-danger");
                     $("#message").text("Username is already taken")
+                } else if (response === "email") {
+                    $("#message").toggleClass("alert-danger");
+                    $("#message").text("Email address is already taken")
                 }
             })
         }

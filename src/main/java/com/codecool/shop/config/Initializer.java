@@ -5,6 +5,7 @@ import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.SupplierDao;
 import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
+import com.codecool.shop.dao.implementation.SupplierDaoJDBC;
 import com.codecool.shop.dao.implementation.SupplierDaoMem;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
@@ -22,6 +23,7 @@ public class Initializer implements ServletContextListener {
         ProductDao productDataStore = ProductDaoMem.getInstance();
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
         SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
+
 
         //setting up a new supplier
         Supplier amazon = new Supplier("Amazon", "Digital content and services");
@@ -50,7 +52,6 @@ public class Initializer implements ServletContextListener {
         productDataStore.add(new Product("Sleep at Work Stickers", 5, "USD", "To help prevent getting caught sleeping.", gadget, codeCoolShop));
         productDataStore.add(new Product("Banana Slicer", 20, "USD", "Faster, safer than using a knife.", gadget, codeCoolShop));
         productDataStore.add(new Product("Bacon Flavored Toothpaste", 33, "USD", "Each tube contains 2.5 oz (70 g) of potent BACON paste.", gadget, codeCoolShop));
-
 
     }
 }

@@ -29,6 +29,10 @@ public abstract class BaseController extends HttpServlet {
 
     abstract void addPlusContext(WebContext context, HttpServletRequest req) throws ElementNotFoundException, IndexOutOfBoundsException;
 
+    String getHTML() {
+        return "";
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());

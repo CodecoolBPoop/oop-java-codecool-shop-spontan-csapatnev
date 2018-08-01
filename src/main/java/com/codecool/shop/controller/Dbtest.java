@@ -1,5 +1,7 @@
 package com.codecool.shop.controller;
 
+import com.codecool.shop.dao.SupplierDao;
+import com.codecool.shop.dao.implementation.SupplierDaoJDBC;
 import com.codecool.shop.model.Database;
 import org.thymeleaf.context.WebContext;
 
@@ -15,7 +17,10 @@ public class Dbtest extends BaseController {
         Database db = Database.getInstance();
 
 
-//        context.setVariable("name", db.getName());
+        SupplierDao test = SupplierDaoJDBC.getInstance();
+        test.getAll();
+
+
         renderHtml = "product/db";
     }
 

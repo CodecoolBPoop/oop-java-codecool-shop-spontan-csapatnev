@@ -1,29 +1,20 @@
 package com.codecool.shop.controller;
 
-import com.codecool.shop.dao.SupplierDao;
-import com.codecool.shop.dao.implementation.SupplierDaoJDBC;
-import com.codecool.shop.model.Database;
+import com.codecool.shop.config.BaseDatabaseFiller;
 import org.thymeleaf.context.WebContext;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.ResultSet;
 
-@WebServlet(urlPatterns = {"/dbtest"})
+
+@WebServlet(urlPatterns = {"/adminFillBaseDatabase"})
 public class Dbtest extends BaseController {
 
     @Override
     void addPlusContext(WebContext context, HttpServletRequest req) {
-        Database db = Database.getInstance();
-
-
-        SupplierDao test = SupplierDaoJDBC.getInstance();
-        test.getAll();
-
+        BaseDatabaseFiller dbFiller = new BaseDatabaseFiller();
+        dbFiller.fillDatabase();
     }
 
-    @Override
-    String getHTML() {
-        return "product/db";
-    }
 }

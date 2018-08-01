@@ -21,6 +21,12 @@ import java.util.List;
 
 @WebServlet(urlPatterns = {"/checkout"})
 public class CheckoutController extends BaseController {
+
+    @Override
+    String getHTML() {
+        return "product/checkout";
+    }
+
     @Override
     void addPlusContext(WebContext context, HttpServletRequest req) throws ElementNotFoundException, IndexOutOfBoundsException {
 
@@ -31,8 +37,6 @@ public class CheckoutController extends BaseController {
         if (cartItems != null) {
             totalPrice = calculateTotalPrice(cartItems);
         }
-
-        renderHtml = "product/checkout";
 
         context.setVariable("cartItems", cartItems);
         context.setVariable("totalPrice", totalPrice);

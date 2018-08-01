@@ -20,8 +20,10 @@ public class Dbtest extends BaseController {
         SupplierDao test = SupplierDaoJDBC.getInstance();
         test.getAll();
 
-
-        renderHtml = "product/db";
     }
 
+    @Override
+    String getHTML() {
+        return "product/db";
+    }
 }

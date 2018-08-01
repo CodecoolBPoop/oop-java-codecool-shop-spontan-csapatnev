@@ -15,8 +15,12 @@ import java.io.IOException;
 public class PaypalConfirmation extends BaseController {
 
     @Override
+    String getHTML() {
+        return "product/paying_success";
+    }
+
+    @Override
     void addPlusContext(WebContext context, HttpServletRequest req) throws ElementNotFoundException, IndexOutOfBoundsException {
-        renderHtml = "product/paying_success";
     }
 
     @Override

@@ -53,6 +53,5 @@ public class Initializer implements ServletContextListener {
         productDataStore.add(new Product("Banana Slicer", 20, "USD", "Faster, safer than using a knife.", gadget, codeCoolShop));
         productDataStore.add(new Product("Bacon Flavored Toothpaste", 33, "USD", "Each tube contains 2.5 oz (70 g) of potent BACON paste.", gadget, codeCoolShop));
 
-
     }
 }

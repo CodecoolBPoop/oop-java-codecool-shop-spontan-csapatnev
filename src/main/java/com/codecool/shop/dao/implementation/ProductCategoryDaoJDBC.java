@@ -40,7 +40,7 @@ public class ProductCategoryDaoJDBC implements ProductCategoryDao {
                     + "'" + category.getDepartment() + "', "
                     + "'" + category.getDescription() + "')");
             conn.close();
-            System.out.println("Added category: " + category.getName() + "to the database.");
+            System.out.println("Added category: " + category.getName() + " to the database.");
         } catch (SQLException se) {
             System.err.println(se.getMessage());
         }
@@ -112,7 +112,7 @@ public class ProductCategoryDaoJDBC implements ProductCategoryDao {
             Statement st = conn.createStatement();
             st.executeUpdate("DELETE FROM product_categories WHERE id = " + id);
             conn.close();
-            System.out.println("Deleted category with id: " + id + "from the database.");
+            System.out.println("Deleted category with id: " + id + " from the database.");
         } catch (SQLException se) {
             System.err.println(se.getMessage());
         }

@@ -1,5 +1,6 @@
 package com.codecool.shop.dao.implementation;
 
+import com.codecool.shop.dao.ElementNotFoundException;
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.SupplierDao;
@@ -38,25 +39,44 @@ public class ProductDaoJDBC implements ProductDao {
     public void add(Product product) {
         Connection conn = db.connectToDatabase();
 
+        Supplier supplier = null;
+        int supplier_id = 0;
+
+        ProductCategory category = null;
+        int category_id = 0;
+
+        try {
+
+            supplier = supplierDao.find(product.getSupplier().getName());
+            supplier_id = supplier.getId();
+
+            category = categoryDao.find(product.getProductCategory().getName());
+            category_id = category.getId();
+
+        } catch (ElementNotFoundException e) {
+            e.printStackTrace();
+        }
+
+
         try {
             Statement st = conn.createStatement();
             st.executeUpdate("INSERT INTO product (name, description, image, supplier_id, currency, price, category_id) VALUES ("
                     + "'" + product.getName() + "', "
                     + "'" + product.getDescription() + "', "
-                    + "'product_ +" + product.getId() + ".png', "
-                    + supplierDao.find(product.getSupplier().getId()) + ", "
+                    + "'product_" + product.getId() + ".png', "
+                    + supplier_id + ", "
                     + "'" + product.getDefaultCurrency() + "', "
                     + product.getDefaultPrice() + ", "
-                    + categoryDao.find(product.getProductCategory().getId()) + ")");
+                    + category_id + ")");
             conn.close();
-            System.out.println("Added product: " + product.getName() + "to the database.");
+            System.out.println("Added product: " + product.getName() + " to the database.");
         } catch (SQLException se) {
             System.err.println(se.getMessage());
         }
     }
 
     @Override
-    public Product find(int id){
+    public Product find(int id) {
         String name = null;
         String description = null;
         Supplier supplier = null;
@@ -98,7 +118,7 @@ public class ProductDaoJDBC implements ProductDao {
             Statement st = conn.createStatement();
             st.executeUpdate("DELETE FROM product WHERE id = " + id);
             conn.close();
-            System.out.println("Deleted product with id: " + id + "from the database.");
+            System.out.println("Deleted product with id: " + id + " from the database.");
         } catch (SQLException se) {
             System.err.println(se.getMessage());
         }

@@ -1,5 +1,6 @@
 package com.codecool.shop.dao.implementation;
 
+import com.codecool.shop.dao.ElementNotFoundException;
 import com.codecool.shop.dao.SupplierDao;
 import com.codecool.shop.model.Database;
 import com.codecool.shop.model.Supplier;
@@ -38,7 +39,7 @@ public class SupplierDaoJDBC implements SupplierDao {
                     + "'" + supplier.getDescription() + "')";
             st.executeUpdate(sql);
             conn.close();
-            System.out.println("Added supplier: " + supplier.getName() + "to the database.");
+            System.out.println("Added supplier: " + supplier.getName() + " to the database.");
         } catch (SQLException se) {
             System.err.println(se.getMessage());
         }
@@ -72,7 +73,7 @@ public class SupplierDaoJDBC implements SupplierDao {
     }
 
     @Override
-    public Supplier find(String name){
+    public Supplier find(String name) throws ElementNotFoundException {
         String description = null;
         int id = 0;
 
@@ -105,7 +106,7 @@ public class SupplierDaoJDBC implements SupplierDao {
             Statement st = conn.createStatement();
             st.executeUpdate("DELETE FROM suppliers WHERE id = " + id);
             conn.close();
-            System.out.println("Deleted supplier with id: " + id + "from the database.");
+            System.out.println("Deleted supplier with id: " + id + " from the database.");
         } catch (SQLException se) {
             System.err.println(se.getMessage());
         }

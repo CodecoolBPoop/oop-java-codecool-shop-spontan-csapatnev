@@ -74,7 +74,6 @@ public class PaymentController extends HttpServlet {
 
             session.invalidate();
         } else {
-            // Handle errors
             System.out.println("ERROR");
             System.out.println(result);
 

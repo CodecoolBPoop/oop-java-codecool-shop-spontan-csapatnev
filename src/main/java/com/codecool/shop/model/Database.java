@@ -1,24 +1,22 @@
 package com.codecool.shop.model;
 
 import java.sql.*;
-import java.util.*;
 
 public class Database {
-    private static Database ourInstance = new Database();
+    private static Database Instance = new Database();
     private final String DB_USERNAME = System.getenv("USERNAME");
     private final String DB_PASSWORD = System.getenv("PASSWORD");
     private final String DB_URL = System.getenv("DB_URL");
-    private final String DB_DRIVER = System.getProperty("DB_DRIVER");
-
+    private final String DB_DRIVER = System.getenv("DB_DRIVER");
 
     public static Database getInstance() {
-        return ourInstance;
+        return Instance;
     }
 
     private Database() {
     }
 
-    private Connection connectToDatabase() {
+    public Connection connectToDatabase() {
         Connection conn = null;
         try {
             Class.forName(DB_DRIVER);
@@ -32,21 +30,4 @@ public class Database {
         }
         return conn;
     }
-
-    //// SQL QUERY SCHEME \\\\
-/*    public String getName() {
-        ResultSet rs = null;
-        String name = null;
-        Connection conn = connectToDatabase();
-        try {
-            Statement st = conn.createStatement();
-            String sql;
-            sql = "SELECT name FROM test WHERE name = 'tibi'";
-            rs = st.executeQuery(sql);
-            while (rs.next()) {name = rs.getString("name");}
-        } catch (SQLException se) {
-            System.err.println(se.getMessage());
-        }
-        return name;
-    }*/
 }

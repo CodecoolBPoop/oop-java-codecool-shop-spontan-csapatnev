@@ -164,6 +164,13 @@
             </ul>
             <div class="shopping-cart-details">
                 <div class="cart-price">Total $<span class="cart-price-num" th:text="${sumOfPrices}"></span></div>
+                <a th:if="${username != null}" href="/save-shopping-cart" class="btn btn-success" id="saveShoppingCart">Save</a>
+            </div>
+            <div th:if="${username != null}" id="shoppingCartSaveAlert" class="alert alert-success alert-dismissible fade" role="alert">
+                We saved your shopping cart <strong>successfully</strong>!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
         </div>
     </div>

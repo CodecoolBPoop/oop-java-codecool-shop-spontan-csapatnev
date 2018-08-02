@@ -27,7 +27,7 @@ public class PaypalConfirmation extends BaseController {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         EmailUtil.createEmailOfOrder(req, resp);
-        session.invalidate();
+        session.removeAttribute("ShoppingCart");
         resp.setContentType("text/plain");
         resp.setCharacterEncoding("UTF-8");
         resp.getWriter().write("ok");

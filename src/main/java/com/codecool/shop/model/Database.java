@@ -30,4 +30,27 @@ public class Database {
         }
         return conn;
     }
+
+    public ResultSet executeQuery(String query) throws SQLException {
+        try (Connection connection = connectToDatabase()) {
+
+            PreparedStatement statement = connection.prepareStatement(query);
+            return statement.executeQuery();
+
+        } catch (SQLTimeoutException se) {
+            System.err.println(se.getMessage());
+        }
+        return null;
+    }
+
+    public void executeUpdate(String query) throws SQLException {
+        try (Connection connection = connectToDatabase()) {
+
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.executeUpdate();
+
+        } catch (SQLTimeoutException se) {
+            System.err.println(se.getMessage());
+        }
+    }
 }

@@ -25,7 +25,6 @@ public class ShoppingCart {
         }
     }
 
-    @SuppressWarnings("unchecked")
     public static void add(HttpSession session, int id) {
         ArrayList<Product> productList;
         Product product = getProductById(id);
@@ -39,7 +38,7 @@ public class ShoppingCart {
             int i = 0;
             while (i < productList.size()) {
                 Product p = productList.get(i);
-                if (p.equals(product)) {
+                if (p.getId() == product.getId()) {
                     p.setShoppingCartQuantity(p.getShoppingCartQuantity() + 1);
                     break;
                 }
@@ -49,17 +48,17 @@ public class ShoppingCart {
                 product.setShoppingCartQuantity(1);
                 productList.add(product);
             }
+            System.out.println(productList);
             session.setAttribute(SHOPPING_CART, productList);
         }
     }
 
-    @SuppressWarnings("unchecked")
     public static void remove(HttpSession session, int id, boolean removeAll){
         ArrayList<Product> productList = (ArrayList) session.getAttribute(SHOPPING_CART);
         Product productToRemove = getProductById(id);
         int i = 0;
         while (i < productList.size()){
-            if(productList.get(i).equals(productToRemove)) {
+            if (productList.get(i).getId() == productToRemove.getId()) {
                 Product foundProduct = productList.get(i);
                 foundProduct.setShoppingCartQuantity(foundProduct.getShoppingCartQuantity()-1);
                 if( foundProduct.getShoppingCartQuantity() == 0 || removeAll)
@@ -121,6 +120,8 @@ public class ShoppingCart {
                 }
             }
         }
+        session.removeAttribute(SHOPPING_CART);
+        session.setAttribute(SHOPPING_CART, getCartFromDB(session));
     }
 
     private List<Product> getCartFromDB (HttpSession session) {

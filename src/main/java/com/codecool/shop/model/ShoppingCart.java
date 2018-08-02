@@ -104,15 +104,16 @@ public class ShoppingCart {
         ArrayList<Product> productList = (ArrayList)session.getAttribute(SHOPPING_CART);
         String username = (String) session.getAttribute("username");
         int userId = getUserId(username);
-
-        for (Product prod: productList) {
-            try  {
-                db.executeUpdate(String.format(
-                        "INSERT INTO shopping_cart " +
-                        "VALUES (%d, %d, %d) ",
-                        userId, prod.getId(), prod.getShoppingCartQuantity()));
-            } catch (SQLException se) {
-                System.err.println(se.getMessage());
+        if (productList != null) {
+            for (Product prod : productList) {
+                try {
+                    db.executeUpdate(String.format(
+                            "INSERT INTO shopping_cart " +
+                                    "VALUES (%d, %d, %d) ",
+                            userId, prod.getId(), prod.getShoppingCartQuantity()));
+                } catch (SQLException se) {
+                    System.err.println(se.getMessage());
+                }
             }
         }
     }

@@ -1,3 +1,14 @@
+$('#saveShoppingCart').on('click', function(event) {
+    event.preventDefault();
+    let $this = $(this);
+    $.post($this.attr('href'), function(data) {
+        $('#shoppingCartSaveAlert').addClass('show');
+        setTimeout(function() {
+            $('#shoppingCartSaveAlert').removeClass('show');
+        }, 2500);
+    });
+});
+
 function menuHandling() {
     $('#menuHandler').on('click', function() {
         $('#pageMenu').addClass('menu-opened');

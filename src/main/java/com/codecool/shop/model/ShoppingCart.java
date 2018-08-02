@@ -128,11 +128,13 @@ public class ShoppingCart {
         int userId = getUserIdFromSession(session);
 
         try (ResultSet rs = db.executeQuery(String.format(
-                "SELECT product_id FROM shopping_cart " +
+                "SELECT product_id, product_quantity FROM shopping_cart " +
                 "WHERE user_id = %d", userId))) {
             while(rs.next()) {
                 try {
-                    result.add(productDao.find(rs.getInt("product_id")));
+                    Product prod = productDao.find(rs.getInt("product_id"));
+                    prod.setShoppingCartQuantity(rs.getInt("product_quantity"));
+                    result.add(prod);
                 } catch (ElementNotFoundException e) {
                     System.err.println(e.getMessage());
                 }

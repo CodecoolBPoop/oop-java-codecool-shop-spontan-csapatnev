@@ -24,13 +24,13 @@
 <div th:fragment="menu">
 
 <div id="userMenu">
-    <div th:if="${username == null}">
+    <div class="user-container" th:if="${username == null}">
         <a href="#" class="">Login</a>
         or
         <a href="#" class="">Register</a>
     </div>
-    <div th:if="${username != null}">
-        Welcome <strong th:text="${username}"></strong>!
+    <div class="user-container" th:if="${username != null}">
+        Welcome&nbsp;<strong th:text="${username}"></strong>!
         <div class="user-avatar"></div>
     </div>
 </div>

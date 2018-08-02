@@ -21,6 +21,19 @@
 </head>
 <body>
 
+<div th:fragment="menu">
+
+<div id="userMenu">
+    <div th:if="${username == null}">
+        <a href="#" class="">Login</a>
+        or
+        <a href="#" class="">Register</a>
+    </div>
+    <div th:if="${username != null}">
+        Welcome <strong th:text="${username}"></strong>!
+        <div class="user-avatar"></div>
+    </div>
+</div>
 <nav th:fragment="menu" id="pageMenu">
     <a href="/" class="logo"></a>
     <ul class="menu">
@@ -151,6 +164,8 @@
         </div>
     </div>
 </nav>
+
+</div>
 
 </body>
 </html>

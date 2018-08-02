@@ -6,18 +6,15 @@ import com.codecool.shop.dao.implementation.ProductDaoJDBC;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 
 import javax.servlet.http.HttpSession;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ShoppingCart {
 
-
-    public static final String SHOPPING_CART = "ShoppingCart";
-    Database db = Database.getInstance();
+    private static final String SHOPPING_CART = "ShoppingCart";
+    private Database db = Database.getInstance();
     private ProductDao productDao = ProductDaoJDBC.getInstance();
 
     public static Product getProductById(int id) {
@@ -28,12 +25,13 @@ public class ShoppingCart {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public static void add(HttpSession session, int id) {
         ArrayList<Product> productList;
         Product product = getProductById(id);
 
         if (session.getAttribute(SHOPPING_CART) == null) {
-            productList = new ArrayList<Product>();
+            productList = new ArrayList<>();
             productList.add(product);
             session.setAttribute(SHOPPING_CART, productList);
         } else {
@@ -55,6 +53,7 @@ public class ShoppingCart {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public static void remove(HttpSession session, int id, boolean removeAll){
         ArrayList<Product> productList = (ArrayList) session.getAttribute(SHOPPING_CART);
         Product productToRemove = getProductById(id);
@@ -72,6 +71,7 @@ public class ShoppingCart {
         session.setAttribute(SHOPPING_CART,productList);
     }
 
+    @SuppressWarnings("unchecked")
     public static float sumOfPrices(HttpSession session) {
         ArrayList<Product> productList = (ArrayList) session.getAttribute(SHOPPING_CART);
         if (productList == null) {
@@ -84,6 +84,7 @@ public class ShoppingCart {
         return sum;
     }
 
+    @SuppressWarnings("unchecked")
     public static int sumOfProducts(HttpSession session){
         ArrayList<Product> productList = (ArrayList)session.getAttribute(SHOPPING_CART);
         if (productList == null) {
@@ -96,10 +97,12 @@ public class ShoppingCart {
         return sum;
     }
 
+    @SuppressWarnings("unchecked")
     public static List<Product> getAllProduct(HttpSession session) {
         return (ArrayList)session.getAttribute(SHOPPING_CART);
     }
 
+    @SuppressWarnings("unchecked")
     public void saveCartToDB(HttpSession session) {
         ArrayList<Product> productList = (ArrayList)session.getAttribute(SHOPPING_CART);
         String username = (String) session.getAttribute("username");
@@ -118,8 +121,9 @@ public class ShoppingCart {
         }
     }
 
-    public List<Product> getCartFromDB (int userId) {
+    private List<Product> getCartFromDB (HttpSession session) {
         List<Product> result = new ArrayList<>();
+        int userId = getUserIdFromSession(session);
 
         try (ResultSet rs = db.executeQuery(String.format(
                 "SELECT product_id FROM shopping_cart " +
@@ -138,7 +142,8 @@ public class ShoppingCart {
         return result;
     }
 
-    public void deleteCartFromDB(int userId) {
+    public void deleteCartFromDB(HttpSession session) {
+        int userId = getUserIdFromSession(session);
 
         try  {
             db.executeUpdate(String.format(
@@ -150,23 +155,27 @@ public class ShoppingCart {
 
     }
 
-    public void setCartFromDBToSession (HttpSession session, int userId) {
-
-        List<Product> products = getCartFromDB(userId);
+    public void setCartFromDBToSession (HttpSession session) {
+        List<Product> products = getCartFromDB(session);
         session.setAttribute(SHOPPING_CART, products);
 
     }
 
-    public int getUserId(String username) {
+    private int getUserId(String username) {
         try (ResultSet rs = db.executeQuery(String.format(
                 "SELECT id FROM users " +
                 "WHERE name = '%s'", username))) {
-            while (rs.next()) {return rs.getInt("id");}
+            return rs.getInt("id");
         } catch (SQLException se) {
             System.err.println(se.getMessage());
         }
 
         return 0;
+    }
+
+    private int getUserIdFromSession(HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        return getUserId(username);
     }
 }
 

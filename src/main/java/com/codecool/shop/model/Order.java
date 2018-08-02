@@ -146,7 +146,6 @@ public class Order {
     }
 
     public void logOrderDetails(HttpSession session, AdminLog logger){
-        System.out.println(this);
         logger.addLog(session, "Name: " + this.name);
         logger.addLog(session, "Email: " + this.email);
         logger.addLog(session, "Phone Number: " + this.phoneNumber);

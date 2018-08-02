@@ -67,13 +67,9 @@ public class PaymentController extends HttpServlet {
         Order currentOrder;
         currentOrder = (Order)session.getAttribute("currentOrder");
         if (result.isSuccess()) {
-            System.out.println("Paying success!!!");
             EmailUtil.createEmailOfOrder(req, resp);
 
-//            context.setVariable("shoppingCartProducts", ShoppingCart.getAllProduct(session));
             context.setVariable("sumOfProducts", 0);
-//            context.setVariable("sumOfPrices", ShoppingCart.sumOfPrices(session));
-
             currentOrder.logPaymentMethod(session, logger, "Card");
             currentOrder.logOrderDetails(session, logger);
             currentOrder.logPaymentResult(session, logger, "Success!");
@@ -82,9 +78,6 @@ public class PaymentController extends HttpServlet {
             session.removeAttribute("ShoppingCart");
             engine.process("product/paying_success.html", context, resp.getWriter());
         } else {
-            System.out.println("ERROR");
-            System.out.println(result);
-
             currentOrder.logPaymentMethod(session, logger, "Card");
             currentOrder.logOrderDetails(session, logger);
             currentOrder.logPaymentResult(session, logger, "Failed!");

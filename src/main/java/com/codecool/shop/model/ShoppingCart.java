@@ -48,7 +48,6 @@ public class ShoppingCart {
                 product.setShoppingCartQuantity(1);
                 productList.add(product);
             }
-            System.out.println(productList);
             session.setAttribute(SHOPPING_CART, productList);
         }
     }
@@ -106,8 +105,6 @@ public class ShoppingCart {
         ArrayList<Product> productList = (ArrayList)session.getAttribute(SHOPPING_CART);
         String username = (String) session.getAttribute("username");
         int userId = getUserId(username);
-        System.out.println(username);
-        System.out.println(userId);
         if (productList != null) {
             for (Product prod : productList) {
                 try {
@@ -149,8 +146,6 @@ public class ShoppingCart {
 
     public void deleteCartFromDB(HttpSession session) {
         int userId = getUserIdFromSession(session);
-
-        System.err.println(userId);
 
         try  {
             db.executeUpdate(String.format(

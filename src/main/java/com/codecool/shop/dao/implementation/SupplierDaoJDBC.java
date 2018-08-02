@@ -39,7 +39,6 @@ public class SupplierDaoJDBC implements SupplierDao {
                     + "'" + supplier.getDescription() + "')";
             st.executeUpdate(sql);
             conn.close();
-            System.out.println("Added supplier: " + supplier.getName() + " to the database.");
         } catch (SQLException se) {
             System.err.println(se.getMessage());
         }
@@ -106,7 +105,6 @@ public class SupplierDaoJDBC implements SupplierDao {
             Statement st = conn.createStatement();
             st.executeUpdate("DELETE FROM suppliers WHERE id = " + id);
             conn.close();
-            System.out.println("Deleted supplier with id: " + id + " from the database.");
         } catch (SQLException se) {
             System.err.println(se.getMessage());
         }

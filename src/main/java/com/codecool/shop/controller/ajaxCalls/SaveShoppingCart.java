@@ -16,8 +16,6 @@ public class SaveShoppingCart extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
 
-        System.out.println(session.getAttribute("ShoppingCart"));
-
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.deleteCartFromDB(session);
         shoppingCart.saveCartToDB(session);

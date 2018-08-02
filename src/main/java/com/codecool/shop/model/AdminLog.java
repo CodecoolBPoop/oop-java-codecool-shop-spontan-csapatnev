@@ -120,9 +120,6 @@ public class AdminLog {
             fw.flush();
             fw.close();
 
-            System.out.println("Successfully Copied log from session to File...");
-            System.out.println("\nlog: " + log);
-
         } catch (IOException ex) {
             System.err.println("Caught IOException: " + ex.getMessage());
         }

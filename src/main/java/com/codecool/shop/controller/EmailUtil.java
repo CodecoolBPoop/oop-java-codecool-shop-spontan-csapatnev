@@ -43,10 +43,7 @@ class EmailUtil {
             msg.setSentDate(new Date());
 
             msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail, false));
-            System.out.println("Message is ready");
             Transport.send(msg);
-
-            System.out.println("EMail Sent Successfully!!");
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -71,7 +68,6 @@ class EmailUtil {
         final String fromEmail = "jakabgipsz1983@gmail.com";
         final String password = "gipsz.j4k4b";
 
-        System.out.println("TLSEmail Start");
         Session mailSession = getMailSession(fromEmail, password);
 
         EmailUtil.sendEmail(mailSession, toEmail, subject, mailBody);

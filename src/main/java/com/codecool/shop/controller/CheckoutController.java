@@ -4,6 +4,7 @@ import com.codecool.shop.dao.ElementNotFoundException;
 import com.codecool.shop.dao.OrdersListDao;
 import com.codecool.shop.dao.implementation.OrdersListDaoMem;
 import com.codecool.shop.config.TemplateEngineUtil;
+import com.codecool.shop.model.Database;
 import com.codecool.shop.model.Order;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ShoppingCart;
@@ -15,7 +16,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -37,6 +40,34 @@ public class CheckoutController extends BaseController {
         float totalPrice = 0;
         if (cartItems != null) {
             totalPrice = calculateTotalPrice(cartItems);
+        }
+
+        if (null != session.getAttribute("username")) {
+            Database db = Database.getInstance();
+            Connection connection = db.connectToDatabase();
+            HashMap userCredentials = new HashMap();
+
+            try {
+                PreparedStatement stmt = connection.prepareStatement("" +
+                        "SELECT u.name, " +
+                        "u.email, " +
+                        "a.* " +
+                        "FROM users u " +
+                        "JOIN billing_shipping_addresses a on u.name = a.username " +
+                        "WHERE u.name = ?;");
+                stmt.setString(1, (String) session.getAttribute("username"));
+                ResultSet rs = stmt.executeQuery();
+                ResultSetMetaData rsmd = rs.getMetaData();
+                while (rs.next()) {
+                    for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+                        userCredentials.put(rsmd.getColumnName(i), rs.getString(rsmd.getColumnName(i)));
+                    }
+                }
+                context.setVariable("userAddresses", userCredentials);
+                connection.close();
+            } catch (SQLException se) {
+                System.err.println(se.getMessage());
+            }
         }
 
         context.setVariable("cartItems", cartItems);

@@ -10,41 +10,41 @@
         <form action="/save-billing-info" method="post">
             <div class="input-group">
                 <label for="phone-number">Phone number</label>
-                <input type="text" id="phone-number" name="phone-number" placeholder="Enter your phone number..">
+                <input type="text" id="phone-number" name="phone-number" th:value="${userAddresses} ? ${userAddresses.get('phone_number')} : ''" placeholder="Enter your phone number..">
             </div>
             <h4>Billing Address</h4>
             <div class="input-group">
                 <label for="billing-country">Country</label>
-                <input type="text" id="billing-country" name="billing-country" placeholder="Country">
+                <input type="text" id="billing-country" name="billing-country" th:value="${userAddresses} ? ${userAddresses.get('billing_country')} : ''" placeholder="Country">
             </div>
             <div class="input-group">
                 <label for="billing-city">City</label>
-                <input type="text" id="billing-city" name="billing-city" placeholder="City">
+                <input type="text" id="billing-city" name="billing-city" th:value="${userAddresses} ? ${userAddresses.get('billing_city')} : ''" placeholder="City">
             </div>
             <div class="input-group">
                 <label for="billing-zip">Zip code</label>
-                <input type="text" id="billing-zip" name="billing-zip" placeholder="Zip code">
+                <input type="text" id="billing-zip" name="billing-zip" th:value="${userAddresses} ? ${userAddresses.get('billing_zip')} : ''" placeholder="Zip code">
             </div>
             <div class="input-group">
                 <label for="billing-address">Address</label>
-                <input type="text" id="billing-address" name="billing-address" placeholder="Address">
+                <input type="text" id="billing-address" name="billing-address" th:value="${userAddresses} ? ${userAddresses.get('billing_address')} : ''" placeholder="Address">
             </div>
             <h4>Shipping address</h4>
             <div class="input-group">
                 <label for="shipping-country">Country</label>
-                <input type="text" id="shipping-country" name="shipping-country" placeholder="Country">
+                <input type="text" id="shipping-country" name="shipping-country" th:value="${userAddresses} ? ${userAddresses.get('shipping_country')} : ''" placeholder="Country">
             </div>
             <div class="input-group">
                 <label for="shipping-city">City</label>
-                <input type="text" id="shipping-city" name="shipping-city" placeholder="City">
+                <input type="text" id="shipping-city" name="shipping-city" th:value="${userAddresses} ? ${userAddresses.get('shipping_city')} : ''" placeholder="City">
             </div>
             <div class="input-group">
                 <label for="shipping-zip">Zip code</label>
-                <input type="text" id="shipping-zip" name="shipping-zip" placeholder="Zip code">
+                <input type="text" id="shipping-zip" name="shipping-zip" th:value="${userAddresses} ? ${userAddresses.get('shipping_zip')} : ''" placeholder="Zip code">
             </div>
             <div class="input-group">
                 <label for="shipping-address">Address</label>
-                <input type="text" id="shipping-address" name="shipping-address" placeholder="Address">
+                <input type="text" id="shipping-address" name="shipping-address" th:value="${userAddresses} ? ${userAddresses.get('shipping_address')} : ''" placeholder="Address">
             </div>
             <input type="submit" class="button" value="Save">
         </form>

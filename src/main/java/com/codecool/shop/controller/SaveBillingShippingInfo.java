@@ -9,13 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Enumeration;
 import java.util.HashMap;
 
-@WebServlet(urlPatterns = {"/save-billing-info"})
+@WebServlet(urlPatterns = {"/addresses"})
 public class SaveBillingShippingInfo extends BaseController {
 
     @Override
@@ -23,6 +21,21 @@ public class SaveBillingShippingInfo extends BaseController {
 
     @Override
     void addPlusContext(WebContext context, HttpServletRequest req) throws ElementNotFoundException, IndexOutOfBoundsException {
+        Database db = Database.getInstance();
+        HttpSession session = req.getSession();
+        HashMap userCredentials = new HashMap();
+        try {
+            ResultSet rs = db.executeQuery("SELECT * FROM billing_shipping_addresses WHERE username='" + session.getAttribute("username") + "'");
+            ResultSetMetaData rsmd = rs.getMetaData();
+            while (rs.next()) {
+                for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+                    userCredentials.put(rsmd.getColumnName(i), rs.getString(rsmd.getColumnName(i)));
+                }
+            }
+            context.setVariable("userAddresses", userCredentials);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

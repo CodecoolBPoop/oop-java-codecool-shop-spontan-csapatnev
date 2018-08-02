@@ -59,7 +59,7 @@ public class CheckoutController extends BaseController {
                 ResultSet rs = stmt.executeQuery();
                 ResultSetMetaData rsmd = rs.getMetaData();
                 while (rs.next()) {
-                    for (int i = 1; i < rsmd.getColumnCount(); i++) {
+                    for (int i = 1; i <= rsmd.getColumnCount(); i++) {
                         userCredentials.put(rsmd.getColumnName(i), rs.getString(rsmd.getColumnName(i)));
                     }
                 }

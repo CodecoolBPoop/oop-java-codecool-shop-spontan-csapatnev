@@ -1,6 +1,8 @@
 package com.codecool.shop.model;
 
 import com.codecool.shop.dao.ElementNotFoundException;
+import com.codecool.shop.dao.ProductDao;
+import com.codecool.shop.dao.implementation.ProductDaoJDBC;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 
 import javax.servlet.http.HttpSession;
@@ -15,6 +17,8 @@ public class ShoppingCart {
 
 
     public static final String SHOPPING_CART = "ShoppingCart";
+    Database db = Database.getInstance();
+    private ProductDao productDao = ProductDaoJDBC.getInstance();
 
     public static Product getProductById(int id) {
         try {
@@ -96,34 +100,72 @@ public class ShoppingCart {
         return (ArrayList)session.getAttribute(SHOPPING_CART);
     }
 
-    public void saveToDatabase(HttpSession session) {
+    public void saveCartToDB(HttpSession session) {
         ArrayList<Product> productList = (ArrayList)session.getAttribute(SHOPPING_CART);
-        Database db = Database.getInstance();
-
         String username = (String) session.getAttribute("username");
-        int userId = db.baseQuery("id", "users", "name", "username");
+        int userId = getUserId(username);
 
-        ResultSet rs;
-        Connection conn = db.connectToDatabase();
-
-        try {
-            Statement st = conn.createStatement();
-            st.executeUpdate(String.format("INSERT INTO shopping_cart (user_id) VALUES (%d)", userId));
-            conn.close();
-        } catch (SQLException se) {
-            System.err.println(se.getMessage());
-        }
-
-        int shoppingCartId = db.baseQuery("id", "shopping_cart", "user_id", userId);
-
-        try {
-            Statement st = conn.createStatement();
-            st.executeUpdate("INSERT INTO cart_content (user_id) VALUES (" + userId + ")");
-            conn.close();
-        } catch (SQLException se) {
-            System.err.println(se.getMessage());
+        for (Product prod: productList) {
+            try  {
+                db.executeUpdate(String.format(
+                        "INSERT INTO shopping_cart " +
+                        "VALUES (%d, %d, %d) ",
+                        userId, prod.getId(), prod.getShoppingCartQuantity()));
+            } catch (SQLException se) {
+                System.err.println(se.getMessage());
+            }
         }
     }
 
+    public List<Product> getCartFromDB (int userId) {
+        List<Product> result = new ArrayList<>();
+
+        try (ResultSet rs = db.executeQuery(String.format(
+                "SELECT product_id FROM shopping_cart " +
+                "WHERE user_id = %d", userId))) {
+            while(rs.next()) {
+                try {
+                    result.add(productDao.find(rs.getInt("product_id")));
+                } catch (ElementNotFoundException e) {
+                    System.err.println(e.getMessage());
+                }
+            }
+        } catch (SQLException se) {
+            System.err.println(se.getMessage());
+        }
+
+        return result;
+    }
+
+    public void deleteCartFromDB(int userId) {
+
+        try  {
+            db.executeUpdate(String.format(
+                    "DELETE FROM shopping_cart " +
+                    "WHERE user_id = %d",userId));
+        } catch (SQLException se) {
+            System.err.println(se.getMessage());
+        }
+
+    }
+
+    public void setCartFromDBToSession (HttpSession session, int userId) {
+
+        List<Product> products = getCartFromDB(userId);
+        session.setAttribute(SHOPPING_CART, products);
+
+    }
+
+    public int getUserId(String username) {
+        try (ResultSet rs = db.executeQuery(String.format(
+                "SELECT id FROM users " +
+                "WHERE name = '%s'", username))) {
+            while (rs.next()) {return rs.getInt("id");}
+        } catch (SQLException se) {
+            System.err.println(se.getMessage());
+        }
+
+        return 0;
+    }
 }
 

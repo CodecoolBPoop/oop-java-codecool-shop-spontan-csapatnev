@@ -61,23 +61,10 @@ create unique index users_email_uindex
 
 CREATE TABLE public.shopping_cart
 (
-  id      serial PRIMARY KEY NOT NULL,
-  user_id int                NOT NULL,
-  CONSTRAINT shopping_cart_user_id_fk FOREIGN KEY (user_id) REFERENCES public.users (id)
-);
-CREATE UNIQUE INDEX shopping_cart_id_uindex
-  ON public.shopping_cart (id);
-
-CREATE TABLE public.cart_content
-(
-  shopping_cart_id int           NOT NULL,
-  product_id       int           NOT NULL,
+  user_id int NOT NULL,
+  product_id int NOT NULL,
   product_quantity int DEFAULT 1 NOT NULL,
-  CONSTRAINT cart_content_shopping_cart_id_fk FOREIGN KEY (shopping_cart_id) REFERENCES shopping_cart (id),
-  CONSTRAINT cart_content_product_id_fk FOREIGN KEY (product_id) REFERENCES public.product (id)
+  CONSTRAINT shopping_cart_user_id_fk FOREIGN KEY (user_id) REFERENCES public.users (id),
+  CONSTRAINT shopping_cart_product_id_fk FOREIGN KEY (user_id) REFERENCES public.product (id)
 );
-CREATE UNIQUE INDEX cart_content_shopping_cart_id_uindex
-  ON public.cart_content (shopping_cart_id);
-CREATE UNIQUE INDEX cart_content_product_id_uindex
-  ON public.cart_content (product_id)
 

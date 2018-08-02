@@ -31,45 +31,26 @@ public class Database {
         return conn;
     }
 
-    public String baseQuery(String target, String tableName, String where, String what) {
+    public ResultSet executeQuery(String query) throws SQLException {
+        try (Connection connection = connectToDatabase()) {
 
-        ResultSet rs;
-        Connection conn = connectToDatabase();
-        String result = null;
+            PreparedStatement statement = connection.prepareStatement(query);
+            return statement.executeQuery();
 
-        try {
-            Statement st = conn.createStatement();
-            String sql = String.format("SELECT %s FROM %s WHERE %s = %s", target, tableName, where, what);
-            rs = st.executeQuery(sql);
-            while (rs.next()) {
-                result = rs.getString(target);
-            }
-            conn.close();
-        } catch (SQLException se) {
+        } catch (SQLTimeoutException se) {
             System.err.println(se.getMessage());
         }
-
-        return result;
+        return null;
     }
 
-    public int baseQuery(String target, String tableName, String where, int what) {
+    public void executeUpdate(String query) throws SQLException {
+        try (Connection connection = connectToDatabase()) {
 
-        ResultSet rs;
-        Connection conn = connectToDatabase();
-        int result = 0;
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.executeUpdate();
 
-        try {
-            Statement st = conn.createStatement();
-            String sql = String.format("SELECT %s FROM %s WHERE %s = %d", target, tableName, where, what);
-            rs = st.executeQuery(sql);
-            while (rs.next()) {
-                result = rs.getInt(target);
-            }
-            conn.close();
-        } catch (SQLException se) {
+        } catch (SQLTimeoutException se) {
             System.err.println(se.getMessage());
         }
-
-        return result;
     }
 }

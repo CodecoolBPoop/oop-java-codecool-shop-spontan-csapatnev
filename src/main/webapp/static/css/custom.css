@@ -44,6 +44,8 @@ body.clear {
 
 .button:hover {
     background-color: rgba(200, 0, 30, 1);
+    color: white;
+    text-decoration: none;
 }
 
 .center {
@@ -623,6 +625,8 @@ table.shopping-cart-content tfoot td {
 
 .go-back-checkout:hover {
     background-color: rgba(180, 0, 25, 1);
+    color: white;
+    text-decoration: none;
 }
 
 .footer {

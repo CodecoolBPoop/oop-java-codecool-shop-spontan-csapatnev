@@ -5,53 +5,9 @@
 
 <nav th:replace="fragments/header.html::menu"></nav>
 
-<table class="shopping-cart-content">
-    <thead>
-        <tr>
-            <th>Image</th>
-            <th>Name</th>
-            <th>Quantity</th>
-            <th>Price</th>
-        </tr>
-    </thead>
-    <tfoot>
-        <tr>
-            <td colspan="4">
-                <div class="cart-price">Total $<span class="cart-price-num" th:text="${sumOfPrices}"></span></div>
-            </td>
-        </tr>
-    </tfoot>
-    <tbody class="shopping-cart-list">
-        <tr th:each="prod, iterStat : ${cartItems}" th:id="'product-' + ${prod.getId()}" class="cart-item">
-            <td>
-                <img th:src="'/static/img/product_' + ${prod.getId()} + '.png'" height="85">
-            </td>
-            <td>
-                <strong class="product-name" th:text="${prod.getName()}"></strong>
-            </td>
-            <td>
-                <span class="item-quantity" th:text="${prod.getShoppingCartQuantity()}"></span>
-            </td>
-            <td>
-                <span class="item-price" th:text="${prod.getPrice()}"></span>
-            </td>
-        </tr>
-    </tbody>
-</table>
-
 <div class="container">
     <div class="form">
-        <h3>Checkout</h3>
-        <form action="/checkout" method="post">
-            <input type="hidden" id="total-price" name="total-price" th:value="${totalPrice}">
-            <div class="input-group">
-                <label for="name">Name</label>
-                <input type="text" id="name" name="name" th:value="${userAddresses} ? ${userAddresses.get('name')} : ''" placeholder="Enter your name..">
-            </div>
-            <div class="input-group">
-                <label for="email">Email</label>
-                <input type="text" id="email" name="email" placeholder="Enter your email..">
-            </div>
+        <form action="/save-billing-info" method="post">
             <div class="input-group">
                 <label for="phone-number">Phone number</label>
                 <input type="text" id="phone-number" name="phone-number" placeholder="Enter your phone number..">
@@ -90,7 +46,7 @@
                 <label for="shipping-address">Address</label>
                 <input type="text" id="shipping-address" name="shipping-address" placeholder="Address">
             </div>
-            <input type="submit" class="button" value="Proceed to paying">
+            <input type="submit" class="button" value="Save">
         </form>
     </div>
 </div>

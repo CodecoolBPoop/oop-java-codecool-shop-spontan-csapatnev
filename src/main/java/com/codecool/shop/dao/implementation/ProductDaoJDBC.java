@@ -69,7 +69,6 @@ public class ProductDaoJDBC implements ProductDao {
                     + product.getDefaultPrice() + ", "
                     + category_id + ")");
             conn.close();
-            System.out.println("Added product: " + product.getName() + " to the database.");
         } catch (SQLException se) {
             System.err.println(se.getMessage());
         }
@@ -120,7 +119,6 @@ public class ProductDaoJDBC implements ProductDao {
             Statement st = conn.createStatement();
             st.executeUpdate("DELETE FROM product WHERE id = " + id);
             conn.close();
-            System.out.println("Deleted product with id: " + id + " from the database.");
         } catch (SQLException se) {
             System.err.println(se.getMessage());
         }

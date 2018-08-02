@@ -43,6 +43,14 @@ public class PaymentController extends HttpServlet {
         String nonceFromTheClient = req.getParameter("payment_method_nonce");
 
         HttpSession session = req.getSession();
+
+        try {
+            String username;
+            username = session.getAttribute("username").toString();
+            context.setVariable("username", username);
+        } catch (NullPointerException e) {
+        }
+
         List<Product> cartItems;
         cartItems = (ArrayList)session.getAttribute("ShoppingCart");
         float totalPrice = CheckoutController.calculateTotalPrice(cartItems);
@@ -62,17 +70,17 @@ public class PaymentController extends HttpServlet {
             System.out.println("Paying success!!!");
             EmailUtil.createEmailOfOrder(req, resp);
 
-            context.setVariable("shoppingCartProducts", ShoppingCart.getAllProduct(session));
-            context.setVariable("sumOfProducts", ShoppingCart.sumOfProducts(session));
-            context.setVariable("sumOfPrices", ShoppingCart.sumOfPrices(session));
-            engine.process("product/paying_success.html", context, resp.getWriter());
+//            context.setVariable("shoppingCartProducts", ShoppingCart.getAllProduct(session));
+            context.setVariable("sumOfProducts", 0);
+//            context.setVariable("sumOfPrices", ShoppingCart.sumOfPrices(session));
 
             currentOrder.logPaymentMethod(session, logger, "Card");
             currentOrder.logOrderDetails(session, logger);
             currentOrder.logPaymentResult(session, logger, "Success!");
             logger.writeLogsToFile(session);
 
-            session.invalidate();
+            session.removeAttribute("ShoppingCart");
+            engine.process("product/paying_success.html", context, resp.getWriter());
         } else {
             System.out.println("ERROR");
             System.out.println(result);

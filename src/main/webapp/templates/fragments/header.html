@@ -25,15 +25,98 @@
 
 <div id="userMenu">
     <div class="user-container" th:if="${username == null}">
-        <a href="#" class="">Login</a>
+        <a href="#" role="button" class="" data-toggle="modal" data-target="#loginModal">Login</a>
         or
-        <a href="#" class="">Register</a>
+        <a href="#" role="button" class="" data-toggle="modal" data-target="#registerModal">Register</a>
     </div>
     <div class="user-container" th:if="${username != null}">
         Welcome&nbsp;<strong th:text="${username}"></strong>!
         <div class="user-avatar"></div>
     </div>
 </div>
+
+<!-- Login Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="/login" method="post" id="loginForm">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">Login</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">Email</span>
+                        </div>
+                        <input type="email" name="email" id="loginEmail" required autocomplete="off" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon2">Password</span>
+                        </div>
+                        <input type="password" name="password" id="loginPassword" required autocomplete="off" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon2">
+                    </div>
+                    <span class="alert" id="loginMessage"></span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" name="register-submit" id="login" class="btn btn-primary">Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Register Modal -->
+<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="/registration" method="post" id="registerForm">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registerModalLabel">Register</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon3">Name</span>
+                        </div>
+                        <input type="text" name="name" id="username" required autocomplete="off" class="form-control" placeholder="Name" aria-label="Name" aria-describedby="basic-addon3">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon4">Password</span>
+                        </div>
+                        <input type="password" name="password" id="password" required autocomplete="off" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon4">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon5">Confirm Password</span>
+                        </div>
+                        <input type="password" name="password" id="password-confirm" required autocomplete="off" class="form-control" placeholder="Confirm Password" aria-label="Confirm Password" aria-describedby="basic-addon5">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon6">Email</span>
+                        </div>
+                        <input type="email" name="email" id="email" required autocomplete="off" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="basic-addon6">
+                    </div>
+                    <span class="alert" id="message"></span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" name="register-submit" id="register" class="btn btn-primary">Register</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <nav th:fragment="menu" id="pageMenu">
     <a href="/" class="logo"></a>
     <ul class="menu">
@@ -48,80 +131,6 @@
         </li>
         <li class="menu-item">
             <a href="/checkout" class="menu-link">Checkout</a>
-        </li>
-        <li class="menu-item" th:if="${username == null}">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#registrationModal">
-                Sign up
-            </button>
-            <div class="modal fade" id="registrationModal" tabindex="-1" role="dialog" data-backdrop="" aria-labelledby="registrationModalTitle" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="ModalTitle">Sign up</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <form action="/registration" method="post" id="registerForm">
-                            <div class="modal-body">
-                                <label>Name
-                                    <input type="text" name="name" id="username" required>
-                                </label>
-                                <label>Password
-                                    <input type="password" name="password" id="password" required>
-                                </label>
-                                <label>Confirm password
-                                    <input type="password" name="confirm-password" id="password-confirm" required>
-                                </label>
-                                <label>Email
-                                    <input type="email" name="email" id="email" required>
-                                </label>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                <div class="form-group"><label for="register"></label>
-                                    <button type="submit" name="register-submit" value="Register" class="btn btn-primary" id="register">Register</button>
-                                </div>
-                            </div>
-                        </form>
-                        <span class="alert" id="message"></span>
-                    </div>
-                </div>
-            </div>
-        </li>
-        <li class="menu-item" th:if="${username == null}">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">
-                Login
-            </button>
-            <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" data-backdrop="" aria-labelledby="loginModalTitle" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="loginModalTitle">Login</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <form action="/login" method="post" id="loginForm">
-                            <div class="modal-body">
-                                <label>Email
-                                    <input type="email" name="email" id="loginEmail" required>
-                                </label>
-                                <label>Password
-                                    <input type="password" name="password" id="loginPassword" required>
-                                </label>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                <div class="form-group"><label for="register"></label>
-                                    <button type="submit" name="register-submit" value="Register" class="btn btn-primary" id="login">Login</button>
-                                </div>
-                            </div>
-                        </form>
-                        <span class="alert" id="loginMessage"></span>
-                    </div>
-                </div>
-            </div>
         </li>
         <li>
             <a href="/logout" th:if="${username != null}">

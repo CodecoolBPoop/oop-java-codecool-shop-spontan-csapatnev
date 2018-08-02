@@ -1,3 +1,17 @@
+$('#saveShoppingCart').on('click', function(event) {
+    event.preventDefault();
+    let $this = $(this);
+    let alert = $('#shoppingCartSaveAlert');
+    $.post($this.attr('href'), function(data) {
+        alert.css('display', 'block');
+        alert.addClass('show');
+        setTimeout(function() {
+            alert.removeClass('show');
+            alert.css('display', 'none');
+        }, 2500);
+    });
+});
+
 function menuHandling() {
     $('#menuHandler').on('click', function() {
         $('#pageMenu').addClass('menu-opened');

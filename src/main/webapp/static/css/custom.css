@@ -382,8 +382,15 @@ body.clear {
 .shopping-cart-details {
     height: 70px;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+
+.shopping-cart-details .btn {
+    font-size: 12px;
+    padding: 5px 8px;
+    margin-top: 5px;
 }
 
 .shopping-cart-remove-item {
@@ -396,6 +403,12 @@ body.clear {
     top: 3px;
     right: 3px;
     text-decoration: none;
+}
+
+#shoppingCartSaveAlert {
+    position: fixed;
+    top: 0;
+    right: 0;
 }
 
 table.shopping-cart-content {

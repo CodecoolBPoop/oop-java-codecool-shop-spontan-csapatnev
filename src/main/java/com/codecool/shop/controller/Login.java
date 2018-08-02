@@ -1,6 +1,7 @@
 package com.codecool.shop.controller;
 
 import com.codecool.shop.model.Database;
+import com.codecool.shop.model.ShoppingCart;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -25,6 +26,8 @@ public class Login extends HttpServlet {
 
         HttpSession session = req.getSession();
         session.setAttribute("username", name);
+        ShoppingCart shoppingCart = new ShoppingCart();
+        shoppingCart.setCartFromDBToSession(session);
         resp.sendRedirect("/");
     }
 

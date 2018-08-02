@@ -107,6 +107,8 @@ public class ShoppingCart {
         ArrayList<Product> productList = (ArrayList)session.getAttribute(SHOPPING_CART);
         String username = (String) session.getAttribute("username");
         int userId = getUserId(username);
+        System.out.println(username);
+        System.out.println(userId);
         if (productList != null) {
             for (Product prod : productList) {
                 try {
@@ -145,10 +147,11 @@ public class ShoppingCart {
     public void deleteCartFromDB(HttpSession session) {
         int userId = getUserIdFromSession(session);
 
+        System.err.println(userId);
+
         try  {
             db.executeUpdate(String.format(
-                    "DELETE FROM shopping_cart " +
-                    "WHERE user_id = %d",userId));
+                    "DELETE FROM shopping_cart WHERE user_id = %d", userId));
         } catch (SQLException se) {
             System.err.println(se.getMessage());
         }
@@ -158,19 +161,21 @@ public class ShoppingCart {
     public void setCartFromDBToSession (HttpSession session) {
         List<Product> products = getCartFromDB(session);
         session.setAttribute(SHOPPING_CART, products);
-
     }
 
     private int getUserId(String username) {
+        int userId = 0;
         try (ResultSet rs = db.executeQuery(String.format(
                 "SELECT id FROM users " +
                 "WHERE name = '%s'", username))) {
-            return rs.getInt("id");
+            while (rs.next()) {
+                userId = rs.getInt("id");
+            }
         } catch (SQLException se) {
             System.err.println(se.getMessage());
         }
 
-        return 0;
+        return userId;
     }
 
     private int getUserIdFromSession(HttpSession session) {

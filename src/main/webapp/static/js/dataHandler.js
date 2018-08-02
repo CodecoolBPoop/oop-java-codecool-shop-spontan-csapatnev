@@ -1,10 +1,13 @@
 $('#saveShoppingCart').on('click', function(event) {
     event.preventDefault();
     let $this = $(this);
+    let alert = $('#shoppingCartSaveAlert');
     $.post($this.attr('href'), function(data) {
-        $('#shoppingCartSaveAlert').addClass('show');
+        alert.css('display', 'block');
+        alert.addClass('show');
         setTimeout(function() {
-            $('#shoppingCartSaveAlert').removeClass('show');
+            alert.removeClass('show');
+            alert.css('display', 'none');
         }, 2500);
     });
 });

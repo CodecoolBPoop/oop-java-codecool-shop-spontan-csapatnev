@@ -17,6 +17,7 @@ public class SaveShoppingCart extends HttpServlet {
         HttpSession session = req.getSession();
 
         ShoppingCart shoppingCart = new ShoppingCart();
+        shoppingCart.deleteCartFromDB(session);
         shoppingCart.saveCartToDB(session);
     }
 

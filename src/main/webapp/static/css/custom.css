@@ -159,6 +159,10 @@ body.clear {
     margin-left: 10px;
 }
 
+#userMenu .user-actions {
+    display: flex;
+}
+
 #pageMenu {
     display: flex;
     flex-direction: row;

@@ -25,13 +25,17 @@
 
 <div id="userMenu">
     <div class="user-container" th:if="${username == null}">
-        <a href="#" role="button" class="" data-toggle="modal" data-target="#loginModal">Login</a>
+        <a role="button" href="" class="btn btn-link" data-toggle="modal" data-target="#loginModal">Login</a>
         or
-        <a href="#" role="button" class="" data-toggle="modal" data-target="#registerModal">Register</a>
+        <a role="button" href="" class="btn btn-link" data-toggle="modal" data-target="#registerModal">Register</a>
     </div>
     <div class="user-container" th:if="${username != null}">
         Welcome&nbsp;<strong th:text="${username}"></strong>!
         <div class="user-avatar"></div>
+        <div class="user-actions">
+            <a href="/orders" class="btn btn-link">Orders</a>
+            <a href="/logout" class="btn btn-link">Logout</a>
+        </div>
     </div>
 </div>
 
@@ -131,16 +135,6 @@
         </li>
         <li class="menu-item">
             <a href="/checkout" class="menu-link">Checkout</a>
-        </li>
-        <li>
-            <a href="/logout" th:if="${username != null}">
-                <button type="button" class="btn btn-primary">
-                    Logout
-                </button>
-            </a>
-        </li>
-        <li th:if="${username != null}">
-            <span th:text="'Welcome ' + ${username} + '!'"></span>
         </li>
     </ul>
 

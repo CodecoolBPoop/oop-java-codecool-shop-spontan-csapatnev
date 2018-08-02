@@ -39,10 +39,10 @@ public class ProductDaoJDBC implements ProductDao {
     public void add(Product product) {
         Connection conn = db.connectToDatabase();
 
-        Supplier supplier = null;
+        Supplier supplier;
         int supplier_id = 0;
 
-        ProductCategory category = null;
+        ProductCategory category;
         int category_id = 0;
 
         try {

@@ -31,6 +31,7 @@ public class CheckoutController extends BaseController {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     void addPlusContext(WebContext context, HttpServletRequest req) throws ElementNotFoundException, IndexOutOfBoundsException {
 
         HttpSession session = req.getSession();
@@ -82,6 +83,7 @@ public class CheckoutController extends BaseController {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         OrdersListDao ordersDataStore = OrdersListDaoMem.getInstance();
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());

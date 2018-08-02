@@ -107,7 +107,9 @@ public class ProductDaoJDBC implements ProductDao {
             System.err.println(se.getMessage());
         }
 
-        return new Product(name, defaultPrice, currency, description, productCategory, supplier);
+        Product prod = new Product(name, defaultPrice, currency, description, productCategory, supplier);
+        prod.setId(id);
+        return prod;
     }
 
     @Override

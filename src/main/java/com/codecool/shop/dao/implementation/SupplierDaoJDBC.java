@@ -121,6 +121,8 @@ public class SupplierDaoJDBC implements SupplierDao {
         ResultSet rs;
         Connection conn = db.connectToDatabase();
 
+        data.clear();
+
         try {
             Statement st = conn.createStatement();
             rs = st.executeQuery("SELECT * FROM suppliers");

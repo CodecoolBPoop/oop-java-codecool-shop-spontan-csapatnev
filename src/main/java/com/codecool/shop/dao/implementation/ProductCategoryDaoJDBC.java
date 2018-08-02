@@ -128,6 +128,7 @@ public class ProductCategoryDaoJDBC implements ProductCategoryDao {
         ResultSet rs;
         Connection conn = db.connectToDatabase();
 
+        data.clear();
         try {
             Statement st = conn.createStatement();
             rs = st.executeQuery("SELECT * FROM product_categories");

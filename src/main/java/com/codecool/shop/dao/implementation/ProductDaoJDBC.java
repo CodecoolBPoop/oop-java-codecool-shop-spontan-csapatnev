@@ -131,6 +131,8 @@ public class ProductDaoJDBC implements ProductDao {
         ResultSet rs;
         Connection conn = db.connectToDatabase();
 
+        data.clear();
+
         try {
             Statement st = conn.createStatement();
             rs = st.executeQuery("SELECT name, id, description, supplier_id, " +

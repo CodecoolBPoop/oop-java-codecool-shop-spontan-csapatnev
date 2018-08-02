@@ -1,3 +1,17 @@
+$('#saveShoppingCart').on('click', function(event) {
+    event.preventDefault();
+    let $this = $(this);
+    let alert = $('#shoppingCartSaveAlert');
+    $.post($this.attr('href'), function(data) {
+        alert.css('display', 'block');
+        alert.addClass('show');
+        setTimeout(function() {
+            alert.removeClass('show');
+            alert.css('display', 'none');
+        }, 2500);
+    });
+});
+
 function menuHandling() {
     $('#menuHandler').on('click', function() {
         $('#pageMenu').addClass('menu-opened');
@@ -87,6 +101,58 @@ function dataHandler(ev) {ev.preventDefault();
             }
         }
     })
-};
+}
 
-$('.data-handler-button').on('click',dataHandler)
+$('.data-handler-button').on('click',dataHandler);
+
+$(document).ready(function () {
+    $("#register").click(function (event) {
+        $("#message").removeClass("alert-danger");
+        $("#message").text("");
+        let password = $("#password").val();
+        let password_confirm = $("#password-confirm").val();
+        if (!(password === password_confirm)) {
+            event.preventDefault();
+            $("#message").toggleClass("alert-danger");
+            $("#message").text("Passwords don't match!")
+        } else {
+            event.preventDefault();
+            let validationUrl = "/check-username";
+            let username = $("#username").val();
+            let email = $("#email").val();
+            $.post(validationUrl, JSON.stringify({"username": username, "email": email}), function (response) {
+                if (response === "ok") {
+                    console.log(response);
+                    $("#registerForm")[0].submit();
+                } else if (response === "both") {
+                    $("#message").toggleClass("alert-danger");
+                    $("#message").text("Username and email is already taken")
+                } else if (response === "username") {
+                    $("#message").toggleClass("alert-danger");
+                    $("#message").text("Username is already taken")
+                } else if (response === "email") {
+                    $("#message").toggleClass("alert-danger");
+                    $("#message").text("Email address is already taken")
+                }
+            })
+        }
+    })
+});
+
+$(document).ready(function () {
+    $("#login").click(function (event) {
+        $("#loginMessage").removeClass("alert-danger");
+        $("#loginMessage").text("");
+        let email = $("#loginEmail").val();
+        let password = $("#loginPassword").val();
+        event.preventDefault();
+        $.post('/verify-user', JSON.stringify({"email": email, "password": password}), function(response){
+                if(response === "ok"){
+                    $("#loginForm")[0].submit();
+                }else{
+                    $("#loginMessage").toggleClass("alert-danger");
+                    $("#loginMessage").text("Email or password is incorrect")
+                }
+            })
+    })
+});

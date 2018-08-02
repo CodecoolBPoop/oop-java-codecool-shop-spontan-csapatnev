@@ -12,9 +12,9 @@ import java.util.LinkedHashMap;
 public class AdminLog {
 
     private static AdminLog instance = null;
-    private final String LOG_DIR_PATH = System.getProperty("user.dir") + "\\log\\";
-    private final String LATEST_ID_FILE_PATH = System.getProperty("user.dir") + "\\log\\LatestOrderId.txt";
-    static int idx = 0;
+    private final String LOG_DIR_PATH = System.getProperty("user.dir") + "/log";
+    private final String LATEST_ID_FILE_PATH = System.getProperty("user.dir") + "/log/LatestOrderId.txt";
+    private static int idx = 0;
 
     private AdminLog() {
     }
@@ -83,7 +83,7 @@ public class AdminLog {
      *
      * @return name of that file
      */
-    public String createLogFile(HttpSession session) {
+    private String createLogFile(HttpSession session) {
 
         String timeStamp = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
         Order order = (Order) session.getAttribute("currentOrder");
@@ -107,6 +107,7 @@ public class AdminLog {
      *
      * @param session the HttpSession in which the linked hash map can be found
      */
+    @SuppressWarnings("unchecked")
     public void writeLogsToFile(HttpSession session) {
 
         LinkedHashMap<Long, String> log = (LinkedHashMap) session.getAttribute("AdminLog");
@@ -118,9 +119,6 @@ public class AdminLog {
             fw.write(json);
             fw.flush();
             fw.close();
-
-            System.out.println("Successfully Copied log from session to File...");
-            System.out.println("\nlog: " + log);
 
         } catch (IOException ex) {
             System.err.println("Caught IOException: " + ex.getMessage());
@@ -134,6 +132,7 @@ public class AdminLog {
      * @param session the HttpSession in which the linked hash map can be found
      * @param value   value of the log to add
      */
+    @SuppressWarnings("unchecked")
     public void addLog(HttpSession session, String value) {
         Long time = idx++ + System.currentTimeMillis();
         LinkedHashMap<Long, String> log = (LinkedHashMap) session.getAttribute("AdminLog");

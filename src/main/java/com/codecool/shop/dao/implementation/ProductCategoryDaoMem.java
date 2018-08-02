@@ -3,7 +3,6 @@ package com.codecool.shop.dao.implementation;
 
 import com.codecool.shop.dao.ElementNotFoundException;
 import com.codecool.shop.dao.ProductCategoryDao;
-import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 
 import java.util.ArrayList;
@@ -33,7 +32,7 @@ public class ProductCategoryDaoMem implements ProductCategoryDao {
     }
 
     @Override
-    public ProductCategory find(int id) {
+    public ProductCategory find(int id){
         return data
                 .stream()
                 .filter(t -> t.getId() == id)

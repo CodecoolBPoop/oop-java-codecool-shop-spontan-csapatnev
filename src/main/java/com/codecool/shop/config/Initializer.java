@@ -5,6 +5,7 @@ import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.SupplierDao;
 import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
+import com.codecool.shop.dao.implementation.SupplierDaoJDBC;
 import com.codecool.shop.dao.implementation.SupplierDaoMem;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
@@ -23,22 +24,20 @@ public class Initializer implements ServletContextListener {
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
         SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
 
+
         //setting up a new supplier
         Supplier amazon = new Supplier("Amazon", "Digital content and services");
         supplierDataStore.add(amazon);
         Supplier lenovo = new Supplier("Lenovo", "Computers");
         supplierDataStore.add(lenovo);
-        Supplier apple = new Supplier("Apple", "Computers");
-        supplierDataStore.add(apple);
         Supplier codeCoolShop = new Supplier("CodeCoolShop", "Gadgets");
         supplierDataStore.add(codeCoolShop);
 
         //setting up a new product category
         ProductCategory tablet = new ProductCategory("Tablet", "Hardware", "A tablet computer, commonly shortened to tablet, is a thin, flat mobile computer with a touchscreen display.");
         productCategoryDataStore.add(tablet);
-        ProductCategory mobile = new ProductCategory("Mobile", "Hardware", "Mobile phone, shortly mobile. A pretty small but powerful device. Used for contacting people by phone or on the internet.");
-        productCategoryDataStore.add(mobile);
         ProductCategory gadget = new ProductCategory("Gadget", "Item", "Interesting and useful gadgets helping us in our every-day life.");
+        productCategoryDataStore.add(gadget);
 
         //setting up products and printing it
         productDataStore.add(new Product("Amazon Fire", 49, "USD", "Fantastic price. Large content ecosystem. Good parental controls. Helpful technical support.", tablet, amazon));
@@ -50,7 +49,6 @@ public class Initializer implements ServletContextListener {
         productDataStore.add(new Product("Sleep at Work Stickers", 5, "USD", "To help prevent getting caught sleeping.", gadget, codeCoolShop));
         productDataStore.add(new Product("Banana Slicer", 20, "USD", "Faster, safer than using a knife.", gadget, codeCoolShop));
         productDataStore.add(new Product("Bacon Flavored Toothpaste", 33, "USD", "Each tube contains 2.5 oz (70 g) of potent BACON paste.", gadget, codeCoolShop));
-
 
     }
 }

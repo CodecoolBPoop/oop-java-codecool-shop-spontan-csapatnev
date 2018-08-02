@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head th:fragment="head">
-    <meta charset="utf-8" />
+    <meta charset="UTF-8"/>
     <meta name="author" content="Codecool" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="shortcut icon" href="/static/img/logo/cc.png" />
@@ -13,9 +13,114 @@
     <script src="/static/js/dataHandler.js" defer></script>
 
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
     <link rel="stylesheet" type="text/css" href="/static/css/custom.css" />
 </head>
 <body>
+
+<div th:fragment="menu">
+
+<div id="userMenu">
+    <div class="user-container" th:if="${username == null}">
+        <a role="button" href="" class="btn btn-link" data-toggle="modal" data-target="#loginModal">Login</a>
+        or
+        <a role="button" href="" class="btn btn-link" data-toggle="modal" data-target="#registerModal">Register</a>
+    </div>
+    <div class="user-container" th:if="${username != null}">
+        Welcome&nbsp;<strong th:text="${username}"></strong>!
+        <div class="user-avatar"></div>
+        <div class="user-actions">
+            <a href="/orders" class="btn btn-link">Orders</a>
+            <a href="/addresses" class="btn btn-link">Addresses</a>
+            <a href="/logout" class="btn btn-link">Logout</a>
+        </div>
+    </div>
+</div>
+
+<!-- Login Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="/login" method="post" id="loginForm">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">Login</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">Email</span>
+                        </div>
+                        <input type="email" name="email" id="loginEmail" required autocomplete="off" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon2">Password</span>
+                        </div>
+                        <input type="password" name="password" id="loginPassword" required autocomplete="off" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon2">
+                    </div>
+                    <span class="alert" id="loginMessage"></span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" name="register-submit" id="login" class="btn btn-primary">Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Register Modal -->
+<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="/registration" method="post" id="registerForm">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registerModalLabel">Register</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon3">Name</span>
+                        </div>
+                        <input type="text" name="name" id="username" required autocomplete="off" class="form-control" placeholder="Name" aria-label="Name" aria-describedby="basic-addon3">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon4">Password</span>
+                        </div>
+                        <input type="password" name="password" id="password" required autocomplete="off" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon4">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon5">Confirm Password</span>
+                        </div>
+                        <input type="password" name="password" id="password-confirm" required autocomplete="off" class="form-control" placeholder="Confirm Password" aria-label="Confirm Password" aria-describedby="basic-addon5">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon6">Email</span>
+                        </div>
+                        <input type="email" name="email" id="email" required autocomplete="off" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="basic-addon6">
+                    </div>
+                    <span class="alert" id="message"></span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" name="register-submit" id="register" class="btn btn-primary">Register</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <nav th:fragment="menu" id="pageMenu">
     <a href="/" class="logo"></a>
@@ -33,6 +138,7 @@
             <a href="/checkout" class="menu-link">Checkout</a>
         </li>
     </ul>
+
     <div class="menu-handler" id="menuHandler"><i></i><i></i><i></i></div>
     <div class="menu-overlay"></div>
     <div class="shopping-cart">
@@ -58,10 +164,19 @@
             </ul>
             <div class="shopping-cart-details">
                 <div class="cart-price">Total $<span class="cart-price-num" th:text="${sumOfPrices}"></span></div>
+                <a th:if="${username != null}" href="/save-shopping-cart" class="btn btn-success" id="saveShoppingCart">Save</a>
+            </div>
+            <div th:if="${username != null}" id="shoppingCartSaveAlert" class="alert alert-success alert-dismissible fade" role="alert">
+                We saved your shopping cart <strong>successfully</strong>!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
         </div>
     </div>
 </nav>
+
+</div>
 
 </body>
 </html>

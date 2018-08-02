@@ -1,11 +1,6 @@
 package com.codecool.shop.controller;
 
 import com.braintreegateway.*;
-import com.codecool.shop.dao.ElementNotFoundException;
-import com.codecool.shop.dao.ProductCategoryDao;
-import com.codecool.shop.dao.ProductDao;
-import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
-import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.model.AdminLog;
 import com.codecool.shop.model.Order;
@@ -14,10 +9,6 @@ import com.codecool.shop.model.ShoppingCart;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
-import javax.mail.Authenticator;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -52,6 +43,14 @@ public class PaymentController extends HttpServlet {
         String nonceFromTheClient = req.getParameter("payment_method_nonce");
 
         HttpSession session = req.getSession();
+
+        try {
+            String username;
+            username = session.getAttribute("username").toString();
+            context.setVariable("username", username);
+        } catch (NullPointerException e) {
+        }
+
         List<Product> cartItems;
         cartItems = (ArrayList)session.getAttribute("ShoppingCart");
         float totalPrice = CheckoutController.calculateTotalPrice(cartItems);
@@ -68,25 +67,17 @@ public class PaymentController extends HttpServlet {
         Order currentOrder;
         currentOrder = (Order)session.getAttribute("currentOrder");
         if (result.isSuccess()) {
-            System.out.println("Paying success!!!");
-            EmailUtil.createEmail(req, resp);
+            EmailUtil.createEmailOfOrder(req, resp);
 
-            context.setVariable("shoppingCartProducts", ShoppingCart.getAllProduct(session));
-            context.setVariable("sumOfProducts", ShoppingCart.sumOfProducts(session));
-            context.setVariable("sumOfPrices", ShoppingCart.sumOfPrices(session));
-            engine.process("product/paying_success.html", context, resp.getWriter());
-
+            context.setVariable("sumOfProducts", 0);
             currentOrder.logPaymentMethod(session, logger, "Card");
             currentOrder.logOrderDetails(session, logger);
             currentOrder.logPaymentResult(session, logger, "Success!");
             logger.writeLogsToFile(session);
 
-            session.invalidate();
+            session.removeAttribute("ShoppingCart");
+            engine.process("product/paying_success.html", context, resp.getWriter());
         } else {
-            // Handle errors
-            System.out.println("ERROR");
-            System.out.println(result);
-
             currentOrder.logPaymentMethod(session, logger, "Card");
             currentOrder.logOrderDetails(session, logger);
             currentOrder.logPaymentResult(session, logger, "Failed!");

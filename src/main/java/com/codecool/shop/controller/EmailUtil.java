@@ -23,7 +23,7 @@ import javax.servlet.http.HttpSession;
 
 class EmailUtil {
 
-    static void sendEmail(Session session, String toEmail, String subject, String body){
+    private static void sendEmail(Session session, String toEmail, String subject, String body){
         try
         {
             MimeMessage msg = new MimeMessage(session);
@@ -43,17 +43,14 @@ class EmailUtil {
             msg.setSentDate(new Date());
 
             msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail, false));
-            System.out.println("Message is ready");
             Transport.send(msg);
-
-            System.out.println("EMail Sent Successfully!!");
         }
         catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    static void createEmail(HttpServletRequest req, HttpServletResponse resp) {
+    static void createEmailOfOrder(HttpServletRequest req, HttpServletResponse resp) {
         HttpSession session = req.getSession();
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
@@ -71,7 +68,24 @@ class EmailUtil {
         final String fromEmail = "jakabgipsz1983@gmail.com";
         final String password = "gipsz.j4k4b";
 
-        System.out.println("TLSEmail Start");
+        Session mailSession = getMailSession(fromEmail, password);
+
+        EmailUtil.sendEmail(mailSession, toEmail, subject, mailBody);
+    }
+
+    static void createWelcomeEmail(String toEmail, String name) {
+        final String fromEmail = "jakabgipsz1983@gmail.com";
+        final String password = "gipsz.j4k4b";
+        final String subject = "Welcome to Codecoolshop!";
+
+        String mailBody = String.format("Thank you for registering at Codecoolshop, %s", name);
+
+        Session mailSession = getMailSession(fromEmail, password);
+        EmailUtil.sendEmail(mailSession, toEmail, subject, mailBody);
+
+    }
+
+    private static Session getMailSession(String fromEmail, String password) {
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.port", "587");
@@ -85,10 +99,6 @@ class EmailUtil {
                 return new PasswordAuthentication(fromEmail, password);
             }
         };
-        Session mailSession = Session.getInstance(props, auth);
-
-        EmailUtil.sendEmail(mailSession, toEmail, subject, mailBody);
-
+        return Session.getInstance(props, auth);
     }
-
 }

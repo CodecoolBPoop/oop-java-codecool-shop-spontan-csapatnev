@@ -68,3 +68,26 @@ CREATE TABLE public.shopping_cart
   CONSTRAINT shopping_cart_product_id_fk FOREIGN KEY (user_id) REFERENCES public.product (id)
 );
 
+create table billing_shipping_addresses
+(
+  id               serial not null
+    constraint table_name_pkey
+    primary key,
+  username         varchar(255)
+    constraint fk_username
+    references users (name)
+    on update cascade on delete cascade,
+  phone_number     varchar(255),
+  billing_country  varchar(255),
+  billing_city     varchar(255),
+  billing_zip      varchar(255),
+  billing_address  varchar(255),
+  shipping_country varchar(255),
+  shipping_zip     varchar(255),
+  shipping_city    varchar(255),
+  shipping_address varchar(255)
+);
+
+create unique index table_name_id_uindex
+  on billing_shipping_addresses (id);
+

@@ -64,7 +64,11 @@ public class SaveBillingShippingInfo extends BaseController {
         Connection connection = db.connectToDatabase();
 
         try {
-            PreparedStatement stmt = connection.prepareStatement(
+            PreparedStatement stmt = connection.prepareStatement("DELETE FROM billing_shipping_addresses WHERE username=?;");
+            stmt.setString(1, username);
+            stmt.executeUpdate();
+
+            stmt = connection.prepareStatement(
                     "INSERT INTO billing_shipping_addresses " +
                     "(username, " +
                     "phone_number, " +
